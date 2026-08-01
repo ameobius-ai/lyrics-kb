@@ -1,2 +1,32 @@
 # lyrics-kb
-Music KB mirror: songwriting cases and sound corpus. Source of truth lives in Notion; this repo is a mirror for cases and references.
+
+База знаний по сонграйтингу и звуку музыкального хаба.
+
+**Правило зеркала:** источник правды — Notion (карточки базы «Треки и релизы» + канон-страницы в «Плейбуках»). Этот репозиторий — зеркало для кейсов и референсов, а не второй источник правды.
+
+## Структура
+
+- `cases/` — кейсы треков: лирика-аудит, метрики, fail_mode, урок. Именование: `{LANE}-{NNN}-{slug}.md` (`CW-002-trista-sorok-sem.md`, `SWP-001-…`, `IND-001-…`)
+- `references/` — справочники, сведённые по всем кейсам (`sound_corpus.md` — звуковые метрики и таргеты)
+- `suno/` — пакеты Style / behavior-тегов по лейнам (зеркало Notion-страниц «Suno-пакет …»)
+
+## Лейны
+
+| Код | Лейн |
+|---|---|
+| CW | darksynth / coldwave |
+| SWP | болотный фолк-электроник |
+| IND | industrial / neurofunk |
+| MC | металкор / пост-хардкор |
+| FH | фолк-хоррор |
+
+## Статус зеркала
+
+- [x] `cases/CW-002-trista-sorok-sem.md`
+- [x] `references/sound_corpus.md` v0.1
+- [ ] cases CW-003 / CW-004 / CW-005
+- [ ] cases SWP-010…SWP-013 (ГАТЬ)
+- [ ] хаб болотной полосы
+- [ ] suno-пакеты по лейнам
+
+Исторический долг закрыт: файл `cases/CW-012-tri-cifry.md` со старого репо здесь не воссоздаётся — кейс сразу лежит под правильным именем.
