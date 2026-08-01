@@ -23,8 +23,10 @@
 ## Статус зеркала
 
 - [x] `cases/CW-002-trista-sorok-sem.md`
+- [x] `cases/CW-003-razmorozka.md`
+- [x] `cases/CW-004-chuzhoy-etazh.md`
+- [x] `cases/CW-005-schetchik.md`
 - [x] `references/sound_corpus.md` v0.1
-- [ ] cases CW-003 / CW-004 / CW-005
 - [ ] cases SWP-010…SWP-013 (ГАТЬ)
 - [ ] хаб болотной полосы
 - [ ] suno-пакеты по лейнам
