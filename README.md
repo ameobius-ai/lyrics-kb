@@ -7,9 +7,9 @@
 ## Структура
 
 - `cases/` — кейсы треков: лирика-аудит, метрики, fail_mode, урок. Именование: `{LANE}-{NNN}-{slug}.md`
-- `references/` — справочники, сведённые по всем кейсам (`sound_corpus.md` — звуковые метрики и таргеты; `swamp-lane.md` — хаб болотной полосы)
+- `references/` — справочники по всем кейсам: `sound_corpus.md` (звуковые метрики и таргеты) · `swamp-lane.md` (хаб болотной полосы) · `release-pipeline-v1.md` (канон пайплайна)
 - `suno/` — пакеты Style / behavior-тегов: `style-tag-grammar.md` (канон всех лейнов) + per-lane `coldwave.md` · `swamp.md` · `industrial.md` · `metalcore.md`
-- `songwriting/` — сонграйтинг-канон: `anti-patterns.md` · `top-texts-teardown.md` · `cw-lessons.md` · `swamp-playbook.md` · `industrial-danger-levers.md` · `en/EN_CRAFT_LAYER.md`
+- `songwriting/` — сонграйтинг-канон: `anti-patterns.md` · `top-texts-teardown.md` · `cw-lessons.md` · `swamp-playbook.md` · `industrial-danger-levers.md` · `en/EN_CRAFT_LAYER.md` · `ru/` (энциклопедия, 4 части)
 
 ## Лейны
 
@@ -38,8 +38,10 @@
 | `cases/IND-002-kill-the-crest.md` | KILL THE CREST | 8.3 | GEN READY |
 | `cases/MC-001-toxic.md` | TOXIC | 7.6 → 8.6 | Мастеринг (over_master) |
 
-## Статус зеркала (2026-08-01)
+## Статус зеркала (2026-08-02)
 
-Зеркало собрано полностью: 12 кейсов, 2 референса, 5 suno-файлов, 6 файлов сонграйтинг-канона. Дальше — режим поддержки: новые кейсы и правки канона идут сюда следом за Notion.
+Зеркало собрано: 12 кейсов, 3 референса, 5 suno-файлов, 6 файлов сонграйтинг-канона + энциклопедия в 4 частях (`songwriting/ru/`). Дальше — режим поддержки: новые кейсы и правки канона идут сюда следом за Notion.
 
-Исторический долг закрыт: файл `cases/CW-012-tri-cifry.md` со старого репо здесь не воссоздаётся — кейс сразу лежит под правильным именем. Из старого репо не перенесены: `cases/EN-001…EN-010` (git-only desk-блок), `suno/genre_bpm_map.md`, `suno/persona.md`, `references/siliconsense_genre_bpm.json` — судьба решается человеком (см. ишью в Notion).
+Открытый хвост: §22–27 энциклопедии (AI-карта, деревья, векторы, паттерны, трансформации, шаблоны) — догрузить отдельным проходом.
+
+Исторический долг закрыт: файл `cases/CW-012-tri-cifry.md` со старого репо здесь не воссоздаётся — кейс сразу лежит под правильным именем. Из старого репо не перенесены: `cases/EN-001…EN-010`, `suno/genre_bpm_map.md`, `suno/persona.md`, `references/siliconsense_genre_bpm.json` — судьба решается человеком (см. ишью в Notion).
