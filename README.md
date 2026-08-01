@@ -6,7 +6,7 @@
 
 ## Структура
 
-- `cases/` — кейсы треков: лирика-аудит, метрики, fail_mode, урок. Именование: `{LANE}-{NNN}-{slug}.md` (`CW-002-trista-sorok-sem.md`, `SWP-001-…`, `IND-001-…`)
+- `cases/` — кейсы треков: лирика-аудит, метрики, fail_mode, урок. Именование: `{LANE}-{NNN}-{slug}.md` (`CW-002-trista-sorok-sem.md`, `SWP-010-mara.md`, `IND-001-…`)
 - `references/` — справочники, сведённые по всем кейсам (`sound_corpus.md` — звуковые метрики и таргеты)
 - `suno/` — пакеты Style / behavior-тегов по лейнам (зеркало Notion-страниц «Suno-пакет …»)
 
@@ -26,9 +26,12 @@
 - [x] `cases/CW-003-razmorozka.md`
 - [x] `cases/CW-004-chuzhoy-etazh.md`
 - [x] `cases/CW-005-schetchik.md`
+- [x] `cases/SWP-010-mara.md`
+- [x] `cases/SWP-011-shishiga.md`
+- [x] `cases/SWP-012-staritsa.md`
+- [x] `cases/SWP-013-bylichka.md`
 - [x] `references/sound_corpus.md` v0.1
-- [ ] cases SWP-010…SWP-013 (ГАТЬ)
-- [ ] хаб болотной полосы
+- [ ] хаб болотной полосы (`references/swamp-lane.md`)
 - [ ] suno-пакеты по лейнам
 
 Исторический долг закрыт: файл `cases/CW-012-tri-cifry.md` со старого репо здесь не воссоздаётся — кейс сразу лежит под правильным именем.
