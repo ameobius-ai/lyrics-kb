@@ -4,9 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       lyrics_path:
-        description: "Путь к файлу с текстом в репо (например songwriting/ru/drafts/ottepel.md)"
+        description: "Путь к файлу с текстом в репо. Smoke-тест: integrations/gigachat/samples/smoke-test.md"
         required: true
         type: string
+        default: "integrations/gigachat/samples/smoke-test.md"
       model:
         description: "Модель (пусто = GigaChat-3.5-Ultra)"
         required: false
