@@ -1,0 +1,46 @@
+name: GigaChat second opinion
+
+on:
+  workflow_dispatch:
+    inputs:
+      lyrics_path:
+        description: "Путь к файлу с текстом в репо (например songwriting/ru/drafts/ottepel.md)"
+        required: true
+        type: string
+      model:
+        description: "Модель (пусто = GigaChat-3.5-Ultra)"
+        required: false
+        type: string
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  opinion:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: pip install -r integrations/gigachat/requirements.txt
+
+      - name: Run second opinion
+        env:
+          GIGACHAT_AUTH_KEY: ${{ secrets.GIGACHAT_AUTH_KEY }}
+          GIGACHAT_MODEL: ${{ inputs.model }}
+        run: python integrations/gigachat/second_opinion.py "${{ inputs.lyrics_path }}"
+
+      - name: Commit opinion
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          SRC="${{ inputs.lyrics_path }}"
+          OUT="${SRC%.*}.gigachat-opinion.md"
+          git add "$OUT"
+          git commit -m "gigachat second opinion: $OUT" || echo "nothing to commit"
+          git push
