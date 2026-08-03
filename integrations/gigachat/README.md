@@ -24,9 +24,19 @@ Actions → **GigaChat second opinion** → Run workflow → укажи путь
 
 ### Локально
 
+Для SSL GigaChat нужны русские корневые сертификаты (Минцифры):
+
 ```bash
+# Ubuntu/Debian — один раз:
+sudo cp integrations/gigachat/certs/russian-trusted-root-ca.pem /usr/local/share/ca-certificates/russian-trusted-root-ca.crt
+sudo cp integrations/gigachat/certs/russian-trusted-sub-ca.pem /usr/local/share/ca-certificates/russian-trusted-sub-ca.crt
+sudo update-ca-certificates
+
+# затем:
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r integrations/gigachat/requirements.txt
-GIGACHAT_AUTH_KEY=... python integrations/gigachat/second_opinion.py songwriting/ru/drafts/ottepel.md
+GIGACHAT_AUTH_KEY=... REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
+  python integrations/gigachat/second_opinion.py songwriting/ru/drafts/ottepel.md
 ```
 
 ## Что на выходе
