@@ -7,7 +7,7 @@
 ## Структура
 
 - `cases/` — кейсы треков: лирика-аудит, метрики, fail_mode, урок. Именование: `{LANE}-{NNN}-{slug}.md`
-- `references/` — справочники по всем кейсам: `sound_corpus.md` (звуковые метрики и таргеты) · `swamp-lane.md` (хаб болотной полосы) · `release-pipeline-v1.md` (канон пайплайна)
+- `references/` — справочники по всем кейсам: `sound_corpus.md` (звуковые метрики и таргеты) · `swamp-lane.md` (хаб болотной полосы) · `release-pipeline-v1.md` (канон пайплайна) · `blake_crosley_v55.md` (дистиллят Suno V5.5: метатеги, слайдеры, стемы, траблшутинг) · `blake_crosley_suno_guide_v55.md` (полный гайд Blake Crosley, 110k, обновлён 2026-07-25)
 - `suno/` — пакеты Style / behavior-тегов: `style-tag-grammar.md` (канон всех лейнов) + per-lane `coldwave.md` · `swamp.md` · `industrial.md` · `metalcore.md`
 - `songwriting/` — сонграйтинг-канон: `anti-patterns.md` · `top-texts-teardown.md` · `cw-lessons.md` · `swamp-playbook.md` · `industrial-danger-levers.md` · `en/EN_CRAFT_LAYER.md` · `ru/` (энциклопедия, 4 части)
 
