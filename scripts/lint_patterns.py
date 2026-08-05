@@ -5,7 +5,7 @@ Detector 2.0 mechanical pattern lint + parallel-structure / denial-gap detectors
 Scope (deliberately narrow): only implements checks that are decidable from
 surface form (word lists, regex, line-diff) without semantic judgment. Flags
 that require judging "does this vague phrase have a concrete event-trace
-nearby" (vague_deixis, truncation white-list) or "is this cliche used
+nearby" (vague_deixis, and the omission side of truncation) or "is this cliche used
 ironically" (banal_rhyme framing) or "does the closure read as earned"
 (school_arc) are NOT implemented here -- they need a human/model read of
 context, not a lint rule. See README section at bottom for the exact list.
@@ -160,6 +160,52 @@ POSITION_EXPLANATION_RE = re.compile(
     re.IGNORECASE,
 )
 
+# ---------------------------------------------------------------------------
+# truncation (issue #4, 5th pass): §25.13 / §30.2 detector, weight 2.0, i.e.
+# hard-fail tier. Closed list of the four canonical "I am not going to finish
+# this scene" markers.
+# This closed-list form is the ONLY safe way to mechanize truncation. The
+# semantic version of the rule ("the text stops before the event happens")
+# collides head-on with the 25.27 white-list, where an omission that leaves a
+# trace in the text is a legal device -- see G-01 (лёд так и не встал) and
+# G-10 (никто не звал). A semantic truncation rule would hard-fail both of
+# them, so we do not judge omission at all: we only catch the narrator's
+# explicit cop-out formulas.
+# Dash tokens accept —, – and - because the same marker gets typed with any
+# of them, and the leading ellipsis of "…дальше — позже" is optional for the
+# same reason ("...", "…" or nothing at all).
+# ---------------------------------------------------------------------------
+TRUNCATION_PHRASES = [
+    "[Продолжение следует",
+    "Потом было",
+    "…дальше — позже",
+    "но это уже другая история",
+]
+_DASH_TOKENS = ("—", "–", "-")
+_DASH_CLASS = r"[—–-]"
+_OPTIONAL_ELLIPSIS = r"(?:…|\.\.\.)?\s*"
+
+
+def _truncation_pattern(phrase):
+    body = phrase
+    prefix = ""
+    if body.startswith("…"):
+        body = body[1:]
+        prefix = _OPTIONAL_ELLIPSIS
+    tokens = [
+        _DASH_CLASS if word in _DASH_TOKENS else re.escape(word)
+        for word in body.split()
+    ]
+    return prefix + r"\s+".join(tokens)
+
+
+TRUNCATION_RE = re.compile(
+    r"(?<![А-Яа-яЁё])(?:"
+    + "|".join(_truncation_pattern(phrase) for phrase in TRUNCATION_PHRASES)
+    + r")(?![А-Яа-яЁё])",
+    re.IGNORECASE,
+)
+
 
 def check_denial_gap(text):
     """anti-patterns.md §B: denial construction legal <= 1 time per text."""
@@ -240,6 +286,15 @@ def check_position_explanation(text):
     return [("position_explanation", 1.5, f"{len(hits)}x")] if hits else []
 
 
+def check_truncation(text):
+    """§25.13 / §30.2 detector truncation, weight 2.0 (hard-fail tier). Closed
+    literal marker list only -- see the comment above TRUNCATION_PHRASES for
+    why the semantic reading of this rule is deliberately NOT implemented (it
+    would hard-fail the 25.27 white-list cases G-01 and G-10)."""
+    hits = TRUNCATION_RE.findall(text)
+    return [("truncation", 2.0, f"{len(hits)}x")] if hits else []
+
+
 # ---------------------------------------------------------------------------
 # parallel_shift_candidate (issue #3): mechanical *detector*, not a verdict.
 # Finds pairs of repeated multi-line blocks (e.g. two pre-chorus instances)
@@ -291,6 +346,7 @@ MECHANICAL_CHECKS = [
     check_organ_cliche,
     check_not_x_but_y,
     check_position_explanation,
+    check_truncation,
 ]
 
 ADVISORY_CHECKS = [check_parallel_shift_candidate]
@@ -344,7 +400,7 @@ def _extract_golden_corpus_cases(md_text):
 IMPLEMENTED_FLAG_NAMES = {
     "kantselyarit", "genitive_metaphor", "em_dash_cascade", "triple_rhetoric",
     "genre_autopilot", "chorus_checklist", "marker_word", "organ_cliche",
-    "not_x_but_y", "position_explanation",
+    "not_x_but_y", "position_explanation", "truncation",
 }
 
 
@@ -361,7 +417,7 @@ def self_test():
         want_names = expected.get(case_id, set()) & IMPLEMENTED_FLAG_NAMES
         # Only compare on the subset of flags we actually implement --
         # unimplemented flags (banal_rhyme, vague_deixis, school_arc,
-        # sentiment_flatline, tech_metaphor, truncation, perfect_grammar,
+        # sentiment_flatline, tech_metaphor, perfect_grammar,
         # parallel_no_shift verdict) are explicitly out of scope, see module
         # docstring. We still check we don't fire flags we DO implement when
         # they're not expected (false positive), and that we DO fire flags
@@ -410,7 +466,10 @@ if __name__ == "__main__":
 # Out of scope (needs semantic/contextual judgment, not a lint rule):
 #   - vague_deixis: requires checking neighbouring 1-2 lines for a concrete,
 #     "photographable" event trace (§25.27 умолчания criterion).
-#   - truncation white-list: same event-trace judgment, formulaic-section-only.
+#   - truncation as *omission*: the "text stops before the event" reading is
+#     the same event-trace judgment as vague_deixis and stays out of scope --
+#     it would hard-fail the 25.27 white-list cases G-01 and G-10. Only the
+#     four literal cop-out markers of §25.13 are linted (check_truncation).
 #   - banal_rhyme conscious-framing: requires judging authorial irony.
 #   - school_arc: requires judging whether the closing line is an earned
 #     action/image vs a stated moral.
@@ -431,7 +490,8 @@ if __name__ == "__main__":
 #     POS tagging). Left for a follow-up pass, one flag at a time, each with
 #     its own golden-corpus TP/FP pair per §0 protocol.
 #     Promoted out of this list so far: not_x_but_y (narrowed to the literal
-#     redundant-copula formula) and position_explanation (closed phrase
-#     list); both keep the spec's flag name but document any narrowing next
-#     to their pattern definitions.
+#     redundant-copula formula), position_explanation (closed phrase list)
+#     and truncation (closed marker list only, omission judgment excluded);
+#     each keeps the spec's flag name but documents its narrowing next to the
+#     pattern definition.
 # ---------------------------------------------------------------------------
