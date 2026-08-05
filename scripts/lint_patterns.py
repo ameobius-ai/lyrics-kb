@@ -83,6 +83,36 @@ DENIAL_RE = re.compile(
     r"\bя\s+не\s+(" + "|".join(DENIAL_VERBS) + r")\b", re.IGNORECASE
 )
 
+# ---------------------------------------------------------------------------
+# marker_word / organ_cliche (issue #4): sourced verbatim from the canonical
+# machine-readable detector block, songwriting/encyclopedia.md §30.2
+# (`detector.marker_words`, `detector.organ_cliches_regex`), weights from
+# `detector.weights.marker_word` (1.0) and `.organ_cliche` (1.5). Both are
+# closed word/regex lists with no "is it earning its place" judgment call,
+# unlike vague_deixis/school_arc/etc., so they are safe as mechanical checks.
+# "прекрасный" and "глубокий" are deliberately excluded from the closed list:
+# §30.2/§16.1 marks them as filler-ONLY markers whose flag-worthiness depends
+# on sentence role (descriptive work vs. padding) -- exactly the semantic
+# judgment this module's docstring says is out of scope. The remaining
+# words/phrases below are flagged unconditionally with no such caveat.
+# ---------------------------------------------------------------------------
+MARKER_WORDS = [
+    "вечность", "бесконечность", "симфония", "гармония", "мелодия души",
+    "навсегда", "навечно", "бесконечный путь", "вечный",
+    "непостижимый", "загадочный", "волшебный", "магический",
+    "чудесный", "дивный", "неземной", "космический",
+    "как никогда ранее", "ничто не могло подготовить",
+]
+MARKER_WORD_RE = re.compile(
+    r"\b(" + "|".join(re.escape(w) for w in MARKER_WORDS) + r")\b", re.IGNORECASE
+)
+
+ORGAN_CLICHE_RE = re.compile(
+    r"\bсердце\s+(бьётся|колотится|рвётся|кричит|плачет)\b"
+    r"|\bдуша\s+(рвётся|кричит|плачет|горит|болит)\b",
+    re.IGNORECASE,
+)
+
 
 def check_denial_gap(text):
     """anti-patterns.md §B: denial construction legal <= 1 time per text."""
@@ -135,6 +165,19 @@ def check_chorus_checklist(text):
     return [("chorus_checklist", 2.0, "repeated мы будем X frame >=3x")] if hits else []
 
 
+def check_marker_word(text):
+    """§30.2 detector.marker_words, weight 1.0. Closed list, no filler-role
+    judgment call (see module-level comment above the word list)."""
+    hits = MARKER_WORD_RE.findall(text)
+    return [("marker_word", 1.0, f"{len(hits)}x: {hits}")] if hits else []
+
+
+def check_organ_cliche(text):
+    """§30.2 detector.organ_cliches_regex, weight 1.5."""
+    hits = ORGAN_CLICHE_RE.findall(text)
+    return [("organ_cliche", 1.5, f"{len(hits)}x")] if hits else []
+
+
 # ---------------------------------------------------------------------------
 # parallel_shift_candidate (issue #3): mechanical *detector*, not a verdict.
 # Finds pairs of repeated multi-line blocks (e.g. two pre-chorus instances)
@@ -182,6 +225,8 @@ MECHANICAL_CHECKS = [
     check_triple_rhetoric,
     check_genre_autopilot,
     check_chorus_checklist,
+    check_marker_word,
+    check_organ_cliche,
 ]
 
 ADVISORY_CHECKS = [check_parallel_shift_candidate]
@@ -234,7 +279,7 @@ def _extract_golden_corpus_cases(md_text):
 
 IMPLEMENTED_FLAG_NAMES = {
     "kantselyarit", "genitive_metaphor", "em_dash_cascade", "triple_rhetoric",
-    "genre_autopilot", "chorus_checklist",
+    "genre_autopilot", "chorus_checklist", "marker_word", "organ_cliche",
 }
 
 
@@ -311,4 +356,12 @@ if __name__ == "__main__":
 #   - parallel_no_shift final verdict: this script only *detects candidates*
 #     (see check_parallel_shift_candidate); the shift-vs-filler call in
 #     §25.27 stays a human/model REPAIR-review step.
+#   - not_x_but_y / hypophora / binary_light_dark / position_explanation /
+#     noun_stack / adj_pile / verb_rhyme / uniform_line_length: §30.2 gives
+#     closed lists or regexes for these too (added to marker_word/organ_cliche
+#     in this pass, issue #4), but each carries a real false-positive risk on
+#     live text without more corpus evidence (e.g. "не X, а Y" is extremely
+#     common in ordinary Russian; noun_stack/adj_pile need POS tagging we
+#     don't have). Left for a follow-up pass, one flag at a time, each with
+#     its own golden-corpus TP/FP pair per §0 protocol.
 # ---------------------------------------------------------------------------
