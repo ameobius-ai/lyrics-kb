@@ -113,6 +113,26 @@ ORGAN_CLICHE_RE = re.compile(
     re.IGNORECASE,
 )
 
+# ---------------------------------------------------------------------------
+# not_x_but_y (issue #4, follow-up pass): §30.2 detector.constructions.not_x_but_y
+# gives three regex alternatives. We implement ONLY the first, most specific
+# one -- "не просто X — это был(о/а) Y" (the literal formula named in
+# §16.3: «Формула «Это было не просто X — это было Y»: AI-слоуп чистой
+# воды»). The other two spec alternatives are deliberately NOT implemented:
+#   - "это не X — это Y" (generic redefinition) is a common REAL poetic
+#     device (rhetorical restatement), not just AI-slop -- flagging it
+#     unconditionally would false-positive on legitimate craft.
+#   - "не X а Y" (bare) matches ordinary Russian grammar constantly (e.g.
+#     "не сплю, а работаю") and is far too broad to be a mechanical rule.
+# The implemented pattern requires the specific redundant-copula echo
+# ("это был/это было/это была" restating "это было" from the setup) which
+# is the actual tell of the AI formula, not just any "не X, а Y" contrast.
+# ---------------------------------------------------------------------------
+NOT_X_BUT_Y_RE = re.compile(
+    r"не\s+просто\s+[^.!?—\n]{1,80}—\s*это\s+бы(?:ло|л|ла)\b",
+    re.IGNORECASE,
+)
+
 
 def check_denial_gap(text):
     """anti-patterns.md §B: denial construction legal <= 1 time per text."""
@@ -178,6 +198,14 @@ def check_organ_cliche(text):
     return [("organ_cliche", 1.5, f"{len(hits)}x")] if hits else []
 
 
+def check_not_x_but_y(text):
+    """§30.2 detector.constructions.not_x_but_y, weight 1.5. Narrowed to the
+    literal redundant-copula formula only -- see comment above NOT_X_BUT_Y_RE
+    for why the other two spec regex alternatives are excluded."""
+    hits = NOT_X_BUT_Y_RE.findall(text)
+    return [("not_x_but_y", 1.5, f"{len(hits)}x")] if hits else []
+
+
 # ---------------------------------------------------------------------------
 # parallel_shift_candidate (issue #3): mechanical *detector*, not a verdict.
 # Finds pairs of repeated multi-line blocks (e.g. two pre-chorus instances)
@@ -227,6 +255,7 @@ MECHANICAL_CHECKS = [
     check_chorus_checklist,
     check_marker_word,
     check_organ_cliche,
+    check_not_x_but_y,
 ]
 
 ADVISORY_CHECKS = [check_parallel_shift_candidate]
@@ -280,6 +309,7 @@ def _extract_golden_corpus_cases(md_text):
 IMPLEMENTED_FLAG_NAMES = {
     "kantselyarit", "genitive_metaphor", "em_dash_cascade", "triple_rhetoric",
     "genre_autopilot", "chorus_checklist", "marker_word", "organ_cliche",
+    "not_x_but_y",
 }
 
 
@@ -344,7 +374,7 @@ if __name__ == "__main__":
 # ---------------------------------------------------------------------------
 # Out of scope (needs semantic/contextual judgment, not a lint rule):
 #   - vague_deixis: requires checking neighbouring 1-2 lines for a concrete,
-#     "photographable" event trace (§25.27 умолчания criterion).
+#     "photographable" event trace (§25.27 умолчания криterion).
 #   - truncation white-list: same event-trace judgment, formulaic-section-only.
 #   - banal_rhyme conscious-framing: requires judging authorial irony.
 #   - school_arc: requires judging whether the closing line is an earned
@@ -356,12 +386,17 @@ if __name__ == "__main__":
 #   - parallel_no_shift final verdict: this script only *detects candidates*
 #     (see check_parallel_shift_candidate); the shift-vs-filler call in
 #     §25.27 stays a human/model REPAIR-review step.
-#   - not_x_but_y / hypophora / binary_light_dark / position_explanation /
-#     noun_stack / adj_pile / verb_rhyme / uniform_line_length: §30.2 gives
-#     closed lists or regexes for these too (added to marker_word/organ_cliche
-#     in this pass, issue #4), but each carries a real false-positive risk on
-#     live text without more corpus evidence (e.g. "не X, а Y" is extremely
-#     common in ordinary Russian; noun_stack/adj_pile need POS tagging we
-#     don't have). Left for a follow-up pass, one flag at a time, each with
-#     its own golden-corpus TP/FP pair per §0 protocol.
+#   - hypophora / binary_light_dark / position_explanation / noun_stack /
+#     adj_pile / verb_rhyme / uniform_line_length: §30.2 gives closed lists
+#     or regexes for these too, but each carries a real false-positive risk
+#     on live text without more corpus evidence or tooling we don't have
+#     (e.g. binary_light_dark's own spec flags `frame_check: true`, meaning
+#     it needs to distinguish a philosophical light/dark frame from a literal
+#     detail like a hallway lamp -- not decidable from the regex alone;
+#     noun_stack/adj_pile need POS tagging). Left for a follow-up pass, one
+#     flag at a time, each with its own golden-corpus TP/FP pair per §0
+#     protocol. (not_x_but_y was promoted out of this list in the same pass
+#     that added this note -- see check_not_x_but_y for the narrowed
+#     implementation actually shipped, which covers only the literal
+#     redundant-copula formula, not the two broader spec alternatives.)
 # ---------------------------------------------------------------------------
