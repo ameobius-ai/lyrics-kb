@@ -19,6 +19,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Encoding guard - no U+FFFD or non-UTF-8 bytes in tracked text
+        run: python3 scripts/check_encoding.py .
+
       - name: Run KB validation
         run: python3 validate.py
 
