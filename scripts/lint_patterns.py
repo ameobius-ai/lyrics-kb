@@ -206,6 +206,61 @@ TRUNCATION_RE = re.compile(
     re.IGNORECASE,
 )
 
+# ---------------------------------------------------------------------------
+# tech_metaphor (issue #4, 6th pass): §25.2 / §30.2
+# detector.tech_metaphors_regex, weight 2.0 -- hard-fail tier. This closes the
+# last remaining false negative in the golden corpus: G-05 has expected this
+# flag since the corpus was written.
+# The spec writes each alternative as "<emotion noun>.*<tech token>". Taken
+# literally that is unusable here and had to be narrowed in two ways, both
+# because we lint whole texts rather than single lines:
+#   1. The gap is bounded to the SAME line and to at most TECH_METAPHOR_GAP
+#      characters. An unbounded ".*" would join an emotion noun in one clause
+#      with an unrelated tech word far to the right -- e.g. G-05's "сердце"
+#      and the "код" two lines below it are not one metaphor.
+#   2. Tech tokens must start a word: the bare substring "лог" also lives
+#      inside "диалог"/"монолог", which have nothing to do with logs, and at
+#      weight 2.0 that false positive would cap a live text at SUSPECT.
+# "слёзы" is accepted with ё and with е, and "перезагрузка чувств" is matched
+# through its inflections ("перезагружаю чувства"), for the same reason the
+# е-spelling is accepted in position_explanation: it is the same phrase, not a
+# broadening of the closed list. Without this the canonical corpus example of
+# the flag (G-05) would not fire at all.
+# The spec's EXCEPTION ("tech lexicon as the hero's ground, not an emotion
+# metaphor") is not decidable mechanically, but it is largely moot here: every
+# alternative already requires an emotion noun next to the tech word, so a
+# purely technical setting does not match -- see G-16 and G-26.
+# ---------------------------------------------------------------------------
+TECH_METAPHOR_TARGETS = [
+    (r"сл[её]зы", ("формат", "WAV", "mp3", "файл")),
+    (r"сердце", ("архив", "кэш", "лог", "облак", "код")),
+    (r"душа", ("облак", "кэш", "сервер", "баз")),
+    (r"любовь", ("кэш", "перезагруз", "файл")),
+    (r"память", ("лог", "индекс", "баз")),
+]
+TECH_METAPHOR_LITERALS = [
+    r"код\s+души",
+    r"перезагру\w+\s+чувств\w*",
+    r"файл\s+одиночества",
+]
+_CYRILLIC = r"[А-Яа-яЁё]"
+TECH_METAPHOR_GAP = 40
+
+
+def _tech_metaphor_patterns():
+    patterns = []
+    for noun, tech_tokens in TECH_METAPHOR_TARGETS:
+        patterns.append(
+            r"(?<!" + _CYRILLIC + r")" + noun
+            + r"[^\n]{0," + str(TECH_METAPHOR_GAP) + r"}?"
+            + r"(?<!" + _CYRILLIC + r")(?:" + "|".join(tech_tokens) + r")"
+        )
+    patterns.extend(TECH_METAPHOR_LITERALS)
+    return patterns
+
+
+TECH_METAPHOR_RE = re.compile("|".join(_tech_metaphor_patterns()), re.IGNORECASE)
+
 
 def check_denial_gap(text):
     """anti-patterns.md §B: denial construction legal <= 1 time per text."""
@@ -295,6 +350,15 @@ def check_truncation(text):
     return [("truncation", 2.0, f"{len(hits)}x")] if hits else []
 
 
+def check_tech_metaphor(text):
+    """§25.2 / §30.2 detector.tech_metaphors_regex, weight 2.0 (hard-fail
+    tier). Closed regex list with a bounded same-line gap -- see the comment
+    above TECH_METAPHOR_TARGETS for both narrowings and why each is
+    required."""
+    hits = TECH_METAPHOR_RE.findall(text)
+    return [("tech_metaphor", 2.0, f"{len(hits)}x")] if hits else []
+
+
 # ---------------------------------------------------------------------------
 # parallel_shift_candidate (issue #3): mechanical *detector*, not a verdict.
 # Finds pairs of repeated multi-line blocks (e.g. two pre-chorus instances)
@@ -347,6 +411,7 @@ MECHANICAL_CHECKS = [
     check_not_x_but_y,
     check_position_explanation,
     check_truncation,
+    check_tech_metaphor,
 ]
 
 ADVISORY_CHECKS = [check_parallel_shift_candidate]
@@ -400,7 +465,7 @@ def _extract_golden_corpus_cases(md_text):
 IMPLEMENTED_FLAG_NAMES = {
     "kantselyarit", "genitive_metaphor", "em_dash_cascade", "triple_rhetoric",
     "genre_autopilot", "chorus_checklist", "marker_word", "organ_cliche",
-    "not_x_but_y", "position_explanation", "truncation",
+    "not_x_but_y", "position_explanation", "truncation", "tech_metaphor",
 }
 
 
@@ -417,7 +482,7 @@ def self_test():
         want_names = expected.get(case_id, set()) & IMPLEMENTED_FLAG_NAMES
         # Only compare on the subset of flags we actually implement --
         # unimplemented flags (banal_rhyme, vague_deixis, school_arc,
-        # sentiment_flatline, tech_metaphor, perfect_grammar,
+        # sentiment_flatline, perfect_grammar,
         # parallel_no_shift verdict) are explicitly out of scope, see module
         # docstring. We still check we don't fire flags we DO implement when
         # they're not expected (false positive), and that we DO fire flags
@@ -475,8 +540,11 @@ if __name__ == "__main__":
 #     action/image vs a stated moral.
 #   - sentiment_flatline: requires judging overall tonal register, not
 #     matchable by a fixed word list without heavy false positives.
-#   - tech_metaphor dual-read: requires judging whether a second, literal
-#     reading exists for the metaphor.
+#   - tech_metaphor's spec EXCEPTION (tech lexicon as the hero's ground
+#     rather than an emotion metaphor): the closed regex list itself IS
+#     linted (see check_tech_metaphor); only this semantic carve-out is not,
+#     and it is largely moot because every alternative already requires an
+#     emotion noun next to the tech word.
 #   - parallel_no_shift final verdict: this script only *detects candidates*
 #     (see check_parallel_shift_candidate); the shift-vs-filler call in
 #     §25.27 stays a human/model REPAIR-review step.
@@ -490,8 +558,9 @@ if __name__ == "__main__":
 #     POS tagging). Left for a follow-up pass, one flag at a time, each with
 #     its own golden-corpus TP/FP pair per §0 protocol.
 #     Promoted out of this list so far: not_x_but_y (narrowed to the literal
-#     redundant-copula formula), position_explanation (closed phrase list)
-#     and truncation (closed marker list only, omission judgment excluded);
-#     each keeps the spec's flag name but documents its narrowing next to the
+#     redundant-copula formula), position_explanation (closed phrase list),
+#     truncation (closed marker list only, omission judgment excluded) and
+#     tech_metaphor (closed regex list with a bounded same-line gap); each
+#     keeps the spec's flag name but documents its narrowing next to the
 #     pattern definition.
 # ---------------------------------------------------------------------------
