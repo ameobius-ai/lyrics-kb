@@ -1758,7 +1758,135 @@
       "source": "social_intake",
       "status": "draft",
       "added": "2026-08-04T10:23:57.280086+00:00"
+    },
+    {
+      "id": "suno-lane-pre-cyberpunk",
+      "category": "suno",
+      "title": "Suno-пакет: pre-cyberpunk analog (лейн)",
+      "file": "suno/lanes/pre-cyberpunk.md",
+      "tags": [
+        "suno",
+        "package",
+        "lane",
+        "pre-cyberpunk",
+        "coldwave-child"
+      ],
+      "summary": "Дочерний лейн coldwave: BPM 92-116, A/E minor, аналоговая советская техника (телецентр/глушилка/лента/перфокарта/ОТК/таксофон) вместо urban-decay референсов",
+      "source": "album Три коротких",
+      "added": "2026-08-05"
+    },
+    {
+      "id": "case-PRE-001-sorok-vtoroy-kanal",
+      "category": "cases",
+      "title": "СОРОК ВТОРОЙ КАНАЛ",
+      "file": "cases/PRE-001-sorok-vtoroy-kanal.md",
+      "tags": [
+        "case",
+        "lane",
+        "pre"
+      ],
+      "summary": "pre-cyberpunk analog 108bpm A minor, score 8.3, статус pending_generation (аудио не рендерилось)",
+      "source": "album Три коротких",
+      "added": "2026-08-05"
+    },
+    {
+      "id": "case-PRE-002-glushilka",
+      "category": "cases",
+      "title": "ГЛУШИЛКА",
+      "file": "cases/PRE-002-glushilka.md",
+      "tags": [
+        "case",
+        "lane",
+        "pre"
+      ],
+      "summary": "pre-cyberpunk analog 112bpm E minor, score 8.2, статус pending_generation",
+      "source": "album Три коротких",
+      "added": "2026-08-05"
+    },
+    {
+      "id": "case-PRE-003-lenta",
+      "category": "cases",
+      "title": "ЛЕНТА",
+      "file": "cases/PRE-003-lenta.md",
+      "tags": [
+        "case",
+        "lane",
+        "pre"
+      ],
+      "summary": "pre-cyberpunk analog 104bpm A minor, score 8.0 (REPAIR×1), статус pending_generation",
+      "source": "album Три коротких",
+      "added": "2026-08-05"
+    },
+    {
+      "id": "case-PRE-004-perfokarta",
+      "category": "cases",
+      "title": "ПЕРФОКАРТА",
+      "file": "cases/PRE-004-perfokarta.md",
+      "tags": [
+        "case",
+        "lane",
+        "pre"
+      ],
+      "summary": "pre-cyberpunk analog 100bpm E minor, score 8.0 (REPAIR×1), статус pending_generation",
+      "source": "album Три коротких",
+      "added": "2026-08-05"
+    },
+    {
+      "id": "case-PRE-005-otk",
+      "category": "cases",
+      "title": "ОТК",
+      "file": "cases/PRE-005-otk.md",
+      "tags": [
+        "case",
+        "lane",
+        "pre"
+      ],
+      "summary": "pre-cyberpunk analog 96bpm A minor, score 8.1, статус pending_generation",
+      "source": "album Три коротких",
+      "added": "2026-08-05"
+    },
+    {
+      "id": "case-PRE-006-taksofon",
+      "category": "cases",
+      "title": "ТАКСОФОН",
+      "file": "cases/PRE-006-taksofon.md",
+      "tags": [
+        "case",
+        "lane",
+        "pre"
+      ],
+      "summary": "pre-cyberpunk analog 92bpm E minor, score 8.0, статус pending_generation",
+      "source": "album Три коротких",
+      "added": "2026-08-05"
+    },
+    {
+      "id": "case-PRE-007-profilaktika",
+      "category": "cases",
+      "title": "ПРОФИЛАКТИКА",
+      "file": "cases/PRE-007-profilaktika.md",
+      "tags": [
+        "case",
+        "lane",
+        "pre"
+      ],
+      "summary": "pre-cyberpunk analog 116bpm A minor (industrial-вариант), score 8.4 — лучший трек альбома, статус pending_generation",
+      "source": "album Три коротких",
+      "added": "2026-08-05"
+    },
+    {
+      "id": "case-PRE-008-tri-korotkih",
+      "category": "cases",
+      "title": "ТРИ КОРОТКИХ",
+      "file": "cases/PRE-008-tri-korotkih.md",
+      "tags": [
+        "case",
+        "lane",
+        "pre"
+      ],
+      "summary": "pre-cyberpunk analog 100bpm A minor, титульный трек, score 8.2 (REPAIR×1), статус pending_generation",
+      "source": "album Три коротких",
+      "added": "2026-08-05"
     }
   ],
-  "count": 103
+  "count": 112
 }
