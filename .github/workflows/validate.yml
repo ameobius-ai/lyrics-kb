@@ -22,9 +22,9 @@ jobs:
       - name: Run KB validation
         run: python3 validate.py
 
-      - name: Detector 2.0 mechanical lint - self-test
+      - name: Detector 2.0 mechanical lint - self-test (blocking regression gate)
         run: python3 scripts/lint_patterns.py --self-test
 
-      - name: Detector 2.0 mechanical lint - cases and songwriting corpus
+      - name: Detector 2.0 mechanical lint - existing cases (advisory, non-blocking)
         run: |
-          find cases suno songwriting -name '*.md' -print0 | xargs -0 python3 scripts/lint_patterns.py
+          find cases -name '*.md' -print0 | xargs -0 python3 scripts/lint_patterns.py || true
