@@ -1,0 +1,2522 @@
+{
+  "80s-pop": {
+    "count": 1,
+    "avg": 102,
+    "min": 90,
+    "max": 115
+  },
+  "90s-pop": {
+    "count": 1,
+    "avg": 100,
+    "min": 85,
+    "max": 115
+  },
+  "acid-rock": {
+    "count": 1,
+    "avg": 135,
+    "min": 120,
+    "max": 150
+  },
+  "acoustic-blues": {
+    "count": 2,
+    "avg": 90,
+    "min": 75,
+    "max": 110
+  },
+  "acoustic-hip-hop": {
+    "count": 1,
+    "avg": 95,
+    "min": 85,
+    "max": 105
+  },
+  "acoustic-pop": {
+    "count": 5,
+    "avg": 104,
+    "min": 75,
+    "max": 130
+  },
+  "acoustic-rock": {
+    "count": 1,
+    "avg": 102,
+    "min": 85,
+    "max": 120
+  },
+  "adult-contemporary": {
+    "count": 1,
+    "avg": 95,
+    "min": 80,
+    "max": 110
+  },
+  "afro-disco": {
+    "count": 1,
+    "avg": 124,
+    "min": 118,
+    "max": 130
+  },
+  "afrobeat": {
+    "count": 1,
+    "avg": 112,
+    "min": 100,
+    "max": 125
+  },
+  "afrobeats": {
+    "count": 3,
+    "avg": 106,
+    "min": 95,
+    "max": 115
+  },
+  "afrosoul": {
+    "count": 1,
+    "avg": 98,
+    "min": 90,
+    "max": 105
+  },
+  "alt-hip-hop": {
+    "count": 1,
+    "avg": 92,
+    "min": 80,
+    "max": 105
+  },
+  "alt-pop": {
+    "count": 3,
+    "avg": 98,
+    "min": 70,
+    "max": 130
+  },
+  "alt-rnb": {
+    "count": 1,
+    "avg": 100,
+    "min": 85,
+    "max": 115
+  },
+  "alternative-hip-hop": {
+    "count": 1,
+    "avg": 98,
+    "min": 92,
+    "max": 105
+  },
+  "alternative-metal": {
+    "count": 2,
+    "avg": 110,
+    "min": 70,
+    "max": 140
+  },
+  "alternative-rnb": {
+    "count": 2,
+    "avg": 116,
+    "min": 85,
+    "max": 175
+  },
+  "alternative-rock": {
+    "count": 6,
+    "avg": 108,
+    "min": 75,
+    "max": 160
+  },
+  "amapiano": {
+    "count": 1,
+    "avg": 112,
+    "min": 110,
+    "max": 115
+  },
+  "amapiano-pop": {
+    "count": 1,
+    "avg": 115,
+    "min": 110,
+    "max": 120
+  },
+  "ambient-pop": {
+    "count": 1,
+    "avg": 72,
+    "min": 60,
+    "max": 85
+  },
+  "ambient-rap": {
+    "count": 1,
+    "avg": 85,
+    "min": 75,
+    "max": 95
+  },
+  "anatolian-psych-folk": {
+    "count": 1,
+    "avg": 110,
+    "min": 95,
+    "max": 125
+  },
+  "appalachian-folk": {
+    "count": 1,
+    "avg": 95,
+    "min": 80,
+    "max": 110
+  },
+  "arabic-orchestral-pop": {
+    "count": 1,
+    "avg": 90,
+    "min": 70,
+    "max": 110
+  },
+  "arena-rock": {
+    "count": 6,
+    "avg": 114,
+    "min": 80,
+    "max": 145
+  },
+  "art-pop": {
+    "count": 5,
+    "avg": 102,
+    "min": 75,
+    "max": 140
+  },
+  "art-rock": {
+    "count": 3,
+    "avg": 114,
+    "min": 90,
+    "max": 160
+  },
+  "atmospheric-dnb": {
+    "count": 1,
+    "avg": 165,
+    "min": 160,
+    "max": 170
+  },
+  "atmospheric-jungle": {
+    "count": 1,
+    "avg": 162,
+    "min": 155,
+    "max": 170
+  },
+  "atmospheric-phonk": {
+    "count": 1,
+    "avg": 140,
+    "min": 130,
+    "max": 150
+  },
+  "balkan-brass": {
+    "count": 1,
+    "avg": 140,
+    "min": 100,
+    "max": 180
+  },
+  "baroque-pop": {
+    "count": 2,
+    "avg": 108,
+    "min": 75,
+    "max": 135
+  },
+  "bedroom-funk": {
+    "count": 1,
+    "avg": 95,
+    "min": 80,
+    "max": 110
+  },
+  "big-band": {
+    "count": 2,
+    "avg": 116,
+    "min": 70,
+    "max": 170
+  },
+  "big-band-jazz": {
+    "count": 1,
+    "avg": 145,
+    "min": 120,
+    "max": 170
+  },
+  "big-band-swing": {
+    "count": 4,
+    "avg": 148,
+    "min": 80,
+    "max": 220
+  },
+  "big-beat": {
+    "count": 3,
+    "avg": 128,
+    "min": 105,
+    "max": 150
+  },
+  "big-room-house": {
+    "count": 2,
+    "avg": 128,
+    "min": 126,
+    "max": 132
+  },
+  "black-metal": {
+    "count": 2,
+    "avg": 150,
+    "min": 110,
+    "max": 220
+  },
+  "blackgaze": {
+    "count": 1,
+    "avg": 130,
+    "min": 100,
+    "max": 160
+  },
+  "blue-eyed-soul": {
+    "count": 2,
+    "avg": 101,
+    "min": 75,
+    "max": 135
+  },
+  "bluegrass": {
+    "count": 1,
+    "avg": 130,
+    "min": 115,
+    "max": 145
+  },
+  "blues-rock": {
+    "count": 2,
+    "avg": 104,
+    "min": 70,
+    "max": 135
+  },
+  "bollywood-funk": {
+    "count": 1,
+    "avg": 122,
+    "min": 110,
+    "max": 135
+  },
+  "bollywood-modern-fusion": {
+    "count": 1,
+    "avg": 105,
+    "min": 80,
+    "max": 130
+  },
+  "bollywood-playback": {
+    "count": 3,
+    "avg": 98,
+    "min": 70,
+    "max": 135
+  },
+  "boom-bap": {
+    "count": 6,
+    "avg": 91,
+    "min": 84,
+    "max": 105
+  },
+  "bossa-nova": {
+    "count": 3,
+    "avg": 91,
+    "min": 65,
+    "max": 130
+  },
+  "boyband-pop": {
+    "count": 1,
+    "avg": 110,
+    "min": 95,
+    "max": 125
+  },
+  "brazilian-funk": {
+    "count": 1,
+    "avg": 112,
+    "min": 90,
+    "max": 135
+  },
+  "brazilian-phonk": {
+    "count": 5,
+    "avg": 144,
+    "min": 130,
+    "max": 160
+  },
+  "breakbeat-pop": {
+    "count": 1,
+    "avg": 150,
+    "min": 135,
+    "max": 165
+  },
+  "british-heavy-metal": {
+    "count": 1,
+    "avg": 170,
+    "min": 140,
+    "max": 200
+  },
+  "britpop": {
+    "count": 3,
+    "avg": 116,
+    "min": 80,
+    "max": 140
+  },
+  "brostep": {
+    "count": 1,
+    "avg": 145,
+    "min": 140,
+    "max": 150
+  },
+  "brutal-death-metal": {
+    "count": 1,
+    "avg": 210,
+    "min": 180,
+    "max": 240
+  },
+  "bubblegum-trap": {
+    "count": 1,
+    "avg": 118,
+    "min": 105,
+    "max": 130
+  },
+  "cabaret": {
+    "count": 1,
+    "avg": 72,
+    "min": 60,
+    "max": 85
+  },
+  "cape-verdean-morna": {
+    "count": 1,
+    "avg": 72,
+    "min": 65,
+    "max": 80
+  },
+  "caucasian-chanson": {
+    "count": 2,
+    "avg": 110,
+    "min": 90,
+    "max": 130
+  },
+  "caucasian-pop": {
+    "count": 3,
+    "avg": 103,
+    "min": 90,
+    "max": 116
+  },
+  "celtic-alt-rock": {
+    "count": 1,
+    "avg": 108,
+    "min": 85,
+    "max": 130
+  },
+  "celtic-new-age": {
+    "count": 1,
+    "avg": 70,
+    "min": 60,
+    "max": 80
+  },
+  "chanson": {
+    "count": 7,
+    "avg": 92,
+    "min": 60,
+    "max": 130
+  },
+  "chicago-blues": {
+    "count": 2,
+    "avg": 80,
+    "min": 60,
+    "max": 95
+  },
+  "cinematic-film-score": {
+    "count": 1,
+    "avg": 85,
+    "min": 60,
+    "max": 110
+  },
+  "cinematic-rock": {
+    "count": 1,
+    "avg": 110,
+    "min": 85,
+    "max": 135
+  },
+  "cinematic-sad-pop": {
+    "count": 1,
+    "avg": 81,
+    "min": 70,
+    "max": 92
+  },
+  "cinematic-soul": {
+    "count": 1,
+    "avg": 112,
+    "min": 85,
+    "max": 138
+  },
+  "city-pop": {
+    "count": 1,
+    "avg": 114,
+    "min": 100,
+    "max": 128
+  },
+  "classic-dubstep": {
+    "count": 1,
+    "avg": 140,
+    "min": 138,
+    "max": 142
+  },
+  "classic-female-blues": {
+    "count": 3,
+    "avg": 79,
+    "min": 60,
+    "max": 110
+  },
+  "classic-soul": {
+    "count": 4,
+    "avg": 92,
+    "min": 60,
+    "max": 135
+  },
+  "cloud-rap": {
+    "count": 1,
+    "avg": 140,
+    "min": 130,
+    "max": 150
+  },
+  "coldwave": {
+    "count": 1,
+    "avg": 105,
+    "min": 90,
+    "max": 120
+  },
+  "comedy-metal": {
+    "count": 1,
+    "avg": 155,
+    "min": 130,
+    "max": 180
+  },
+  "conscious-hip-hop": {
+    "count": 2,
+    "avg": 90,
+    "min": 75,
+    "max": 110
+  },
+  "contemporary-rnb": {
+    "count": 7,
+    "avg": 98,
+    "min": 60,
+    "max": 145
+  },
+  "cosmic-jazz": {
+    "count": 1,
+    "avg": 120,
+    "min": 90,
+    "max": 150
+  },
+  "country-blues": {
+    "count": 2,
+    "avg": 91,
+    "min": 70,
+    "max": 110
+  },
+  "country-pop": {
+    "count": 3,
+    "avg": 116,
+    "min": 75,
+    "max": 150
+  },
+  "countrypolitan": {
+    "count": 1,
+    "avg": 85,
+    "min": 60,
+    "max": 110
+  },
+  "cowbell-phonk": {
+    "count": 1,
+    "avg": 150,
+    "min": 135,
+    "max": 165
+  },
+  "crossover-thrash": {
+    "count": 1,
+    "avg": 180,
+    "min": 160,
+    "max": 200
+  },
+  "cuban-son": {
+    "count": 1,
+    "avg": 98,
+    "min": 80,
+    "max": 115
+  },
+  "dance-pop": {
+    "count": 26,
+    "avg": 115,
+    "min": 85,
+    "max": 138
+  },
+  "dance-punk": {
+    "count": 1,
+    "avg": 125,
+    "min": 105,
+    "max": 145
+  },
+  "dance-rock": {
+    "count": 2,
+    "avg": 115,
+    "min": 105,
+    "max": 125
+  },
+  "dark-dream-pop": {
+    "count": 1,
+    "avg": 100,
+    "min": 88,
+    "max": 112
+  },
+  "dark-ethno-pop": {
+    "count": 1,
+    "avg": 95,
+    "min": 85,
+    "max": 105
+  },
+  "dark-pop": {
+    "count": 1,
+    "avg": 125,
+    "min": 110,
+    "max": 140
+  },
+  "dark-trap": {
+    "count": 1,
+    "avg": 115,
+    "min": 105,
+    "max": 125
+  },
+  "darksynth": {
+    "count": 2,
+    "avg": 120,
+    "min": 100,
+    "max": 140
+  },
+  "darkwave": {
+    "count": 3,
+    "avg": 120,
+    "min": 100,
+    "max": 140
+  },
+  "death-metal": {
+    "count": 1,
+    "avg": 190,
+    "min": 160,
+    "max": 220
+  },
+  "deep-house": {
+    "count": 3,
+    "avg": 122,
+    "min": 120,
+    "max": 124
+  },
+  "deep-house-pop": {
+    "count": 1,
+    "avg": 120,
+    "min": 115,
+    "max": 125
+  },
+  "delta-blues": {
+    "count": 2,
+    "avg": 94,
+    "min": 75,
+    "max": 115
+  },
+  "desert-blues": {
+    "count": 1,
+    "avg": 105,
+    "min": 90,
+    "max": 120
+  },
+  "disco": {
+    "count": 3,
+    "avg": 116,
+    "min": 100,
+    "max": 132
+  },
+  "disco-funk": {
+    "count": 3,
+    "avg": 115,
+    "min": 105,
+    "max": 130
+  },
+  "dixieland": {
+    "count": 1,
+    "avg": 122,
+    "min": 110,
+    "max": 135
+  },
+  "djent": {
+    "count": 2,
+    "avg": 134,
+    "min": 95,
+    "max": 180
+  },
+  "doom-metal": {
+    "count": 2,
+    "avg": 72,
+    "min": 40,
+    "max": 115
+  },
+  "downtempo": {
+    "count": 2,
+    "avg": 99,
+    "min": 80,
+    "max": 115
+  },
+  "dream-pop": {
+    "count": 2,
+    "avg": 84,
+    "min": 60,
+    "max": 115
+  },
+  "drift-phonk": {
+    "count": 2,
+    "avg": 125,
+    "min": 115,
+    "max": 135
+  },
+  "drill-and-bass": {
+    "count": 1,
+    "avg": 180,
+    "min": 160,
+    "max": 200
+  },
+  "drill-rap": {
+    "count": 1,
+    "avg": 140,
+    "min": 135,
+    "max": 145
+  },
+  "dub": {
+    "count": 1,
+    "avg": 82,
+    "min": 70,
+    "max": 95
+  },
+  "dungeon-synth": {
+    "count": 1,
+    "avg": 68,
+    "min": 55,
+    "max": 80
+  },
+  "early-country": {
+    "count": 1,
+    "avg": 88,
+    "min": 70,
+    "max": 105
+  },
+  "east-coast-hip-hop": {
+    "count": 1,
+    "avg": 90,
+    "min": 85,
+    "max": 95
+  },
+  "electric-blues": {
+    "count": 2,
+    "avg": 89,
+    "min": 60,
+    "max": 115
+  },
+  "electro-chanson": {
+    "count": 1,
+    "avg": 120,
+    "min": 115,
+    "max": 125
+  },
+  "electro-folk": {
+    "count": 1,
+    "avg": 130,
+    "min": 110,
+    "max": 150
+  },
+  "electro-funk": {
+    "count": 1,
+    "avg": 122,
+    "min": 115,
+    "max": 130
+  },
+  "electro-hop": {
+    "count": 2,
+    "avg": 121,
+    "min": 105,
+    "max": 130
+  },
+  "electro-house": {
+    "count": 3,
+    "avg": 128,
+    "min": 125,
+    "max": 130
+  },
+  "electro-house-pop": {
+    "count": 1,
+    "avg": 125,
+    "min": 120,
+    "max": 130
+  },
+  "electro-pop": {
+    "count": 5,
+    "avg": 127,
+    "min": 115,
+    "max": 135
+  },
+  "electro-rock": {
+    "count": 1,
+    "avg": 105,
+    "min": 70,
+    "max": 140
+  },
+  "electronic-cinematic": {
+    "count": 1,
+    "avg": 75,
+    "min": 60,
+    "max": 90
+  },
+  "electronic-rock": {
+    "count": 1,
+    "avg": 172,
+    "min": 160,
+    "max": 185
+  },
+  "electropop-ballad": {
+    "count": 1,
+    "avg": 120,
+    "min": 115,
+    "max": 125
+  },
+  "emo-pop": {
+    "count": 3,
+    "avg": 156,
+    "min": 130,
+    "max": 180
+  },
+  "emo-punk": {
+    "count": 1,
+    "avg": 165,
+    "min": 140,
+    "max": 190
+  },
+  "epic-pop-rock": {
+    "count": 1,
+    "avg": 110,
+    "min": 85,
+    "max": 135
+  },
+  "epic-trance": {
+    "count": 1,
+    "avg": 138,
+    "min": 135,
+    "max": 142
+  },
+  "estrada": {
+    "count": 9,
+    "avg": 112,
+    "min": 80,
+    "max": 135
+  },
+  "estrada-pop": {
+    "count": 1,
+    "avg": 115,
+    "min": 105,
+    "max": 125
+  },
+  "ethereal-darkwave": {
+    "count": 1,
+    "avg": 80,
+    "min": 60,
+    "max": 100
+  },
+  "ethio-jazz": {
+    "count": 1,
+    "avg": 95,
+    "min": 80,
+    "max": 110
+  },
+  "ethnic-folk-pop": {
+    "count": 1,
+    "avg": 100,
+    "min": 90,
+    "max": 110
+  },
+  "ethno-folk": {
+    "count": 1,
+    "avg": 105,
+    "min": 85,
+    "max": 125
+  },
+  "ethno-pop": {
+    "count": 5,
+    "avg": 116,
+    "min": 95,
+    "max": 140
+  },
+  "euro-pop": {
+    "count": 3,
+    "avg": 122,
+    "min": 110,
+    "max": 132
+  },
+  "euro-trance": {
+    "count": 1,
+    "avg": 136,
+    "min": 130,
+    "max": 142
+  },
+  "eurodance": {
+    "count": 15,
+    "avg": 133,
+    "min": 115,
+    "max": 150
+  },
+  "eurodance-folk-pop": {
+    "count": 1,
+    "avg": 132,
+    "min": 125,
+    "max": 140
+  },
+  "eurodisco": {
+    "count": 7,
+    "avg": 122,
+    "min": 115,
+    "max": 135
+  },
+  "europop": {
+    "count": 4,
+    "avg": 119,
+    "min": 90,
+    "max": 135
+  },
+  "experimental-blues": {
+    "count": 1,
+    "avg": 90,
+    "min": 70,
+    "max": 110
+  },
+  "experimental-hip-hop": {
+    "count": 3,
+    "avg": 111,
+    "min": 85,
+    "max": 160
+  },
+  "fado": {
+    "count": 1,
+    "avg": 65,
+    "min": 50,
+    "max": 80
+  },
+  "flamenco": {
+    "count": 1,
+    "avg": 145,
+    "min": 90,
+    "max": 200
+  },
+  "folk": {
+    "count": 1,
+    "avg": 72,
+    "min": 60,
+    "max": 85
+  },
+  "folk-blues": {
+    "count": 1,
+    "avg": 98,
+    "min": 80,
+    "max": 115
+  },
+  "folk-drum-and-bass": {
+    "count": 1,
+    "avg": 172,
+    "min": 170,
+    "max": 175
+  },
+  "folk-electronica": {
+    "count": 1,
+    "avg": 122,
+    "min": 118,
+    "max": 126
+  },
+  "folk-jazz": {
+    "count": 1,
+    "avg": 95,
+    "min": 75,
+    "max": 115
+  },
+  "folk-metal": {
+    "count": 1,
+    "avg": 110,
+    "min": 90,
+    "max": 130
+  },
+  "folk-pop": {
+    "count": 2,
+    "avg": 104,
+    "min": 75,
+    "max": 130
+  },
+  "folk-punk": {
+    "count": 1,
+    "avg": 158,
+    "min": 140,
+    "max": 175
+  },
+  "folk-rock": {
+    "count": 4,
+    "avg": 99,
+    "min": 75,
+    "max": 135
+  },
+  "folk-trap": {
+    "count": 1,
+    "avg": 110,
+    "min": 90,
+    "max": 130
+  },
+  "folktronica": {
+    "count": 1,
+    "avg": 112,
+    "min": 100,
+    "max": 125
+  },
+  "french-house": {
+    "count": 1,
+    "avg": 124,
+    "min": 120,
+    "max": 128
+  },
+  "french-pop": {
+    "count": 1,
+    "avg": 120,
+    "min": 110,
+    "max": 130
+  },
+  "funk": {
+    "count": 1,
+    "avg": 105,
+    "min": 95,
+    "max": 115
+  },
+  "funk-pop-rock": {
+    "count": 1,
+    "avg": 102,
+    "min": 90,
+    "max": 115
+  },
+  "funk-rock": {
+    "count": 1,
+    "avg": 100,
+    "min": 85,
+    "max": 115
+  },
+  "future-bass": {
+    "count": 2,
+    "avg": 124,
+    "min": 90,
+    "max": 160
+  },
+  "future-house": {
+    "count": 1,
+    "avg": 126,
+    "min": 124,
+    "max": 128
+  },
+  "g-funk": {
+    "count": 3,
+    "avg": 90,
+    "min": 80,
+    "max": 98
+  },
+  "gangsta-rap": {
+    "count": 2,
+    "avg": 96,
+    "min": 85,
+    "max": 110
+  },
+  "garage-rock": {
+    "count": 2,
+    "avg": 142,
+    "min": 130,
+    "max": 165
+  },
+  "garage-rock-revival": {
+    "count": 1,
+    "avg": 125,
+    "min": 115,
+    "max": 135
+  },
+  "glam-metal": {
+    "count": 4,
+    "avg": 118,
+    "min": 85,
+    "max": 145
+  },
+  "global-bass": {
+    "count": 1,
+    "avg": 108,
+    "min": 100,
+    "max": 115
+  },
+  "gospel": {
+    "count": 1,
+    "avg": 72,
+    "min": 60,
+    "max": 84
+  },
+  "gospel-blues": {
+    "count": 1,
+    "avg": 105,
+    "min": 85,
+    "max": 125
+  },
+  "gqom": {
+    "count": 1,
+    "avg": 124,
+    "min": 120,
+    "max": 128
+  },
+  "greek-art-pop": {
+    "count": 1,
+    "avg": 105,
+    "min": 90,
+    "max": 120
+  },
+  "grindcore": {
+    "count": 2,
+    "avg": 232,
+    "min": 190,
+    "max": 280
+  },
+  "grunge": {
+    "count": 4,
+    "avg": 103,
+    "min": 70,
+    "max": 135
+  },
+  "gypsy-jazz": {
+    "count": 2,
+    "avg": 192,
+    "min": 160,
+    "max": 220
+  },
+  "hard-rock": {
+    "count": 6,
+    "avg": 116,
+    "min": 75,
+    "max": 170
+  },
+  "hardcore-hip-hop": {
+    "count": 1,
+    "avg": 104,
+    "min": 98,
+    "max": 110
+  },
+  "hardcore-punk": {
+    "count": 3,
+    "avg": 195,
+    "min": 140,
+    "max": 240
+  },
+  "heartland-rock": {
+    "count": 1,
+    "avg": 130,
+    "min": 115,
+    "max": 145
+  },
+  "heavy-metal": {
+    "count": 1,
+    "avg": 105,
+    "min": 85,
+    "max": 125
+  },
+  "hip-hop": {
+    "count": 1,
+    "avg": 85,
+    "min": 75,
+    "max": 95
+  },
+  "hip-hop-dance": {
+    "count": 1,
+    "avg": 112,
+    "min": 105,
+    "max": 120
+  },
+  "hip-hop-soul": {
+    "count": 1,
+    "avg": 95,
+    "min": 85,
+    "max": 105
+  },
+  "hip-house": {
+    "count": 1,
+    "avg": 120,
+    "min": 115,
+    "max": 125
+  },
+  "honky-tonk": {
+    "count": 1,
+    "avg": 100,
+    "min": 80,
+    "max": 120
+  },
+  "horror-punk": {
+    "count": 2,
+    "avg": 170,
+    "min": 140,
+    "max": 200
+  },
+  "horror-punk-opera": {
+    "count": 1,
+    "avg": 145,
+    "min": 120,
+    "max": 170
+  },
+  "hot-jazz": {
+    "count": 2,
+    "avg": 119,
+    "min": 100,
+    "max": 140
+  },
+  "hyperpop": {
+    "count": 2,
+    "avg": 126,
+    "min": 75,
+    "max": 170
+  },
+  "idm": {
+    "count": 3,
+    "avg": 116,
+    "min": 70,
+    "max": 180
+  },
+  "indian-classical": {
+    "count": 1,
+    "avg": 100,
+    "min": 60,
+    "max": 140
+  },
+  "indie-dance": {
+    "count": 1,
+    "avg": 120,
+    "min": 118,
+    "max": 122
+  },
+  "indie-folk": {
+    "count": 3,
+    "avg": 95,
+    "min": 65,
+    "max": 135
+  },
+  "indie-pop": {
+    "count": 2,
+    "avg": 108,
+    "min": 85,
+    "max": 125
+  },
+  "indie-rock": {
+    "count": 5,
+    "avg": 142,
+    "min": 110,
+    "max": 175
+  },
+  "indietronica": {
+    "count": 1,
+    "avg": 100,
+    "min": 90,
+    "max": 110
+  },
+  "industrial-metal": {
+    "count": 2,
+    "avg": 104,
+    "min": 85,
+    "max": 120
+  },
+  "isicathamiya": {
+    "count": 1,
+    "avg": 75,
+    "min": 60,
+    "max": 90
+  },
+  "italian-pop-rock": {
+    "count": 1,
+    "avg": 130,
+    "min": 110,
+    "max": 150
+  },
+  "italo-disco": {
+    "count": 1,
+    "avg": 122,
+    "min": 116,
+    "max": 128
+  },
+  "j-pop": {
+    "count": 3,
+    "avg": 140,
+    "min": 85,
+    "max": 190
+  },
+  "j-rock": {
+    "count": 1,
+    "avg": 110,
+    "min": 95,
+    "max": 125
+  },
+  "jangle-pop": {
+    "count": 2,
+    "avg": 121,
+    "min": 95,
+    "max": 155
+  },
+  "jazz-ballad": {
+    "count": 1,
+    "avg": 75,
+    "min": 60,
+    "max": 90
+  },
+  "jazz-rap": {
+    "count": 2,
+    "avg": 92,
+    "min": 85,
+    "max": 100
+  },
+  "jazzstep": {
+    "count": 1,
+    "avg": 167,
+    "min": 160,
+    "max": 174
+  },
+  "jersey-club-rap": {
+    "count": 1,
+    "avg": 145,
+    "min": 135,
+    "max": 155
+  },
+  "jump-blues": {
+    "count": 2,
+    "avg": 159,
+    "min": 140,
+    "max": 180
+  },
+  "k-pop": {
+    "count": 11,
+    "avg": 123,
+    "min": 90,
+    "max": 160
+  },
+  "k-pop-trap": {
+    "count": 1,
+    "avg": 112,
+    "min": 85,
+    "max": 140
+  },
+  "kawaii-metal": {
+    "count": 1,
+    "avg": 190,
+    "min": 160,
+    "max": 220
+  },
+  "krautrock": {
+    "count": 1,
+    "avg": 118,
+    "min": 105,
+    "max": 130
+  },
+  "latin-alternative": {
+    "count": 2,
+    "avg": 115,
+    "min": 85,
+    "max": 160
+  },
+  "latin-big-band": {
+    "count": 1,
+    "avg": 115,
+    "min": 100,
+    "max": 130
+  },
+  "latin-pop": {
+    "count": 2,
+    "avg": 104,
+    "min": 90,
+    "max": 120
+  },
+  "latin-pop-crooner": {
+    "count": 1,
+    "avg": 90,
+    "min": 70,
+    "max": 110
+  },
+  "latin-rock": {
+    "count": 1,
+    "avg": 105,
+    "min": 95,
+    "max": 115
+  },
+  "latin-trap": {
+    "count": 1,
+    "avg": 118,
+    "min": 105,
+    "max": 130
+  },
+  "liquid-dnb": {
+    "count": 1,
+    "avg": 171,
+    "min": 168,
+    "max": 174
+  },
+  "liquid-drum-and-bass": {
+    "count": 1,
+    "avg": 172,
+    "min": 170,
+    "max": 175
+  },
+  "lo-fi-pop": {
+    "count": 1,
+    "avg": 100,
+    "min": 85,
+    "max": 115
+  },
+  "math-rock": {
+    "count": 1,
+    "avg": 158,
+    "min": 140,
+    "max": 175
+  },
+  "mbalax": {
+    "count": 1,
+    "avg": 125,
+    "min": 110,
+    "max": 140
+  },
+  "melodic-deep-house": {
+    "count": 1,
+    "avg": 122,
+    "min": 120,
+    "max": 124
+  },
+  "melodic-dubstep": {
+    "count": 1,
+    "avg": 145,
+    "min": 140,
+    "max": 150
+  },
+  "melodic-edm": {
+    "count": 1,
+    "avg": 128,
+    "min": 126,
+    "max": 130
+  },
+  "melodic-house": {
+    "count": 1,
+    "avg": 120,
+    "min": 118,
+    "max": 122
+  },
+  "melodic-pop": {
+    "count": 1,
+    "avg": 90,
+    "min": 80,
+    "max": 100
+  },
+  "melodic-pop-rnb": {
+    "count": 1,
+    "avg": 96,
+    "min": 88,
+    "max": 105
+  },
+  "melodic-rap": {
+    "count": 1,
+    "avg": 112,
+    "min": 100,
+    "max": 125
+  },
+  "melodic-reggae-rap": {
+    "count": 1,
+    "avg": 95,
+    "min": 85,
+    "max": 105
+  },
+  "melodic-trap": {
+    "count": 1,
+    "avg": 105,
+    "min": 90,
+    "max": 120
+  },
+  "memphis-soul": {
+    "count": 2,
+    "avg": 102,
+    "min": 65,
+    "max": 140
+  },
+  "minimalist-rnb": {
+    "count": 1,
+    "avg": 105,
+    "min": 95,
+    "max": 115
+  },
+  "modern-bollywood-romantic": {
+    "count": 1,
+    "avg": 82,
+    "min": 65,
+    "max": 100
+  },
+  "modern-uzbek-pop": {
+    "count": 1,
+    "avg": 98,
+    "min": 80,
+    "max": 115
+  },
+  "motown-soul": {
+    "count": 1,
+    "avg": 128,
+    "min": 115,
+    "max": 140
+  },
+  "nashville-sound": {
+    "count": 1,
+    "avg": 82,
+    "min": 60,
+    "max": 105
+  },
+  "neo-psychedelia": {
+    "count": 1,
+    "avg": 110,
+    "min": 100,
+    "max": 120
+  },
+  "neo-soul": {
+    "count": 3,
+    "avg": 94,
+    "min": 60,
+    "max": 145
+  },
+  "neoclassical": {
+    "count": 1,
+    "avg": 65,
+    "min": 50,
+    "max": 80
+  },
+  "neoperreo": {
+    "count": 1,
+    "avg": 110,
+    "min": 90,
+    "max": 130
+  },
+  "neue-deutsche-welle": {
+    "count": 2,
+    "avg": 151,
+    "min": 125,
+    "max": 195
+  },
+  "neurofunk": {
+    "count": 1,
+    "avg": 172,
+    "min": 170,
+    "max": 174
+  },
+  "new-age": {
+    "count": 1,
+    "avg": 82,
+    "min": 70,
+    "max": 95
+  },
+  "new-wave": {
+    "count": 5,
+    "avg": 114,
+    "min": 80,
+    "max": 150
+  },
+  "new-wave-pop": {
+    "count": 1,
+    "avg": 115,
+    "min": 105,
+    "max": 125
+  },
+  "noise-punk": {
+    "count": 1,
+    "avg": 135,
+    "min": 110,
+    "max": 160
+  },
+  "noise-rock": {
+    "count": 1,
+    "avg": 142,
+    "min": 120,
+    "max": 165
+  },
+  "nordic-folk": {
+    "count": 1,
+    "avg": 80,
+    "min": 60,
+    "max": 100
+  },
+  "nu-disco": {
+    "count": 1,
+    "avg": 125,
+    "min": 120,
+    "max": 130
+  },
+  "nu-disco-pop": {
+    "count": 1,
+    "avg": 110,
+    "min": 104,
+    "max": 116
+  },
+  "nu-metal": {
+    "count": 1,
+    "avg": 115,
+    "min": 95,
+    "max": 135
+  },
+  "nueva-cancion": {
+    "count": 1,
+    "avg": 90,
+    "min": 70,
+    "max": 110
+  },
+  "nuevo-flamenco": {
+    "count": 1,
+    "avg": 100,
+    "min": 90,
+    "max": 110
+  },
+  "nuevo-tango": {
+    "count": 1,
+    "avg": 108,
+    "min": 80,
+    "max": 135
+  },
+  "old-school-hip-hop": {
+    "count": 1,
+    "avg": 105,
+    "min": 95,
+    "max": 115
+  },
+  "old-time": {
+    "count": 2,
+    "avg": 109,
+    "min": 90,
+    "max": 130
+  },
+  "old-time-country": {
+    "count": 1,
+    "avg": 102,
+    "min": 85,
+    "max": 120
+  },
+  "operatic-pop": {
+    "count": 1,
+    "avg": 135,
+    "min": 128,
+    "max": 142
+  },
+  "orchestral-pop": {
+    "count": 1,
+    "avg": 100,
+    "min": 70,
+    "max": 130
+  },
+  "orchestral-soul": {
+    "count": 1,
+    "avg": 85,
+    "min": 75,
+    "max": 95
+  },
+  "oriental-pop": {
+    "count": 1,
+    "avg": 94,
+    "min": 84,
+    "max": 104
+  },
+  "outlaw-country": {
+    "count": 3,
+    "avg": 108,
+    "min": 80,
+    "max": 130
+  },
+  "p-funk": {
+    "count": 1,
+    "avg": 105,
+    "min": 95,
+    "max": 115
+  },
+  "pagan-folk": {
+    "count": 1,
+    "avg": 110,
+    "min": 95,
+    "max": 125
+  },
+  "percussion-trance": {
+    "count": 1,
+    "avg": 138,
+    "min": 132,
+    "max": 145
+  },
+  "pluggnb": {
+    "count": 1,
+    "avg": 140,
+    "min": 130,
+    "max": 150
+  },
+  "poetic-rap": {
+    "count": 1,
+    "avg": 82,
+    "min": 70,
+    "max": 95
+  },
+  "pop-ballad": {
+    "count": 2,
+    "avg": 75,
+    "min": 60,
+    "max": 90
+  },
+  "pop-house": {
+    "count": 1,
+    "avg": 122,
+    "min": 115,
+    "max": 128
+  },
+  "pop-punk": {
+    "count": 3,
+    "avg": 148,
+    "min": 120,
+    "max": 180
+  },
+  "pop-rap": {
+    "count": 15,
+    "avg": 107,
+    "min": 75,
+    "max": 150
+  },
+  "pop-rnb": {
+    "count": 1,
+    "avg": 118,
+    "min": 105,
+    "max": 130
+  },
+  "pop-rock": {
+    "count": 17,
+    "avg": 123,
+    "min": 80,
+    "max": 170
+  },
+  "post-britpop": {
+    "count": 1,
+    "avg": 105,
+    "min": 75,
+    "max": 135
+  },
+  "post-dubstep": {
+    "count": 1,
+    "avg": 135,
+    "min": 130,
+    "max": 140
+  },
+  "post-grunge": {
+    "count": 1,
+    "avg": 155,
+    "min": 140,
+    "max": 170
+  },
+  "post-hardcore": {
+    "count": 1,
+    "avg": 122,
+    "min": 100,
+    "max": 145
+  },
+  "post-punk": {
+    "count": 9,
+    "avg": 127,
+    "min": 90,
+    "max": 160
+  },
+  "post-rock": {
+    "count": 3,
+    "avg": 90,
+    "min": 60,
+    "max": 130
+  },
+  "power-pop": {
+    "count": 1,
+    "avg": 132,
+    "min": 125,
+    "max": 140
+  },
+  "powerviolence": {
+    "count": 1,
+    "avg": 215,
+    "min": 180,
+    "max": 250
+  },
+  "progressive-death-metal": {
+    "count": 2,
+    "avg": 145,
+    "min": 90,
+    "max": 200
+  },
+  "progressive-electronic": {
+    "count": 1,
+    "avg": 102,
+    "min": 90,
+    "max": 115
+  },
+  "progressive-folk-rock": {
+    "count": 1,
+    "avg": 112,
+    "min": 85,
+    "max": 140
+  },
+  "progressive-house": {
+    "count": 4,
+    "avg": 127,
+    "min": 124,
+    "max": 130
+  },
+  "progressive-metal": {
+    "count": 1,
+    "avg": 125,
+    "min": 90,
+    "max": 160
+  },
+  "progressive-rock": {
+    "count": 4,
+    "avg": 112,
+    "min": 60,
+    "max": 145
+  },
+  "progressive-techno": {
+    "count": 1,
+    "avg": 136,
+    "min": 130,
+    "max": 142
+  },
+  "proto-punk": {
+    "count": 1,
+    "avg": 115,
+    "min": 90,
+    "max": 140
+  },
+  "psychedelic-funk": {
+    "count": 1,
+    "avg": 98,
+    "min": 88,
+    "max": 108
+  },
+  "psychedelic-pop": {
+    "count": 1,
+    "avg": 125,
+    "min": 120,
+    "max": 130
+  },
+  "psychedelic-rock": {
+    "count": 2,
+    "avg": 126,
+    "min": 100,
+    "max": 160
+  },
+  "psychedelic-soul": {
+    "count": 1,
+    "avg": 102,
+    "min": 90,
+    "max": 115
+  },
+  "psychedelic-trap": {
+    "count": 1,
+    "avg": 142,
+    "min": 130,
+    "max": 155
+  },
+  "pub-rock": {
+    "count": 1,
+    "avg": 130,
+    "min": 110,
+    "max": 150
+  },
+  "punk-rock": {
+    "count": 2,
+    "avg": 160,
+    "min": 130,
+    "max": 200
+  },
+  "qawwali": {
+    "count": 1,
+    "avg": 115,
+    "min": 90,
+    "max": 140
+  },
+  "rai": {
+    "count": 1,
+    "avg": 114,
+    "min": 100,
+    "max": 128
+  },
+  "ranchera": {
+    "count": 1,
+    "avg": 100,
+    "min": 80,
+    "max": 120
+  },
+  "rap-metal": {
+    "count": 1,
+    "avg": 92,
+    "min": 80,
+    "max": 105
+  },
+  "rap-rock": {
+    "count": 2,
+    "avg": 106,
+    "min": 90,
+    "max": 140
+  },
+  "rap-rock-funk": {
+    "count": 1,
+    "avg": 102,
+    "min": 90,
+    "max": 115
+  },
+  "rave-pop": {
+    "count": 1,
+    "avg": 132,
+    "min": 125,
+    "max": 140
+  },
+  "reggaeton": {
+    "count": 4,
+    "avg": 98,
+    "min": 90,
+    "max": 115
+  },
+  "reggaeton-pop": {
+    "count": 1,
+    "avg": 90,
+    "min": 85,
+    "max": 95
+  },
+  "retro-pop": {
+    "count": 1,
+    "avg": 135,
+    "min": 95,
+    "max": 175
+  },
+  "rhythm-and-blues": {
+    "count": 2,
+    "avg": 121,
+    "min": 100,
+    "max": 140
+  },
+  "rnb": {
+    "count": 1,
+    "avg": 70,
+    "min": 60,
+    "max": 80
+  },
+  "rock-and-roll": {
+    "count": 3,
+    "avg": 144,
+    "min": 85,
+    "max": 185
+  },
+  "rockabilly": {
+    "count": 4,
+    "avg": 152,
+    "min": 100,
+    "max": 185
+  },
+  "rockabilly-pop": {
+    "count": 2,
+    "avg": 149,
+    "min": 130,
+    "max": 170
+  },
+  "roots-reggae": {
+    "count": 4,
+    "avg": 80,
+    "min": 65,
+    "max": 110
+  },
+  "roots-rock": {
+    "count": 1,
+    "avg": 132,
+    "min": 110,
+    "max": 155
+  },
+  "russian-bard": {
+    "count": 6,
+    "avg": 95,
+    "min": 70,
+    "max": 130
+  },
+  "russian-chanson": {
+    "count": 12,
+    "avg": 95,
+    "min": 60,
+    "max": 130
+  },
+  "russian-dance-pop": {
+    "count": 4,
+    "avg": 125,
+    "min": 115,
+    "max": 135
+  },
+  "russian-estrada": {
+    "count": 15,
+    "avg": 110,
+    "min": 60,
+    "max": 135
+  },
+  "russian-eurodance": {
+    "count": 1,
+    "avg": 138,
+    "min": 130,
+    "max": 145
+  },
+  "russian-europop": {
+    "count": 1,
+    "avg": 125,
+    "min": 115,
+    "max": 135
+  },
+  "russian-folk-pop": {
+    "count": 2,
+    "avg": 128,
+    "min": 120,
+    "max": 135
+  },
+  "russian-heavy-metal": {
+    "count": 1,
+    "avg": 150,
+    "min": 120,
+    "max": 180
+  },
+  "russian-indie-rock": {
+    "count": 2,
+    "avg": 112,
+    "min": 80,
+    "max": 145
+  },
+  "russian-melodic-rap": {
+    "count": 1,
+    "avg": 95,
+    "min": 80,
+    "max": 110
+  },
+  "russian-pop": {
+    "count": 37,
+    "avg": 118,
+    "min": 85,
+    "max": 138
+  },
+  "russian-pop-chanson": {
+    "count": 2,
+    "avg": 89,
+    "min": 70,
+    "max": 105
+  },
+  "russian-pop-estrada": {
+    "count": 1,
+    "avg": 112,
+    "min": 100,
+    "max": 124
+  },
+  "russian-pop-rock": {
+    "count": 3,
+    "avg": 122,
+    "min": 80,
+    "max": 165
+  },
+  "russian-rap": {
+    "count": 1,
+    "avg": 140,
+    "min": 135,
+    "max": 145
+  },
+  "russian-rock": {
+    "count": 5,
+    "avg": 107,
+    "min": 80,
+    "max": 140
+  },
+  "russian-romance": {
+    "count": 1,
+    "avg": 90,
+    "min": 70,
+    "max": 110
+  },
+  "russian-synthpop": {
+    "count": 1,
+    "avg": 112,
+    "min": 100,
+    "max": 125
+  },
+  "russian-underground-rap": {
+    "count": 1,
+    "avg": 90,
+    "min": 85,
+    "max": 95
+  },
+  "salsa": {
+    "count": 1,
+    "avg": 110,
+    "min": 100,
+    "max": 120
+  },
+  "samba": {
+    "count": 1,
+    "avg": 118,
+    "min": 100,
+    "max": 135
+  },
+  "shibuya-kei": {
+    "count": 1,
+    "avg": 115,
+    "min": 95,
+    "max": 135
+  },
+  "shoegaze": {
+    "count": 2,
+    "avg": 114,
+    "min": 85,
+    "max": 140
+  },
+  "singer-songwriter": {
+    "count": 2,
+    "avg": 99,
+    "min": 75,
+    "max": 130
+  },
+  "ska-punk": {
+    "count": 1,
+    "avg": 148,
+    "min": 130,
+    "max": 165
+  },
+  "slacker-rock": {
+    "count": 3,
+    "avg": 100,
+    "min": 78,
+    "max": 135
+  },
+  "slowcore": {
+    "count": 1,
+    "avg": 71,
+    "min": 60,
+    "max": 82
+  },
+  "sludge-metal": {
+    "count": 1,
+    "avg": 90,
+    "min": 50,
+    "max": 130
+  },
+  "soft-rock": {
+    "count": 5,
+    "avg": 87,
+    "min": 65,
+    "max": 135
+  },
+  "sophisti-pop": {
+    "count": 5,
+    "avg": 112,
+    "min": 85,
+    "max": 145
+  },
+  "sophisti-soul": {
+    "count": 1,
+    "avg": 83,
+    "min": 70,
+    "max": 96
+  },
+  "soul": {
+    "count": 1,
+    "avg": 100,
+    "min": 60,
+    "max": 140
+  },
+  "soul-blues-folk": {
+    "count": 1,
+    "avg": 101,
+    "min": 72,
+    "max": 130
+  },
+  "soul-jazz": {
+    "count": 1,
+    "avg": 88,
+    "min": 60,
+    "max": 115
+  },
+  "soul-pop": {
+    "count": 1,
+    "avg": 90,
+    "min": 75,
+    "max": 105
+  },
+  "southern-hip-hop": {
+    "count": 3,
+    "avg": 85,
+    "min": 75,
+    "max": 95
+  },
+  "soviet-estrada-balladic": {
+    "count": 1,
+    "avg": 80,
+    "min": 60,
+    "max": 100
+  },
+  "soviet-jazz-estrada": {
+    "count": 1,
+    "avg": 115,
+    "min": 90,
+    "max": 140
+  },
+  "soviet-melodic-hard-rock": {
+    "count": 1,
+    "avg": 114,
+    "min": 96,
+    "max": 132
+  },
+  "soviet-synth-pop": {
+    "count": 1,
+    "avg": 120,
+    "min": 115,
+    "max": 125
+  },
+  "soviet-via": {
+    "count": 6,
+    "avg": 101,
+    "min": 65,
+    "max": 130
+  },
+  "space-electronic": {
+    "count": 1,
+    "avg": 115,
+    "min": 100,
+    "max": 130
+  },
+  "spaghetti-western": {
+    "count": 1,
+    "avg": 100,
+    "min": 80,
+    "max": 120
+  },
+  "stoner-doom": {
+    "count": 1,
+    "avg": 60,
+    "min": 40,
+    "max": 80
+  },
+  "stride-jazz": {
+    "count": 1,
+    "avg": 135,
+    "min": 110,
+    "max": 160
+  },
+  "stutter-house": {
+    "count": 1,
+    "avg": 128,
+    "min": 120,
+    "max": 135
+  },
+  "surf-rock": {
+    "count": 1,
+    "avg": 130,
+    "min": 110,
+    "max": 150
+  },
+  "sweet-jazz": {
+    "count": 1,
+    "avg": 100,
+    "min": 80,
+    "max": 120
+  },
+  "swing-jazz": {
+    "count": 1,
+    "avg": 170,
+    "min": 140,
+    "max": 200
+  },
+  "symphonic-jazz": {
+    "count": 1,
+    "avg": 102,
+    "min": 85,
+    "max": 120
+  },
+  "symphonic-power-metal": {
+    "count": 1,
+    "avg": 168,
+    "min": 150,
+    "max": 185
+  },
+  "symphonic-rock": {
+    "count": 1,
+    "avg": 115,
+    "min": 100,
+    "max": 130
+  },
+  "synth-disco": {
+    "count": 1,
+    "avg": 123,
+    "min": 118,
+    "max": 128
+  },
+  "synth-funk": {
+    "count": 1,
+    "avg": 115,
+    "min": 105,
+    "max": 125
+  },
+  "synth-pop": {
+    "count": 19,
+    "avg": 120,
+    "min": 90,
+    "max": 170
+  },
+  "synth-rock": {
+    "count": 4,
+    "avg": 127,
+    "min": 105,
+    "max": 160
+  },
+  "synth-soul": {
+    "count": 1,
+    "avg": 132,
+    "min": 90,
+    "max": 175
+  },
+  "synthpop": {
+    "count": 1,
+    "avg": 118,
+    "min": 110,
+    "max": 125
+  },
+  "synthwave": {
+    "count": 1,
+    "avg": 106,
+    "min": 95,
+    "max": 118
+  },
+  "synthwave-dreampop": {
+    "count": 1,
+    "avg": 108,
+    "min": 95,
+    "max": 120
+  },
+  "tajik-pop-folk": {
+    "count": 1,
+    "avg": 112,
+    "min": 95,
+    "max": 130
+  },
+  "tango": {
+    "count": 1,
+    "avg": 120,
+    "min": 110,
+    "max": 130
+  },
+  "technopop": {
+    "count": 1,
+    "avg": 135,
+    "min": 125,
+    "max": 145
+  },
+  "teen-pop": {
+    "count": 5,
+    "avg": 111,
+    "min": 85,
+    "max": 140
+  },
+  "tejano": {
+    "count": 1,
+    "avg": 102,
+    "min": 90,
+    "max": 115
+  },
+  "thrash-metal": {
+    "count": 2,
+    "avg": 182,
+    "min": 140,
+    "max": 220
+  },
+  "trad-jazz": {
+    "count": 1,
+    "avg": 170,
+    "min": 110,
+    "max": 230
+  },
+  "traditional-folk": {
+    "count": 1,
+    "avg": 98,
+    "min": 80,
+    "max": 115
+  },
+  "traditional-jazz": {
+    "count": 2,
+    "avg": 102,
+    "min": 80,
+    "max": 130
+  },
+  "traditional-pop": {
+    "count": 4,
+    "avg": 94,
+    "min": 65,
+    "max": 125
+  },
+  "traditional-ska": {
+    "count": 1,
+    "avg": 138,
+    "min": 130,
+    "max": 145
+  },
+  "traditional-western": {
+    "count": 1,
+    "avg": 100,
+    "min": 85,
+    "max": 115
+  },
+  "trap": {
+    "count": 2,
+    "avg": 140,
+    "min": 120,
+    "max": 160
+  },
+  "trap-pop": {
+    "count": 2,
+    "avg": 98,
+    "min": 70,
+    "max": 115
+  },
+  "trap-rap": {
+    "count": 1,
+    "avg": 135,
+    "min": 125,
+    "max": 145
+  },
+  "trap-soul": {
+    "count": 1,
+    "avg": 105,
+    "min": 90,
+    "max": 120
+  },
+  "trip-hop": {
+    "count": 3,
+    "avg": 75,
+    "min": 60,
+    "max": 95
+  },
+  "tropical-house": {
+    "count": 1,
+    "avg": 108,
+    "min": 100,
+    "max": 115
+  },
+  "tropicalia": {
+    "count": 3,
+    "avg": 105,
+    "min": 75,
+    "max": 130
+  },
+  "turkish-arabesque-folk": {
+    "count": 1,
+    "avg": 80,
+    "min": 60,
+    "max": 100
+  },
+  "turkish-pop": {
+    "count": 2,
+    "avg": 118,
+    "min": 100,
+    "max": 132
+  },
+  "turkish-pop-rock": {
+    "count": 1,
+    "avg": 88,
+    "min": 70,
+    "max": 105
+  },
+  "twee-pop": {
+    "count": 1,
+    "avg": 105,
+    "min": 90,
+    "max": 120
+  },
+  "uk-drill": {
+    "count": 1,
+    "avg": 141,
+    "min": 138,
+    "max": 144
+  },
+  "uk-garage-house": {
+    "count": 1,
+    "avg": 122,
+    "min": 120,
+    "max": 124
+  },
+  "uk-punk": {
+    "count": 1,
+    "avg": 148,
+    "min": 130,
+    "max": 165
+  },
+  "uplifting-trance": {
+    "count": 1,
+    "avg": 138,
+    "min": 135,
+    "max": 142
+  },
+  "uzbek-classical-estrada": {
+    "count": 2,
+    "avg": 82,
+    "min": 60,
+    "max": 105
+  },
+  "uzbek-pop-folk": {
+    "count": 1,
+    "avg": 115,
+    "min": 95,
+    "max": 135
+  },
+  "uzbek-romantic-estrada": {
+    "count": 1,
+    "avg": 92,
+    "min": 75,
+    "max": 110
+  },
+  "vaporwave": {
+    "count": 3,
+    "avg": 72,
+    "min": 60,
+    "max": 90
+  },
+  "vaudeville": {
+    "count": 2,
+    "avg": 110,
+    "min": 80,
+    "max": 130
+  },
+  "vaudeville-blues": {
+    "count": 2,
+    "avg": 89,
+    "min": 75,
+    "max": 110
+  },
+  "vaudeville-jazz": {
+    "count": 1,
+    "avg": 105,
+    "min": 85,
+    "max": 125
+  },
+  "vocal-deep-house": {
+    "count": 2,
+    "avg": 122,
+    "min": 118,
+    "max": 126
+  },
+  "vocal-jazz": {
+    "count": 6,
+    "avg": 91,
+    "min": 45,
+    "max": 160
+  },
+  "west-coast-hip-hop": {
+    "count": 1,
+    "avg": 95,
+    "min": 85,
+    "max": 105
+  },
+  "west-coast-jazz": {
+    "count": 1,
+    "avg": 78,
+    "min": 60,
+    "max": 96
+  },
+  "western-swing": {
+    "count": 1,
+    "avg": 115,
+    "min": 100,
+    "max": 130
+  },
+  "witch-house": {
+    "count": 2,
+    "avg": 115,
+    "min": 80,
+    "max": 150
+  },
+  "worldbeat": {
+    "count": 1,
+    "avg": 116,
+    "min": 105,
+    "max": 128
+  }
+}

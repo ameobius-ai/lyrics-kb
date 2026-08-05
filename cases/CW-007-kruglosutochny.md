@@ -1,3 +1,10 @@
+---
+id: CW
+track: 
+status: Генерация
+source: mirror lyrics-kb
+---
+
 # CW-007 — КРУГЛОСУТОЧНЫЙ
 
 - **Лейн:** darksynth / coldwave · **BPM:** 96 · **Вокал:** deep husky bass

@@ -1,3 +1,10 @@
+---
+id: SWP
+track: 
+status: Генерация
+source: mirror lyrics-kb
+---
+
 # SWP-011 — ШИШИГА
 
 - **Лейн:** болотный фолк-электроник · **Цикл:** ГАТЬ (болото-011) · **BPM:** 118 · **Score:** 8.5 EXCELLENT

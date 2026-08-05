@@ -1,3 +1,10 @@
+---
+id: CW
+track: 
+status: Генерация
+source: mirror lyrics-kb
+---
+
 # CW-008 — ПО ТУ СТОРОНУ КАССЫ
 
 - **Лейн:** darksynth / coldwave · **BPM:** 94 · **Вокал:** low smoky contralto (female)

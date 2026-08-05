@@ -1,0 +1,146 @@
+[
+  {
+    "category": "MALE",
+    "name": "Deep husky bass",
+    "description": "Relaxed but intense delivery — for rap-edge and noir pop  Copy",
+    "tag": "[Vocal: male, deep husky timbre, relaxed but intense delivery, clear diction, precise rhythm, modern rap-adjacent tone]"
+  },
+  {
+    "category": "MALE",
+    "name": "Warm crooner",
+    "description": "Soul ballads, swing, smooth R&amp;B  Copy",
+    "tag": "[Vocal: male, warm crooner baritone, jazz phrasing, slight vibrato on long notes, intimate microphone presence]"
+  },
+  {
+    "category": "MALE",
+    "name": "Raspy rock howl",
+    "description": "Grunge, classic rock, alt-rock chorus  Copy",
+    "tag": "[Vocal: male, raspy gritty timbre, dynamic shifts from quiet verse to throat-shredding belt on chorus, anguished delivery]"
+  },
+  {
+    "category": "MALE",
+    "name": "Airy falsetto",
+    "description": "R&amp;B, dream-pop, indie folk  Copy",
+    "tag": "[Vocal: male, airy floating falsetto, breathy intimate close-mic delivery, subtle stacked harmonies, vulnerable tone]"
+  },
+  {
+    "category": "MALE",
+    "name": "Outlaw country gravel",
+    "description": "Country, americana, story ballads  Copy",
+    "tag": "[Vocal: male, gravelly weathered timbre, twangy drawl, conversational storytelling cadence, authentic and lived-in]"
+  },
+  {
+    "category": "MALE",
+    "name": "Monotone melodic rap",
+    "description": "Cloud rap, alternative hip-hop, late-night vibe  Copy",
+    "tag": "[Vocal: male, half-sung half-rapped, monotone delivery with occasional melodic lifts, Auto-Tune subtle, introspective tone]"
+  },
+  {
+    "category": "MALE",
+    "name": "Aggressive rap belt",
+    "description": "UK drill, trap, motivational  Copy",
+    "tag": "[Vocal: male, aggressive articulate delivery, rapid-fire dense flows, hard vocal compression, prominent breath control, menacing edge]"
+  },
+  {
+    "category": "MALE",
+    "name": "Anthemic theatrical",
+    "description": "Mid-tempo rock, cinematic pop  Copy",
+    "tag": "[Vocal: male, powerful tenor, dramatic dynamics, soaring belt on chorus, theatrical phrasing, slight reverb tail]"
+  },
+  {
+    "category": "FEMALE",
+    "name": "Soul belt",
+    "description": "Gospel, classic soul, R&amp;B  Copy",
+    "tag": "[Vocal: female, smooth and soulful, airy on quiet lines, powerful natural belting on peaks, gospel-trained runs and ad-libs, contemporary R&amp;B inflection]"
+  },
+  {
+    "category": "FEMALE",
+    "name": "Close-mic whisper",
+    "description": "Bedroom-pop, ASMR, dark-pop  Copy",
+    "tag": "[Vocal: female, breathy whispered close-mic delivery, sibilant consonants prominent, intimate ASMR-quality, no compression]"
+  },
+  {
+    "category": "FEMALE",
+    "name": "Pop power soprano",
+    "description": "Stadium pop, anthems, K-pop  Copy",
+    "tag": "[Vocal: female, bright assertive pop soprano, double-tracked anthemic choruses, polished playful phrasing, professional studio sheen]"
+  },
+  {
+    "category": "FEMALE",
+    "name": "Husky alto",
+    "description": "Indie-folk, americana, jazz-pop  Copy",
+    "tag": "[Vocal: female, husky low-register alto, smoky lounge timbre, conversational phrasing, slight vibrato]"
+  },
+  {
+    "category": "FEMALE",
+    "name": "Ethereal dreamy",
+    "description": "Dream-pop, shoegaze, ambient  Copy",
+    "tag": "[Vocal: female, ethereal floating delivery, heavy plate reverb, layered choir-like harmonies, no consonant attack, hazy and distant]"
+  },
+  {
+    "category": "FEMALE",
+    "name": "Playful bubblegum",
+    "description": "Y2K-pop, hyperpop, teen-pop  Copy",
+    "tag": "[Vocal: female, bright girlish timbre, coy hiccup phrasing, playful spoken ad-libs between lines, helium-light energy]"
+  },
+  {
+    "category": "FEMALE",
+    "name": "Melancholic art-pop",
+    "description": "Tort-pop, авторские баллады  Copy",
+    "tag": "[Vocal: female, intimate breathy delivery, precise enunciation, minor-key melodic phrasing, no Auto-Tune, dry and present]"
+  },
+  {
+    "category": "FEMALE",
+    "name": "Latin passion",
+    "description": "Reggaeton, salsa-pop, latin-pop  Copy",
+    "tag": "[Vocal: female, passionate Spanish-language delivery, expressive runs, rhythmic syncopation locked to the dembow, sultry mid-range]"
+  },
+  {
+    "category": "SPECIAL",
+    "name": "Robot vocoder",
+    "description": "French house, electroclash, retrofuturism  Copy",
+    "tag": "[Vocal: heavily vocoded robotic delivery, talkbox effect, harmonized through Roland VP-330, futuristic disconnected tone]"
+  },
+  {
+    "category": "SPECIAL",
+    "name": "Spoken word",
+    "description": "Trip-hop, ambient, art-rock  Copy",
+    "tag": "[Vocal: spoken word delivery, no melody, contemplative pacing, close-mic dry recording, occasional whispered emphasis]"
+  },
+  {
+    "category": "SPECIAL",
+    "name": "Church choir",
+    "description": "Hymns, gospel, epic trailers  Copy",
+    "tag": "[Vocal: full mixed church choir, soprano-alto-tenor-bass stacked harmonies, plate reverb, sacred resonance, Latin-style enunciation]"
+  },
+  {
+    "category": "SPECIAL",
+    "name": "Opera soprano",
+    "description": "Symphonic metal, epic-pop  Copy",
+    "tag": "[Vocal: female, classically trained operatic soprano, controlled vibrato, full chest voice on peaks, theatrical projection]"
+  },
+  {
+    "category": "SPECIAL",
+    "name": "Metal scream",
+    "description": "Metalcore, deathcore, post-hardcore  Copy",
+    "tag": "[Vocal: male, alternating clean melodic vocals on chorus and aggressive growl/scream on verses, heavy distortion, throat-rending intensity]"
+  },
+  {
+    "category": "SPECIAL",
+    "name": "Auto-Tune wave",
+    "description": "Trap-soul, melodic rap  Copy",
+    "tag": "[Vocal: male, heavy Auto-Tune on hard fast retune setting, melodic half-sung delivery, pitch correction artifacts intentional, T-Pain-era effect]"
+  },
+  {
+    "category": "SPECIAL",
+    "name": "Child-like vocal",
+    "description": "Hyperpop, dariacore, lullaby  Copy",
+    "tag": "[Vocal: high-pitched child-like timbre, sing-song nursery cadence, innocent unprocessed delivery, slight pitch instability]"
+  },
+  {
+    "category": "SPECIAL",
+    "name": "Megaphone narrator",
+    "description": "Punk, industrial, agit-prop  Copy .tools-wrap { max-width: 1080px; margin: 0 auto; } .tools-back { display: inline-block; color: var(--text-dim); font-size: 13px; margin-bottom: 14px; font-family: var(--font-mono); } .tools-back:hover { color: var(--accent); } .tools-h1 { font-family: var(--font-head); font-size: clamp(32px, 4vw, 44px); margin: 0 0 14px; letter-spacing: -0.01em; } .tools-lead { color: var(--text-soft); font-size: 16px; max-width: 780px; } .tools-lead code { background: var(--bg-2); padding: 1px 6px; border-radius: 3px; font: 500 13px var(--font-mono); color: var(--accent); } .tools-howto { color: var(--text-dim); font-size: 14px; max-width: 780px; margin: 14px 0 36px; } .tools-howto strong { color: var(--text-soft); } .tools-section-h { font-family: var(--font-mono); font-size: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.16em; border-top: 1px solid var(--line); padding-top: 28px; margin: 40px 0 14px; } .tools-section-h:first-of-type { border-top: none; padding-top: 16px; } .anchor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; } .anchor-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; transition: border-color .15s; display: flex; flex-direction: column; } .anchor-card:hover { border-color: var(--line-strong); } .anchor-title { font-family: var(--font-head); font-size: 17px; margin: 0 0 4px; } .anchor-desc { color: var(--text-dim); font-size: 12.5px; margin-bottom: 10px; min-height: 32px; } .anchor-tag { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 10px 12px; font: 500 11.5px var(--font-mono); line-height: 1.5; white-space: pre-wrap; word-break: break-word; color: var(--text-soft); margin: 0 0 10px; max-height: 110px; overflow: hidden; } .btn-anchor-copy { font-size: 11px; padding: 7px 10px; align-self: flex-start; letter-spacing: 0.04em; text-transform: uppercase; } document.querySelectorAll('.btn-anchor-copy').forEach(btn => { btn.addEventListener('click', async () => { const tag = btn.parentElement.querySelector('.anchor-tag').textContent.trim(); try { await navigator.clipboard.writeText(tag); const t = document.createElement('div'); t.className = 'toast show'; t.textContent = btn.dataset.copiedLabel || 'Copied'; document.body.appendChild(t); setTimeout(() => t.remove(), 1400); } catch (e) { console.warn(e); } }); }); The catalog is updated. Prompts follow the schema «era → genre → vocal → instruments → production → tempo → mood». Earn from tracks &nbsp;·&nbsp; Guides &nbsp;·&nbsp; Terms &amp; Privacy &nbsp;·&nbsp; © SiliconSense, 2026 &nbsp;·&nbsp; Support: @siliconsense_bot &nbsp;·&nbsp; Discord community // Locale switcher document.querySelectorAll('.lang-switch button').forEach(b => { b.addEventListener('click', () => { const lang = b.dataset.lang; document.cookie = `ssc_lang=${lang};path=/;max-age=${60*60*24*365};SameSite=Lax`; location.reload(); }); }); // Мобильное бургер-меню (показывает навигацию на узких экранах) (function(){ const hdr = document.querySelector('.hdr'), burger = document.getElementById('hdrBurger'); if (!hdr || !burger) return; const close = () => { hdr.classList.remove('menu-open'); burger.setAttribute('aria-expanded','false'); }; burger.addEventListener('click', (e) => { e.stopPropagation(); const open = hdr.classList.toggle('menu-open'); burger.setAttribute('aria-expanded', open ? 'true' : 'false'); }); document.addEventListener('click', (e) => { if (hdr.classList.contains('menu-open') && !hdr.contains(e.target)) close(); }); hdr.querySelectorAll('.hdr-nav a').forEach(a => a.addEventListener('click', close)); })(); // Копипаст-кнопки в гайдах (делегирование). Текст из data-copy или соседнего / . document.addEventListener('click', function(e){ var b = e.target.closest && e.target.closest('.guide-copy-btn'); if(!b) return; var box = b.closest('.guide-copyblock'); var txt = b.dataset.copy || (box ? (box.querySelector('code,pre')||{}).textContent : '') || ''; navigator.clipboard.writeText(txt.trim()).then(function(){ var o=b.textContent; b.textContent='✓'; b.classList.add('ok'); setTimeout(function(){b.textContent=o;b.classList.remove('ok');},1400); }); }); window.SSC_HAS_CODE = false;",
+    "tag": "[Vocal: male, megaphone-distorted shout, telephone-band-passed, urgent newsreel cadence, mid-range only]"
+  }
+]

@@ -1,3 +1,10 @@
+---
+id: CW
+track: 
+status: Генерация
+source: mirror lyrics-kb
+---
+
 # CW-009 — ДНЕВНОЙ СВЕТ
 
 - **Лейн:** darksynth / coldwave · **BPM:** 104 · **Вокал:** deep husky bass

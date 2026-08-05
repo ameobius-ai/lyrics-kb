@@ -1,0 +1,242 @@
+[
+  {
+    "category": "STRUCTURE (Behavior Tags)",
+    "tag": "[Verse]",
+    "description": "/"
+  },
+  {
+    "category": "STRUCTURE (Behavior Tags)",
+    "tag": "[Chorus]",
+    "description": "— those are blunt and often force a generic-pop delivery. Behavior tags tell the section what to DO."
+  },
+  {
+    "category": "STRUCTURE (Behavior Tags)",
+    "tag": "[Structure: Focused Performance]",
+    "description": "Tight storytelling, medium energy"
+  },
+  {
+    "category": "STRUCTURE (Behavior Tags)",
+    "tag": "[Structure: Build-up]",
+    "description": "Rising tension, instruments layering in"
+  },
+  {
+    "category": "STRUCTURE (Behavior Tags)",
+    "tag": "[Structure: Anthemic Peak]",
+    "description": "Track&apos;s biggest moment, peak hook energy"
+  },
+  {
+    "category": "STRUCTURE (Behavior Tags)",
+    "tag": "[Structure: Minimalist Breakdown]",
+    "description": "Stripped down intimacy, lots of space, few instruments"
+  },
+  {
+    "category": "STRUCTURE (Behavior Tags)",
+    "tag": "[Structure: Cinematic Drop]",
+    "description": "Cinematic dramatic hit after pause"
+  },
+  {
+    "category": "STRUCTURE (Behavior Tags)",
+    "tag": "[Structure: Outro Fade]",
+    "description": "Gradual track fade-out"
+  },
+  {
+    "category": "STRUCTURE (Behavior Tags)",
+    "tag": "[Structure: Spoken Bridge]",
+    "description": "Spoken bridge instead of a melodic section"
+  },
+  {
+    "category": "STRUCTURE (Behavior Tags)",
+    "tag": "[Structure: Call and Response]",
+    "description": "Two voices/instruments trading lines"
+  },
+  {
+    "category": "PIPE COMBINATIONS",
+    "tag": "[Chorus | High Energy | Anthemic | Electric Guitar Solo]",
+    "description": "Anthem chorus + guitar solo"
+  },
+  {
+    "category": "PIPE COMBINATIONS",
+    "tag": "[Verse | Whispered | Close-mic | Sparse Drums]",
+    "description": "Whispered intimate verse"
+  },
+  {
+    "category": "PIPE COMBINATIONS",
+    "tag": "[Bridge | Half-time | 808 sub bass | Vinyl static]",
+    "description": "Half-time bridge with trap bass"
+  },
+  {
+    "category": "PIPE COMBINATIONS",
+    "tag": "[Pre-chorus | Build-up | Rolling Toms | Crescendo]",
+    "description": "Build-up to chorus"
+  },
+  {
+    "category": "PIPE COMBINATIONS",
+    "tag": "[Drop | Distorted Guitar | Stadium crowd ambience]",
+    "description": "Big stadium drop"
+  },
+  {
+    "category": "INSTRUMENTS (Meta Tags)",
+    "tag": "[Rhodes]",
+    "description": "Warm electric piano"
+  },
+  {
+    "category": "INSTRUMENTS (Meta Tags)",
+    "tag": "[Synth Pad]",
+    "description": "Atmospheric synth wash"
+  },
+  {
+    "category": "INSTRUMENTS (Meta Tags)",
+    "tag": "[Distorted Guitar]",
+    "description": "Switch into distorted guitar"
+  },
+  {
+    "category": "INSTRUMENTS (Meta Tags)",
+    "tag": "[Slap Bass]",
+    "description": "Funky slap bass"
+  },
+  {
+    "category": "INSTRUMENTS (Meta Tags)",
+    "tag": "[Banjo]",
+    "description": "Banjo for country/americana"
+  },
+  {
+    "category": "INSTRUMENTS (Meta Tags)",
+    "tag": "[Mellotron]",
+    "description": "Vintage flute/string pad"
+  },
+  {
+    "category": "INSTRUMENTS (Meta Tags)",
+    "tag": "[Taiko Drums]",
+    "description": "Thunderous taiko drums"
+  },
+  {
+    "category": "INSTRUMENTS (Meta Tags)",
+    "tag": "[Brass Section]",
+    "description": "Brass horns"
+  },
+  {
+    "category": "INSTRUMENTS (Meta Tags)",
+    "tag": "[Strings Section]",
+    "description": "Symphonic string section"
+  },
+  {
+    "category": "INSTRUMENTS (Meta Tags)",
+    "tag": "[Choir Vocals]",
+    "description": "Choir backing"
+  },
+  {
+    "category": "INSTRUMENTS (Meta Tags)",
+    "tag": "[Breakbeat]",
+    "description": "Sampled funk break"
+  },
+  {
+    "category": "VOCAL EFFECTS",
+    "tag": "[Whispered]",
+    "description": "Whisper this line"
+  },
+  {
+    "category": "VOCAL EFFECTS",
+    "tag": "[Autotuned]",
+    "description": "Hard Auto-Tune"
+  },
+  {
+    "category": "VOCAL EFFECTS",
+    "tag": "[Powerful]",
+    "description": "Powerful belt"
+  },
+  {
+    "category": "VOCAL EFFECTS",
+    "tag": "[Doubled]",
+    "description": "Double the vocal"
+  },
+  {
+    "category": "VOCAL EFFECTS",
+    "tag": "[Megaphone]",
+    "description": "Megaphone distortion"
+  },
+  {
+    "category": "VOCAL EFFECTS",
+    "tag": "[Vocal Chops]",
+    "description": "Chopped vocal samples"
+  },
+  {
+    "category": "VOCAL EFFECTS",
+    "tag": "[Talkbox]",
+    "description": "Talkbox effect"
+  },
+  {
+    "category": "VOCAL EFFECTS",
+    "tag": "[Ad-libs]",
+    "description": "Spontaneous backing yells"
+  },
+  {
+    "category": "ATMOSPHERE &amp; PRODUCTION",
+    "tag": "[Rain]",
+    "description": "Rain sound"
+  },
+  {
+    "category": "ATMOSPHERE &amp; PRODUCTION",
+    "tag": "[Vinyl static]",
+    "description": "Vinyl crackle"
+  },
+  {
+    "category": "ATMOSPHERE &amp; PRODUCTION",
+    "tag": "[Stadium crowd ambience]",
+    "description": "Stadium crowd"
+  },
+  {
+    "category": "ATMOSPHERE &amp; PRODUCTION",
+    "tag": "[Tape saturation]",
+    "description": "Analog tape saturation"
+  },
+  {
+    "category": "ATMOSPHERE &amp; PRODUCTION",
+    "tag": "[Lo-fi 4-track]",
+    "description": "Lo-fi 4-track recording"
+  },
+  {
+    "category": "ATMOSPHERE &amp; PRODUCTION",
+    "tag": "[Plate reverb]",
+    "description": "Plate reverb"
+  },
+  {
+    "category": "ATMOSPHERE &amp; PRODUCTION",
+    "tag": "[Sidechain pump]",
+    "description": "Sidechain pumping"
+  },
+  {
+    "category": "ATMOSPHERE &amp; PRODUCTION",
+    "tag": "[Silence]",
+    "description": "Silence / pause"
+  },
+  {
+    "category": "ATMOSPHERE &amp; PRODUCTION",
+    "tag": "[Drum fill transition into chorus]",
+    "description": "Drum fill into chorus"
+  },
+  {
+    "category": "ATMOSPHERE &amp; PRODUCTION",
+    "tag": "[Smooth crossfade intro to verse]",
+    "description": "Smooth crossfade into verse"
+  },
+  {
+    "category": "Full structure example",
+    "tag": "[Vocal: female, smooth and soulful, airy on quiet lines, powerful belting on peaks]",
+    "description": ""
+  },
+  {
+    "category": "Full structure example",
+    "tag": "[Structure: Build-up | Rolling Toms]",
+    "description": "Bassline creeps in slow, heart starts to race..."
+  },
+  {
+    "category": "Full structure example",
+    "tag": "[Structure: Anthemic Peak | Stadium crowd ambience | Choir Vocals]",
+    "description": "Rise up — break free — let the whole block hear you roar..."
+  },
+  {
+    "category": "Full structure example",
+    "tag": "[Structure: Minimalist Breakdown | Rain | Silence]",
+    "description": "Just breath... and echoes... fading in the rain... .tools-wrap { max-width: 1080px; margin: 0 auto; } .tools-back { display: inline-block; color: var(--text-dim); font-size: 13px; margin-bottom: 14px; font-family: var(--font-mono); } .tools-back:hover { color: var(--accent); } .tools-h1 { font-family: var(--font-head); font-size: clamp(32px, 4vw, 44px); margin: 0 0 14px; letter-spacing: -0.01em; } .tools-lead { color: var(--text-soft); font-size: 16"
+  }
+]

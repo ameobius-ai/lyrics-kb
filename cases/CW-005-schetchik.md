@@ -1,3 +1,10 @@
+---
+id: CW
+track: 
+status: Генерация
+source: mirror lyrics-kb
+---
+
 # CW-005 — СЧЁТЧИК
 
 - **Лейн:** darksynth / coldwave · **BPM:** 100 · **Вокал:** deep husky bass

@@ -1,0 +1,1764 @@
+{
+  "kb_version": "2.1",
+  "created": "2026-06-23",
+  "description": "Music knowledge base: Suno, production, vocals, genres, songwriting, references",
+  "sources": {
+    "tg_suno_promt": {
+      "id": -1003555459454,
+      "name": "SUNO ПРОМПТ от @sergiyp",
+      "type": "prompts"
+    },
+    "tg_suno_lodzhia": {
+      "id": -1003528662907,
+      "name": "SUNO Лоджия",
+      "type": "community"
+    },
+    "discord_producers": {
+      "guild": "1506284805464260648",
+      "name": "Producers"
+    }
+  },
+  "entries": [
+    {
+      "id": "suno-vocals-rock-clean",
+      "category": "suno",
+      "tags": [
+        "vocals",
+        "rock",
+        "screaming",
+        "controlled",
+        "chest-voice",
+        "bpm"
+      ],
+      "title": "Ровный рок-вокал без визга",
+      "file": "suno/vocals.md",
+      "summary": "Триггеры визга (powerful/aggressive/arena), рабочие дескрипторы (warm/controlled/mid-range), блок style tags, дублирование в лирике, трюк с BPM, жанровые якоря"
+    },
+    {
+      "id": "suno-v5-advanced",
+      "category": "suno",
+      "tags": [
+        "v5.5",
+        "advanced",
+        "mid-side",
+        "transients",
+        "modulation",
+        "archetypes",
+        "syntax",
+        "compound",
+        "contrast",
+        "formant",
+        "granular"
+      ],
+      "title": "v5.5 продвинутый фреймворк T16.PRO",
+      "file": "suno/v5-advanced.md",
+      "summary": "Mid-Side локализация, транзиенты, модуляция, структурные теги, гибридные пресеты (techno/hyperpop/phonk/ambient), эмоция→инженерия, синтаксис v5.5 (compound hyphenation, tag bracketing, triad of contrast)"
+    },
+    {
+      "id": "suno-arrangement",
+      "category": "suno",
+      "tags": [
+        "arrangement",
+        "chorus",
+        "instruments",
+        "latin",
+        "dance",
+        "empty"
+      ],
+      "title": "Инструменты пропадают в припеве",
+      "file": "suno/arrangement.md",
+      "summary": "Suno режет инструменты в припеве (латино/реггетон/поп). Фикс: non-stop rhythm section теги. Что усиливает плотность vs что убивает"
+    },
+    {
+      "id": "suno-persona",
+      "category": "suno",
+      "tags": [
+        "persona",
+        "drift",
+        "voice",
+        "reference",
+        "long-generation"
+      ],
+      "title": "Дрейф персоны",
+      "file": "suno/persona.md",
+      "summary": "После ~2 куплета вокал уходит от persona-референса. Обходы: короткие треки, extensions от сильного участка, регенерация"
+    },
+    {
+      "id": "suno-versions",
+      "category": "suno",
+      "tags": [
+        "versions",
+        "v3.5",
+        "v4",
+        "v4.5",
+        "v5.5"
+      ],
+      "title": "Версии Suno",
+      "file": "suno/versions.md",
+      "summary": "v3.5 сырее, v4 стабильнее, v4.5 чище всего, v5.5 — продвинутый синтаксис, структурные теги, sliders"
+    },
+    {
+      "id": "suno-prompts",
+      "category": "suno",
+      "tags": [
+        "prompts",
+        "custom-mode",
+        "meta-tags",
+        "style-tags",
+        "persona",
+        "extensions",
+        "cover"
+      ],
+      "title": "Промпт-инженерия",
+      "file": "suno/prompts.md",
+      "summary": "Meta-tags структура, style tag категории, persona, extensions, cover mode, audio upload"
+    },
+    {
+      "id": "suno-quirks-playback",
+      "category": "suno",
+      "tags": [
+        "bugs",
+        "web",
+        "playback",
+        "mobile"
+      ],
+      "title": "Веб-глюк с проигрыванием",
+      "file": "suno/quirks.md",
+      "summary": "Треки останавливаются через пару секунд в вебе, мобайл ок, обход — слушать при генерации или скачать"
+    },
+    {
+      "id": "prod-mixing",
+      "category": "production",
+      "tags": [
+        "mixing",
+        "eq",
+        "compression",
+        "reverb",
+        "stems",
+        "stereo"
+      ],
+      "title": "Сведение",
+      "file": "production/mixing.md",
+      "summary": "Бас/кик маска 200Гц, вокал в центре, компрессия, реверб pre-delay, стерео, стемы -12..-18dB"
+    },
+    {
+      "id": "prod-mastering",
+      "category": "production",
+      "tags": [
+        "mastering",
+        "lufs",
+        "true-peak",
+        "spotify",
+        "bandcamp",
+        "streaming"
+      ],
+      "title": "Мастеринг",
+      "file": "production/mastering.md",
+      "summary": "LUFS-таргеты по платформам, true peak, ПЕРЕМОЛОТ как эталон намеренной грязи"
+    },
+    {
+      "id": "vocals-types",
+      "category": "vocals",
+      "tags": [
+        "voice-types",
+        "male",
+        "female",
+        "register",
+        "delivery",
+        "processing"
+      ],
+      "title": "Типы голоса и обработка",
+      "file": "vocals/types.md",
+      "summary": "Suno вокал-дескрипторы (муж/жен), регистры, подача, обработка вокала в продакшене"
+    },
+    {
+      "id": "genres-index",
+      "category": "genres",
+      "tags": [
+        "folk",
+        "neurofunk",
+        "synthwave",
+        "ambient",
+        "lofi",
+        "boombap"
+      ],
+      "title": "Жанровые характеристики",
+      "file": "genres/index.md",
+      "summary": "Фолк/неофолк, neurofunk, synthwave, ambient, lo-fi, boom bap — структура и фактура"
+    },
+    {
+      "id": "song-lyrics",
+      "category": "songwriting",
+      "tags": [
+        "lyrics",
+        "structure",
+        "hook",
+        "rhythm",
+        "rhyme",
+        "anti-ai",
+        "style"
+      ],
+      "title": "Лирика и структура",
+      "file": "songwriting/lyrics.md",
+      "summary": "Структуры песни, хуки, ритм вслух, рифмы, анти-AI-маркеры, стиль юзера"
+    },
+    {
+      "id": "song-modern-russian",
+      "category": "songwriting",
+      "tags": [
+        "lyrics",
+        "russian",
+        "slang",
+        "style",
+        "husky",
+        "pyrokinesis",
+        "shortparis",
+        "skryptonite",
+        "post-punk",
+        "rap",
+        "indie",
+        "voice"
+      ],
+      "title": "Современная русская лирика: голос и стиль",
+      "file": "songwriting/modern_russian_lyrics.md",
+      "summary": "Пантеон: Хаски, Pyrokinesis, Shortparis, Скриптонит, ЛСП, ploho, Буерак, Кровосток, Saluki, Пошлая Молли, 25/17, Oxxxymiron. 16 паттернов: тоника, регистровый контраст, эстетика уродливого, верлибр, ризомность, фонетика, рефрены, вокализации, чёрный юмор, телесный код, аллитерация, интертекстуальность, мифологизация быта, исповедь поколению. Тексты-примеры (Панелька, Страшно, Контракт). Сленг по жанрам. Жанровые отличия рэп/постпанк/поппанк/инди"
+    },
+    {
+      "id": "ref-index",
+      "category": "references",
+      "tags": [
+        "artists",
+        "russian",
+        "poetry",
+        "production-refs",
+        "peremolot"
+      ],
+      "title": "Артисты и ориентиры",
+      "file": "references/index.md",
+      "summary": "Русские авторы, поэзия, продакшен-референсы, ориентиры юзера"
+    },
+    {
+      "file": "suno/procedures/rock-vocal-no-scream.md",
+      "category": "suno",
+      "subcategory": "procedures",
+      "title": "Процедура: ровный рок-вокал без визга",
+      "tags": [
+        "вокал",
+        "rock",
+        "suno",
+        "procedure",
+        "без визга",
+        "controlled"
+      ],
+      "summary": "Пошаговый рецепт: жанр → style prompt → no vocal acrobatics → метки в лирике → BPM → версия",
+      "added": "2026-06-23"
+    },
+    {
+      "file": "suno/procedures/v5-advanced-framework.md",
+      "category": "suno",
+      "subcategory": "procedures",
+      "title": "Процедура: v5.5 продвинутый фреймворк T16.PRO",
+      "tags": [
+        "v5.5",
+        "v5",
+        "suno",
+        "procedure",
+        "framework",
+        "mid-side",
+        "transients",
+        "modulation"
+      ],
+      "summary": "8 шагов: эмоция → архетип → mid-side → транзиенты → модуляция → структурные теги → синтаксис → слайдеры",
+      "added": "2026-06-23"
+    },
+    {
+      "file": "suno/procedures/arrangement-fix.md",
+      "category": "suno",
+      "subcategory": "procedures",
+      "title": "Процедура: фикс пропадающих инструментов в припеве",
+      "tags": [
+        "аранжировка",
+        "arrangement",
+        "suno",
+        "procedure",
+        "припев",
+        "латино",
+        "реггетон"
+      ],
+      "summary": "5 шагов: non-stop rhythm → теги плотности → убрать разреженность → варьировать длину строк → метки",
+      "added": "2026-06-23"
+    },
+    {
+      "id": "suno-stem-mixing",
+      "category": "suno",
+      "tags": [
+        "stems",
+        "mixing",
+        "post-production",
+        "eq",
+        "high-pass",
+        "pan",
+        "mono-check",
+        "suno-studio"
+      ],
+      "title": "Стем-микс в Suno Studio",
+      "file": "suno/stem_mixing.md",
+      "summary": "Философия якорь+стемы, 6-полосный EQ по инструментам, панорама (гитары 45/синты 30/бас моно), расстройка для ширины, громкости, моно-проверка, автоматизация бридж/припев",
+      "added": "2026-06-23"
+    },
+    {
+      "id": "ref-writing-craft-books",
+      "category": "references",
+      "tags": [
+        "writing",
+        "books",
+        "dialogue",
+        "craft",
+        "fiction"
+      ],
+      "title": "Writing craft books — curated list",
+      "file": "references/writing_craft_books.md",
+      "summary": "Curated writing craft books from bookracy API"
+    },
+    {
+      "id": "suno-vocal-anchors",
+      "category": "suno",
+      "tags": [
+        "vocals",
+        "anchors",
+        "male",
+        "female",
+        "special",
+        "vocal-block",
+        "timbre",
+        "delivery",
+        "suno-v5"
+      ],
+      "title": "24 вокальных якоря для Suno",
+      "file": "suno/vocal_anchors.md",
+      "summary": "24 готовых [Vocal: ...] блока (8 MALE + 8 FEMALE + 8 SPECIAL). Заменяют одиночные слова — детальный многокомпонентный вокальный блок: timbre, delivery, texture, processing",
+      "source": "SiliconSense",
+      "added": "2026-06-25"
+    },
+    {
+      "id": "suno-behavior-tags",
+      "category": "suno",
+      "tags": [
+        "structure",
+        "behavior",
+        "pipe",
+        "meta-tags",
+        "sections",
+        "instruments",
+        "atmosphere",
+        "vocal-effects",
+        "suno-v5"
+      ],
+      "title": "48 behavior tags — поведение вместо «тупых» меток",
+      "file": "suno/behavior_tags.md",
+      "summary": "6 категорий: STRUCTURE (10), PIPE COMBINATIONS (5), INSTRUMENTS (11), VOCAL EFFECTS (8), ATMOSPHERE (10), FULL EXAMPLES (4). [Structure: Anthemic Peak] говорит секции что делать, не только как называться",
+      "source": "SiliconSense",
+      "added": "2026-06-25"
+    },
+    {
+      "id": "suno-genre-bpm-map",
+      "category": "suno",
+      "tags": [
+        "genre",
+        "bpm",
+        "tempo",
+        "map",
+        "data",
+        "420-genres"
+      ],
+      "title": "Жанр → BPM карта (420 жанров)",
+      "file": "suno/genre_bpm_map.md",
+      "summary": "420 жанров с avg/min/max BPM из 865 артистов. russian-pop 118, eurodance 133, boom-bap 91, vaporwave 72, big-band-swing 148. Заменяет догадки в генераторе стиля",
+      "source": "SiliconSense",
+      "added": "2026-06-25"
+    },
+    {
+      "id": "suno-siliconsense-guides",
+      "category": "suno",
+      "tags": [
+        "guides",
+        "prompts",
+        "formula",
+        "persona",
+        "repeatability",
+        "chords",
+        "extend",
+        "russian",
+        "structure",
+        "upload"
+      ],
+      "title": "SiliconSense Guides — 10 гайдов по Suno v5.5",
+      "file": "suno/siliconsense_guides.md",
+      "summary": "Промпт-формула, style без имён, Persona, repeatability, chord progressions в [], Extend, russian names/brands транслитерация, russian lyrics ударения, song structure meta tags, upload rejected фикс",
+      "source": "SiliconSense",
+      "added": "2026-06-25"
+    },
+    {
+      "id": "suno-moods-usecases",
+      "category": "suno",
+      "tags": [
+        "moods",
+        "use-cases",
+        "emotion",
+        "scenario",
+        "inverse-map",
+        "217-moods",
+        "394-usecases"
+      ],
+      "title": "217 moods + 394 use cases — словари",
+      "file": "suno/moods_usecases.md",
+      "summary": "217 уникальных moods (melancholic 229, theatrical 213, nostalgic 211) + 394 use_cases (nostalgic-listen 388, sing-along 336, party 281). Для INVERSE_MAP и селекторов «для чего трек»",
+      "source": "SiliconSense",
+      "added": "2026-06-25"
+    },
+    {
+      "id": "ref-siliconsense-catalog",
+      "category": "references",
+      "tags": [
+        "catalog",
+        "artists",
+        "865",
+        "prompts",
+        "name-free",
+        "genre",
+        "vocal-anchor",
+        "related-artists",
+        "siliconsense"
+      ],
+      "title": "SiliconSense Artist Catalog — 865 артистов",
+      "file": "references/siliconsense_catalog.md",
+      "summary": "865 артистов разбиты на name-free style prompts (era→genre→vocal→instruments→production→tempo→mood). 6 с полными промптами+vocal anchors. 420 жанров, 5190 related-связей, граф похожести",
+      "source": "SiliconSense",
+      "added": "2026-06-25"
+    },
+    {
+      "id": "ref-siliconsense-catalog-json",
+      "category": "references",
+      "subcategory": "raw-data",
+      "title": "SiliconSense catalog JSON (865 артистов, сырые данные)",
+      "file": "references/siliconsense_catalog.json",
+      "tags": [
+        "json",
+        "raw-data",
+        "catalog",
+        "865"
+      ],
+      "summary": "Машинно-читаемый JSON: slug, name, genre, decade, bpm, moods, use_cases, description, prompt, prompt_full, vocal_anchor, tags, related_artists, free",
+      "source": "SiliconSense",
+      "added": "2026-06-25"
+    },
+    {
+      "id": "ref-siliconsense-vocal-anchors-json",
+      "category": "references",
+      "subcategory": "raw-data",
+      "title": "SiliconSense vocal anchors JSON (24 якоря)",
+      "file": "references/siliconsense_vocal_anchors.json",
+      "tags": [
+        "json",
+        "raw-data",
+        "vocals",
+        "anchors",
+        "24"
+      ],
+      "summary": "24 vocal anchors: category, name, description, tag. MALE/FEMALE/SPECIAL",
+      "source": "SiliconSense",
+      "added": "2026-06-25"
+    },
+    {
+      "id": "ref-siliconsense-behavior-tags-json",
+      "category": "references",
+      "subcategory": "raw-data",
+      "title": "SiliconSense behavior tags JSON (48 тегов)",
+      "file": "references/siliconsense_behavior_tags.json",
+      "tags": [
+        "json",
+        "raw-data",
+        "behavior-tags",
+        "48"
+      ],
+      "summary": "48 behavior tags: category, tag, description. 6 категорий",
+      "source": "SiliconSense",
+      "added": "2026-06-25"
+    },
+    {
+      "id": "ref-siliconsense-genre-bpm-json",
+      "category": "references",
+      "subcategory": "raw-data",
+      "title": "SiliconSense genre→BPM JSON (420 жанров)",
+      "file": "references/siliconsense_genre_bpm.json",
+      "tags": [
+        "json",
+        "raw-data",
+        "genre",
+        "bpm",
+        "420"
+      ],
+      "summary": "420 жанров: count, avg, min, max BPM",
+      "source": "SiliconSense",
+      "added": "2026-06-25"
+    },
+    {
+      "id": "ref-siliconsense-moods-json",
+      "category": "references",
+      "subcategory": "raw-data",
+      "title": "SiliconSense moods JSON (217 moods)",
+      "file": "references/siliconsense_moods.json",
+      "tags": [
+        "json",
+        "raw-data",
+        "moods",
+        "217"
+      ],
+      "summary": "217 moods с количеством упоминаний",
+      "source": "SiliconSense",
+      "added": "2026-06-25"
+    },
+    {
+      "id": "ref-siliconsense-usecases-json",
+      "category": "references",
+      "subcategory": "raw-data",
+      "title": "SiliconSense use_cases JSON (394 use cases)",
+      "file": "references/siliconsense_usecases.json",
+      "tags": [
+        "json",
+        "raw-data",
+        "use-cases",
+        "394"
+      ],
+      "summary": "394 use_cases с количеством упоминаний",
+      "source": "SiliconSense",
+      "added": "2026-06-25"
+    },
+    {
+      "id": "song-encyclopedia",
+      "category": "songwriting",
+      "tags": [
+        "lyrics",
+        "russian",
+        "encyclopedia",
+        "meter",
+        "rhythm",
+        "rhyme",
+        "structure",
+        "imagery",
+        "syntax",
+        "voice",
+        "register",
+        "ugly-aesthetics",
+        "phonetics",
+        "intertextuality",
+        "myth",
+        "genres",
+        "hook",
+        "explicit",
+        "slang",
+        "anti-ai",
+        "pipeline",
+        "calibration",
+        "exercises",
+        "husky",
+        "shortparis",
+        "pyrokinesis",
+        "skryptonite",
+        "krovostok",
+        "ploho",
+        "lsp",
+        "25-17",
+        "oxxxymiron",
+        "brodsky",
+        "ai-friendly",
+        "decision-trees",
+        "style-vectors",
+        "detection-patterns",
+        "transform-rules",
+        "templates",
+        "score-function",
+        "prompt-scaffolds",
+        "machine-readable",
+        "json",
+        "yaml"
+      ],
+      "title": "Энциклопедия русскоязычной лирики и сонграйтинга (v2.0)",
+      "file": "songwriting/encyclopedia.md",
+      "summary": "Полный справочник (30 разделов): 1-21 — теория (пантеон, метрика, рифма, структура, образы, синтаксис, голос, регистры, уродливое, звукопись, интертекст, 10 жанров, хук, explicit, сленг, анти-AI, пайплайн, калибровка, разборы, чек-листы, упражнения). 22-30 — AI-операционная карта: режимы GENERATE/REPAIR/CALIBRATE/AUDIT, деревья решений, 10 векторов стиля + blend-карта, 25 паттернов детекции AI-маркеров (v2.0: +10 — канцелярит, родительный штамп, тире-каскад, цепочка сравнений, эмоц. стерильность, perfect grammar, school arc, triple rhetoric, genre autopilot, vague deixis; hard-fail правило), 25 правил трансформации (v2.0: +10), функция оценки 2.0 (12 параметров P1-P12, жанровые веса по 6 жанрам, REPAIR-приоритизация, delta-формат), 5 промпт-скаффолдов, 6 машинно-читаемых блоков",
+      "added": "2026-06-27",
+      "updated": "2026-07-11"
+    },
+    {
+      "id": "genre-folk-horror",
+      "category": "genres",
+      "tags": [
+        "folk-horror",
+        "slavic",
+        "dark-folk",
+        "ritual",
+        "причет",
+        "быличка",
+        "мифологема",
+        "пантеон",
+        "atl",
+        "хаски",
+        "букер",
+        "бонд-с-кнопкой",
+        "аффинаж",
+        "25-17",
+        "башлачев",
+        "клюев",
+        "есенин",
+        "некрасов",
+        "шварц",
+        "genre-autopilot",
+        "анти-слоп",
+        "genre-playbook",
+        "неофолк"
+      ],
+      "title": "Жанровый плейбук: Фолк-хоррор",
+      "file": "genres/folk_horror.md",
+      "summary": "Полный жанровый стандарт: вайб (быт+миф=жуть), 3 голоса (свидетель/причитающий/юродивый), двухсловарная лексика (быт+миф), просодия (тоника/дольник, причетная формула), рифма бытового с сакральным, 3 структуры (циклическая/куплет-припев/быличка), мифологемы (гараж=капище, электричка=лодка Харона), genre_autopilot словарь, анти-слоп чек-лист, теги аранжировки/вокала, калибровочная строфа",
+      "added": "2026-07-11"
+    },
+    {
+      "id": "ref-scene-2025-2026",
+      "category": "references",
+      "tags": [
+        "разведка",
+        "scene",
+        "2025",
+        "2026",
+        "пантеон",
+        "madk1d",
+        "темный-принц",
+        "atl",
+        "букер",
+        "бонд-с-кнопкой",
+        "размаха",
+        "sky-rae",
+        "basic-boy",
+        "джон-гарик",
+        "metox",
+        "ном",
+        "polnalyubvi",
+        "gruppa-skryptonite",
+        "новые-приёмы",
+        "крючок-среды",
+        "сращение-классики",
+        "зацикленный-финал",
+        "умолчание",
+        "исповедник-завистник",
+        "blend-карта"
+      ],
+      "title": "Разведка: русскоязычная сцена 2024–2026",
+      "file": "references/scene_2025_2026.md",
+      "summary": "6 трендов: СК-фрешмены (Madk1d, Темный Принц), фолк-хоррор (ATL, Букер, Бонд), лирика умолчаний (Хаски, Metox, НОМ), антигламурная женская оптика (Размаха, Sky Rae), неуютная искренность (Basic Boy), вокал как инструмент (Gruppa Skryptonite). 7 кандидатов в пантеон. 5 новых приёмов: крючок среды, сращение классики и сленга, зацикленный финал, умолчание, исповедник-завистник. Blend-карта: зелёные (ATL+Хаски, Бонд+АукцЫон, Размаха+Кровосток), красные (Madk1d+Pyrokinesis, Букер+Пошлая Молли)",
+      "added": "2026-07-11"
+    },
+    {
+      "id": "genre-darksynth-coldwave",
+      "category": "genres",
+      "tags": [
+        "darksynth",
+        "coldwave",
+        "80s-revival",
+        "synthwave",
+        "husky-alto",
+        "swagger",
+        "vulnerability",
+        "разговорный-синтаксис",
+        "просодия",
+        "анти-слоп",
+        "genre-playbook",
+        "vocal-tags",
+        "аранж-tags"
+      ],
+      "title": "Жанровый плейбук: Darksynth / Coldwave",
+      "file": "genres/darksynth_coldwave.md",
+      "summary": "Краткий стандарт: вайб (холодный неон, гламур с ледяной коркой), разговорный синтаксис, открытые гласные для хриплого альта, точная рифма без банальностей, каркас Intro→Verse→Chorus→Post-Chorus→Bridge→Outro, анти-слоп чек-лист (штампы, филлеры, натянутые строки), теги вокала/аранжа, ритуал перед сдачей",
+      "added": "2026-07-11"
+    },
+    {
+      "id": "prod-coldwave-mix-mastering",
+      "category": "production",
+      "tags": [
+        "coldwave",
+        "darksynth",
+        "mixing",
+        "mastering",
+        "openDAW",
+        "pedalboard",
+        "7-stem",
+        "lufs",
+        "spotify",
+        "limiter",
+        "highshelf",
+        "bass-saturation",
+        "single-variable"
+      ],
+      "title": "Coldwave 7-stem mix → mastering (openDAW + pedalboard)",
+      "file": "production/coldwave_mix_mastering.md",
+      "summary": "Процедура F01→F12: 7-stem setup (cover anchor, стерео вокал ±0.7, синты ±0.85), single-variable iteration, HS@12k+8 для воздуха, pedalboard bass saturation (openDAW waveshaper мёртв в офлайне), лимитер +6.4 LU для Spotify -14. Targets: gap 0-5pp, air >0.5%, crest >14 (mix), LUFS -14, LRA 2-4, crest 10-12 (master). 10 lessons",
+      "added": "2026-07-01"
+    },
+    {
+      "id": "suno-proc-generation-workflow",
+      "category": "suno",
+      "subcategory": "procedures",
+      "title": "Процедура: полный пайплайн генерации трека",
+      "tags": [
+        "generation",
+        "workflow",
+        "procedure",
+        "suno",
+        "kb-research",
+        "user-clarification",
+        "prompt-assembly",
+        "feedback"
+      ],
+      "summary": "5 шагов: ресёрч KB (genre_bpm, vocal_anchors, behavior_tags, prompts, v5-advanced) → уточнение с юзером (жанр/вокал/BPM/настроение) → сборка промпта ( Lyrics, Style, model, negative) → генерация+скачивание → фидбек+mem0. Чек-лист перед генерацией",
+      "file": "suno/procedures/generation-workflow.md",
+      "added": "2026-07-02"
+    },
+    {
+      "id": "prod-opendaw-dsp-scripts",
+      "category": "production",
+      "tags": [
+        "opendaw",
+        "dsp",
+        "werkstatt",
+        "apparat",
+        "spielwerk",
+        "effects",
+        "instruments",
+        "reference",
+        "vocoder",
+        "reverse",
+        "scratch",
+        "chorale"
+      ],
+      "title": "openDAW MCP DSP Scripts — Complete Reference (111 scripts)",
+      "file": "production/opendaw_dsp_scripts.md",
+      "summary": "Полный справочник 111 DSP скриптов: 43 Werkstatt (dynamics 8, saturation 5, modulation 5, reverb 3, delay 2, EQ 2, filter 5, pitch 3, time 2, stereo 2, spectral/FX 4) + 7 Apparat instruments + 6 Spielwerk MIDI effects. Параметры каждого скрипта, цепи обработки (mastering/vocal/lo-fi/vinyl/vocoder), usage примеры. v1.67.0",
+      "added": "2026-07-05",
+      "updated": "2026-07-06"
+    },
+    {
+      "id": "prod-bandlab-presets",
+      "category": "production",
+      "tags": [
+        "bandlab",
+        "mastering",
+        "presets",
+        "reverse-engineered",
+        "spectral",
+        "welch",
+        "lufs",
+        "crest",
+        "width",
+        "eq-curves"
+      ],
+      "title": "BandLab Mastering Presets — Reverse-Engineered",
+      "file": "production/bandlab_mastering_presets.md",
+      "summary": "8 пресетов (Universal/Fire/Clarity/Tape/Natural/Spatial/Cinematic/Punch) из spectral analysis: LUFS Δ, peak Δ, crest Δ, width Δ, centroid Δ. EQ curves по 10 полосам. Характер каждого пресета",
+      "added": "2026-07-01"
+    },
+    {
+      "id": "prod-postprocessing-v2",
+      "category": "production",
+      "tags": [
+        "postprocessing",
+        "flashsr",
+        "bs-roformer",
+        "midi",
+        "uvr",
+        "super-resolution",
+        "stems",
+        "suno",
+        "elevenlabs",
+        "transients"
+      ],
+      "title": "Постобработка AI-генерации v2",
+      "file": "production/postprocessing_v2.md",
+      "summary": "Стек: FlashSR (one-step diffusion, 16-20kHz восстановление), BS-Roformer stem separation, MIDI extraction. Решает проблему 128kbps MP3 с резом на 16kHz. Этапы: восстановление верхних частот → стемы → микс → MIDI",
+      "added": "2026-06-29"
+    },
+    {
+      "id": "prod-post-master-pipeline",
+      "category": "production",
+      "tags": [
+        "mastering",
+        "post-production",
+        "scipy",
+        "pyloudnorm",
+        "loudness",
+        "multiband",
+        "limiter",
+        "dc-blocker",
+        "lufs",
+        "suno-postmaster",
+        "pro3"
+      ],
+      "title": "Post-Master Pipeline (scipy/numpy) — pro2/pro3",
+      "file": "production/post_master_pipeline.md",
+      "summary": "Post-render DSP chain для Suno/openDAW WAV. Версии: pro2 (-14 LUFS streaming), pro3 EXPENSIVE (-10 LUFS коммерческий мастер). 9 шагов: DC blocker → LUFS normalize → 6-band LR split → per-band comp/sat/EQ → glue → M/S EQ → soft clipper → oversampled limiter. Verified: +4 dB LUFS, crest 16→10.8, 32-bit float сохранён",
+      "added": "2026-07-07"
+    },
+    {
+      "id": "genre-cloud-bedroom",
+      "category": "genres",
+      "tags": [
+        "cloud-rap",
+        "lo-fi",
+        "bedroom-pop",
+        "soundcloud",
+        "spatialnik",
+        "self-irony",
+        "autotune",
+        "недоговорённость",
+        "genre-playbook",
+        "genre-autopilot",
+        "madk1d",
+        "темный-принц",
+        "урал-гайсин"
+      ],
+      "title": "Жанровый плейбук: Саундклауд-волна / лоу-фай спальников",
+      "file": "genres/cloud_bedroom.md",
+      "summary": "Вайб: спальник+интернет+самоирония=недоговорённая нежность. Голос как голосовое в 3 ночи. Словарь А (брать: зарядка 8%, вкладки, гирлянда) и Б (избегать: неон, вайб, душа нараспашку). Короткие строки, небрежная рифма. Профиль весов: P1 1.3, P3 0.4, P8 1.3, P10 1.3. Мини-эталон: 7.6 GOOD",
+      "added": "2026-07-11"
+    },
+    {
+      "id": "ref-golden-corpus",
+      "category": "references",
+      "tags": [
+        "тесты",
+        "регрессия",
+        "детектор",
+        "white-list",
+        "false-positive",
+        "true-positive",
+        "14-кейсов",
+        "G-01",
+        "G-14",
+        "FP-zero",
+        "FN-zero"
+      ],
+      "title": "Золотой корпус — регрессионная батарея детектора",
+      "file": "references/golden_corpus.md",
+      "summary": "14 тест-кейсов (G-01…G-14): 3 живых эталона (фолк-хоррор/думер/рэп), 6 слопов (родительные штампы, технометафора, чеклист, канцелярит, школьная арка, жанровый клише), 5 пограничных (white-list проверки). Протокол: FP=0, FN≤1. Статус 11.07.2026: все 14 пройдены, FP=0, FN=0",
+      "added": "2026-07-11"
+    },
+    {
+      "id": "ref-pantheon-v2",
+      "category": "references",
+      "tags": [
+        "пантеон",
+        "blend-карта",
+        "апдейт",
+        "ATL",
+        "джон-гарик",
+        "madk1d",
+        "букер",
+        "бонд-с-кнопкой",
+        "размаха",
+        "basic-boy",
+        "хаски-партизан",
+        "skryptonite-04pm",
+        "векторы-стиля"
+      ],
+      "title": "Пантеон 2.0 и blend-карта 2.0 — апдейт энциклопедии",
+      "file": "references/pantheon_v2.md",
+      "summary": "7 новых записей пантеона (§1.19–1.25): ATL (бестиарий окраин), Джон Гарик (ванлайны+интертекст), Madk1d (крючки среды), Букер (башлачёвская линия), Бонд с кнопкой (глоссолалия), Размаха (антиняшная женственность), Basic Boy (неуютная искренность). Обновления Хаски (эзопов язык) и Скриптонит (вокал-как-инструмент). Blend-карта: 7 зелёных + 4 красных. 5 новых приёмов — куда ложатся в энциклопедии",
+      "added": "2026-07-11"
+    },
+    {
+      "id": "song-pipeline-demo-ep",
+      "category": "songwriting",
+      "tags": [
+        "demo",
+        "EP",
+        "фолк-хоррор",
+        "пайплайн",
+        "прогон",
+        "белый-список",
+        "white-list",
+        "аудит",
+        "score",
+        "GOOD",
+        "EXCELLENT",
+        "лёд-не-встал"
+      ],
+      "title": "Мини-EP «Лёд не встал» — полный прогон пайплайна",
+      "file": "songwriting/pipeline_demo_ep.md",
+      "summary": "3 трека фолк-хоррор: «За гаражами» (7.8 GOOD), «Сельмаг» (8.0 EXCELLENT, 1 REPAIR), «Гул» (8.2 EXCELLENT). Концепция: одно село, зима не наступила. Сквозной приём: бытовая деталь перед мифом, событие не названо. White-list 25.27 погасил ложные truncation и parallel_no_shift. Средний score по EP: 8.0",
+      "added": "2026-07-11"
+    },
+    {
+      "id": "pipeline-release-v1",
+      "category": "pipeline",
+      "tags": [
+        "pipeline",
+        "release",
+        "v1",
+        "canon",
+        "end-to-end",
+        "stages",
+        "agent-commands",
+        "postmortem"
+      ],
+      "title": "Release Pipeline v1 — канон end-to-end",
+      "file": "pipeline/release_v1.md",
+      "summary": "Канон: бриф→черновик→детектор→Suno-пакет→генерация→стем-микс→мастеринг→релиз→postmortem→архив. Метрики прохода (score≥7.0, crest>14, LUFS -14). 8 команд агента (GENERATE/AUDIT/REPAIR/PACKAGE/VOCAL FIX/MIX BRIEF/MASTER TARGET/POSTMORTEM). 5 правил канона",
+      "added": "2026-07-11"
+    },
+    {
+      "id": "suno-pkg-darksynth-coldwave",
+      "category": "suno",
+      "subcategory": "packages",
+      "tags": [
+        "suno",
+        "package",
+        "darksynth",
+        "coldwave",
+        "style-block",
+        "vocal-anchor",
+        "behavior-tags",
+        "negatives",
+        "7-stem",
+        "master-targets",
+        "fail-fix"
+      ],
+      "title": "Suno Package: Darksynth / Coldwave",
+      "file": "suno/packages/darksynth_coldwave.md",
+      "summary": "Релизный пакет: 110 BPM, deep baritone, якорь-король, Spotify -14. Style full+compact, vocal anchors (3), lyrics skeleton, negatives, density fix, 7-stem mix start (anchor -7/bass -5/drums -4/vocal ±0.7/synth ±0.85), master targets, fail→fix table (5 поломок)",
+      "added": "2026-07-11"
+    },
+    {
+      "id": "suno-pkg-folk-horror",
+      "category": "suno",
+      "subcategory": "packages",
+      "tags": [
+        "suno",
+        "package",
+        "folk-horror",
+        "dark-folk",
+        "style-block",
+        "vocal-anchor",
+        "behavior-tags",
+        "negatives",
+        "master-targets",
+        "fail-fix"
+      ],
+      "title": "Suno Package: Folk Horror",
+      "file": "suno/packages/folk_horror.md",
+      "summary": "Релизный пакет: 88-92 BPM, gravelly storytelling, acoustic-core+drone. Style full+compact, vocal anchors (4: outlaw gravel/whisper/choir/spoken), lyrics skeleton, negatives (no pop gloss), density fix, mix start (anchor/vocal/drone/perc), master targets (Bandcamp/Spotify), fail→fix table (4 поломки)",
+      "added": "2026-07-11"
+    },
+    {
+      "id": "suno-pkg-cloud-bedroom",
+      "category": "suno",
+      "subcategory": "packages",
+      "tags": [
+        "suno",
+        "package",
+        "cloud-rap",
+        "lo-fi",
+        "bedroom-pop",
+        "style-block",
+        "vocal-anchor",
+        "behavior-tags",
+        "negatives",
+        "master-targets",
+        "fail-fix"
+      ],
+      "title": "Suno Package: Cloud / Bedroom",
+      "file": "suno/packages/cloud_bedroom.md",
+      "summary": "Релизный пакет: 78-85 BPM, half-sung monotone, soft 808/tape/bedroom. Style full+compact, vocal anchors (3: monotone/trap-soul/whisper), lyrics skeleton, negatives (no festival drop), density fix, mix start (anchor/vocal/drums/tape), master targets (SoundCloud/Spotify), fail→fix table (4 поломки)",
+      "added": "2026-07-11"
+    },
+    {
+      "id": "case-cw-001-poslednee-okno",
+      "category": "cases",
+      "tags": [
+        "case",
+        "CW-001",
+        "darksynth",
+        "coldwave",
+        "pending-generation",
+        "score-8.1",
+        "EXCELLENT",
+        "110-bpm",
+        "deep-husky-bass",
+        "yakor-korol",
+        "spotify-14"
+      ],
+      "title": "CW-001 · ПОСЛЕДНЕЕ ОКНО (pending_generation)",
+      "file": "cases/CW-001-poslednee-okno.md",
+      "summary": "Desk-цикл M2: darksynth/coldwave, 110 BPM, score 8.1 EXCELLENT, REPAIR×0. Лирика (чистая + с behavior tags), Style full+compact, AUDIT P1-P12, MIX BRIEF 7-stem, MASTER TARGET Spotify -14. status=pending_generation, result=null. После gen: fill result/fail_mode/lesson",
+      "added": "2026-07-11"
+    },
+    {
+      "id": "cw-012-tri-tsifry",
+      "category": "cases",
+      "tags": [
+        "coldwave",
+        "synthwave",
+        "industrial",
+        "thin_low",
+        "mastering",
+        "eq-stack"
+      ],
+      "title": "ТРИ ЦИФРЫ — thin_low fix",
+      "file": "cases/CW-012-tri-tsifry.md",
+      "summary": "Synthwave 118 BPM. Dark spectrum, mud 250Hz, presence hole. Bell cut + dual high shelf + limiter. Closed."
+    },
+    {
+      "id": "cw-013-chuzhoy-etazh",
+      "category": "cases",
+      "tags": [
+        "synthwave",
+        "industrial-rock",
+        "sub_overload",
+        "thin_low",
+        "eq-stack",
+        "limiter"
+      ],
+      "title": "ЧУЖОЙ ЭТАЖ — sub overload + thin high",
+      "file": "cases/CW-013-chuzhoy-etazh.md",
+      "summary": "Synthwave 103 BPM. Sub 66%, gap +42pp. Full stack low shelf + dual high shelf. 5 iterations. Closed."
+    },
+    {
+      "id": "cw-014-schetchik-idyot",
+      "category": "cases",
+      "tags": [
+        "dark-electronic",
+        "full-stack",
+        "balanced",
+        "benchmark"
+      ],
+      "title": "СЧЁТЧИК ИДЁТ — post-stack benchmark",
+      "file": "cases/CW-014-schetchik-idyot.md",
+      "summary": "Dark electronic 99 BPM. Post-full-stack: presence 11% (highest measured), balanced spectrum. Benchmark."
+    },
+    {
+      "id": "suno-api-intel",
+      "category": "suno",
+      "tags": [
+        "api",
+        "auth",
+        "endpoints",
+        "reverse-engineering",
+        "models"
+      ],
+      "path": "suno/api_intel.md",
+      "source": "github:suno-cli",
+      "title": "Suno API Intelligence — reverse-engineered endpoints, auth, model keys"
+    },
+    {
+      "id": "suno-lyrics-qc",
+      "category": "suno",
+      "tags": [
+        "lyrics",
+        "qc",
+        "checklist",
+        "quality-gate"
+      ],
+      "path": "suno/lyrics_qc.md",
+      "source": "github:claude-ai-music-skills",
+      "title": "Lyrics QC Checklist (13-point) — pre-generation quality gate"
+    },
+    {
+      "id": "production-qc-gate",
+      "category": "production",
+      "tags": [
+        "qc",
+        "mastering",
+        "quality-gate",
+        "export",
+        "validate"
+      ],
+      "path": "production/qc_gate.md",
+      "source": "github:claude-ai-music-skills",
+      "title": "Audio QC Gate (7-point) — post-master export validation"
+    },
+    {
+      "id": "pkg-darkwave",
+      "category": "suno",
+      "title": "Suno package: Darkwave",
+      "tags": [
+        "package",
+        "darkwave",
+        "suno"
+      ],
+      "path": "suno/packages/darkwave.md",
+      "source": "bitwize+practice"
+    },
+    {
+      "id": "pkg-witch-house",
+      "category": "suno",
+      "title": "Suno package: Witch House",
+      "tags": [
+        "package",
+        "witch-house",
+        "suno"
+      ],
+      "path": "suno/packages/witch_house.md",
+      "source": "bitwize+practice"
+    },
+    {
+      "id": "pkg-dark-ambient",
+      "category": "suno",
+      "title": "Suno package: Dark Ambient",
+      "tags": [
+        "package",
+        "dark-ambient",
+        "suno"
+      ],
+      "path": "suno/packages/dark_ambient.md",
+      "source": "practice"
+    },
+    {
+      "id": "pkg-post-punk",
+      "category": "suno",
+      "title": "Suno package: Post-Punk",
+      "tags": [
+        "package",
+        "post-punk",
+        "suno"
+      ],
+      "path": "suno/packages/post_punk.md",
+      "source": "practice"
+    },
+    {
+      "id": "pkg-hyperpop",
+      "category": "suno",
+      "title": "Suno package: Hyperpop",
+      "tags": [
+        "package",
+        "hyperpop",
+        "suno"
+      ],
+      "path": "suno/packages/hyperpop.md",
+      "source": "practice"
+    },
+    {
+      "id": "pkg-drill",
+      "category": "suno",
+      "title": "Suno package: Drill",
+      "tags": [
+        "package",
+        "drill",
+        "suno"
+      ],
+      "path": "suno/packages/drill.md",
+      "source": "practice"
+    },
+    {
+      "id": "report-genre-gap-2026-07-19",
+      "category": "references",
+      "title": "Genre gap report bitwize vs KB 2026-07-19",
+      "tags": [
+        "report",
+        "genres",
+        "gap"
+      ],
+      "path": "reports/genre_gap_bitwize_2026-07-19.md",
+      "source": "github:bitwize"
+    },
+    {
+      "id": "ref-blake-crosley-guide-v55",
+      "category": "references",
+      "title": "Blake Crosley — Suno Guide V5.5 (полный справочник)",
+      "tags": [
+        "suno",
+        "v5.5",
+        "metatags",
+        "prompts",
+        "sliders",
+        "stems",
+        "studio",
+        "milo-1080",
+        "legal"
+      ],
+      "path": "references/blake_crosley_suno_guide_v55.md",
+      "summary": "14.6k слов, обновлён 2026-07-25: полные таблицы тегов, prompt architecture, Creative Sliders, 3 метода стемов, Studio DAW 1.2/MILO-1080, лицензии, API status, чейнджлог с датами",
+      "source": "web:blakecrosley.com",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "suno-blake-crosley-v55",
+      "category": "suno",
+      "title": "Blake Crosley V5.5 — дистиллят",
+      "tags": [
+        "suno",
+        "v5.5",
+        "metatags",
+        "style-field",
+        "no-vocals",
+        "exclude",
+        "sliders",
+        "stems",
+        "troubleshooting",
+        "api"
+      ],
+      "path": "suno/blake_crosley_v55.md",
+      "summary": "Формула Style поля (4-7 дескрипторов), таблицы метатегов, правда про [no vocals] + Exclude поле, слайдеры, 3 метода стемов, траблшутинг, чек-лист генерации, API, правовое",
+      "source": "web:blakecrosley.com",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "suno-t16-sngx-lite",
+      "category": "suno",
+      "title": "T16-SNGX-LITE v1.2 — дистиллят (непроверенный community-промпт)",
+      "tags": [
+        "suno",
+        "exclude",
+        "matrix",
+        "dictionary",
+        "hardware",
+        "term-leak",
+        "defense-layers",
+        "long-tracks",
+        "unverified"
+      ],
+      "path": "suno/t16_sngx_lite.md",
+      "summary": "Exclude-матрица по 8 жанровым архетипам + MIX Floor, словарь железо→дескрипторы (LA-2A/1176/U47/808…), TERM_LEAK_SCAN гейт, Defense Layers для >120с. Оговорка: [quality:] скобки в лирике может петь Suno",
+      "source": "TG: T16-SNGX-LITE v1.2 (Qwen Studio prompt)",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "songwriting-anti-patterns",
+      "category": "songwriting",
+      "title": "Анти-паттерны сонграйтинга",
+      "file": "songwriting/anti-patterns.md",
+      "tags": [
+        "songwriting",
+        "anti-patterns"
+      ],
+      "summary": "Что НЕ делать в лирике — канон хаба",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "songwriting-cw-lessons",
+      "category": "songwriting",
+      "title": "CW-уроки (coldwave lessons)",
+      "file": "songwriting/cw-lessons.md",
+      "tags": [
+        "songwriting",
+        "coldwave",
+        "lessons"
+      ],
+      "summary": "Выводы из кейсов CW-серии",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "songwriting-industrial-levers",
+      "category": "songwriting",
+      "title": "Industrial danger levers",
+      "file": "songwriting/industrial-danger-levers.md",
+      "tags": [
+        "songwriting",
+        "industrial",
+        "levers"
+      ],
+      "summary": "Рычаги риска в industrial-лирике",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "songwriting-swamp-playbook",
+      "category": "songwriting",
+      "title": "Болотный плейбук",
+      "file": "songwriting/swamp-playbook.md",
+      "tags": [
+        "songwriting",
+        "swamp",
+        "playbook"
+      ],
+      "summary": "Канон болотного лейна",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "songwriting-top-texts",
+      "category": "songwriting",
+      "title": "Разбор топовых текстов",
+      "file": "songwriting/top-texts-teardown.md",
+      "tags": [
+        "songwriting",
+        "teardown",
+        "analysis"
+      ],
+      "summary": "Разборы сильных текстов",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "songwriting-en-craft-layer",
+      "category": "songwriting",
+      "title": "EN CRAFT LAYER",
+      "file": "songwriting/en/EN_CRAFT_LAYER.md",
+      "tags": [
+        "songwriting",
+        "en",
+        "craft"
+      ],
+      "summary": "Английский слой крафта",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "songwriting-ru-part1",
+      "category": "songwriting",
+      "title": "Энциклопедия RU ч.1: крафт",
+      "file": "songwriting/ru/part-1-craft.md",
+      "tags": [
+        "songwriting",
+        "ru",
+        "encyclopedia",
+        "craft"
+      ],
+      "summary": "Энциклопедия сонграйтинга RU — крафт",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "songwriting-ru-part2",
+      "category": "songwriting",
+      "title": "Энциклопедия RU ч.2: жанры",
+      "file": "songwriting/ru/part-2-genres.md",
+      "tags": [
+        "songwriting",
+        "ru",
+        "encyclopedia",
+        "genres"
+      ],
+      "summary": "Энциклопедия RU — жанры",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "songwriting-ru-part3",
+      "category": "songwriting",
+      "title": "Энциклопедия RU ч.3: ops",
+      "file": "songwriting/ru/part-3-ops.md",
+      "tags": [
+        "songwriting",
+        "ru",
+        "encyclopedia",
+        "ops"
+      ],
+      "summary": "Энциклопедия RU — операционка",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "songwriting-ru-part4",
+      "category": "songwriting",
+      "title": "Энциклопедия RU ч.4: scoring",
+      "file": "songwriting/ru/part-4-scoring.md",
+      "tags": [
+        "songwriting",
+        "ru",
+        "encyclopedia",
+        "scoring"
+      ],
+      "summary": "Энциклопедия RU — скоринг",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "songwriting-ru-detector",
+      "category": "songwriting",
+      "title": "Детектор 2.0",
+      "file": "songwriting/ru/detector-2.0.md",
+      "tags": [
+        "songwriting",
+        "detector",
+        "scoring"
+      ],
+      "summary": "Детектор лирики 2.0 + скоринг 2.0",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "suno-style-tag-grammar",
+      "category": "suno",
+      "title": "Грамматика Style-промптов и behavior-тегов (канон лейнов)",
+      "file": "suno/lanes/style-tag-grammar.md",
+      "tags": [
+        "suno",
+        "style",
+        "grammar",
+        "behavior-tags",
+        "lanes"
+      ],
+      "summary": "9 слотов Style строго по порядку, канон всех лейнов (зеркало Notion)",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "suno-lane-coldwave",
+      "category": "suno",
+      "title": "Suno-пакет: darksynth/coldwave (лейн)",
+      "file": "suno/lanes/coldwave.md",
+      "tags": [
+        "suno",
+        "package",
+        "lane",
+        "coldwave",
+        "darksynth"
+      ],
+      "summary": "BPM 105-115, Am/Em, deep baritone, якорь-король",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "suno-lane-industrial",
+      "category": "suno",
+      "title": "Suno-пакет: industrial (лейн)",
+      "file": "suno/lanes/industrial.md",
+      "tags": [
+        "suno",
+        "package",
+        "lane",
+        "industrial"
+      ],
+      "summary": "Лейн industrial/neurofunk",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "suno-lane-metalcore",
+      "category": "suno",
+      "title": "Suno-пакет: metalcore (лейн)",
+      "file": "suno/lanes/metalcore.md",
+      "tags": [
+        "suno",
+        "package",
+        "lane",
+        "metalcore"
+      ],
+      "summary": "Лейн металкор/пост-хардкор",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "suno-lane-swamp",
+      "category": "suno",
+      "title": "Suno-пакет: болотный фолк-электроник (лейн)",
+      "file": "suno/lanes/swamp.md",
+      "tags": [
+        "suno",
+        "package",
+        "lane",
+        "swamp"
+      ],
+      "summary": "Лейн болото",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "ref-sound-corpus",
+      "category": "references",
+      "title": "Sound corpus — звуковые метрики и таргеты",
+      "file": "references/sound_corpus.md",
+      "tags": [
+        "references",
+        "metrics",
+        "targets"
+      ],
+      "summary": "Звуковые метрики и таргеты по всем кейсам",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "ref-swamp-lane",
+      "category": "references",
+      "title": "Swamp lane — хаб болотной полосы",
+      "file": "references/swamp-lane.md",
+      "tags": [
+        "references",
+        "swamp",
+        "lane"
+      ],
+      "summary": "Хаб болотного лейна",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "ref-release-pipeline",
+      "category": "references",
+      "title": "Release pipeline v1 — канон пайплайна",
+      "file": "references/release-pipeline-v1.md",
+      "tags": [
+        "references",
+        "release",
+        "pipeline"
+      ],
+      "summary": "Канон пайплайна релизов",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "int-gigachat",
+      "category": "references",
+      "title": "GigaChat second opinion интеграция",
+      "file": "integrations/gigachat/README.md",
+      "tags": [
+        "integration",
+        "gigachat",
+        "second-opinion"
+      ],
+      "summary": "Скрипт second_opinion.py + GitHub Action + серты Минцифры",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-CW-002-trista-sorok-sem",
+      "category": "cases",
+      "title": "ГИЛЬОТИНА / ТРИСТА СОРОК СЕМЬ",
+      "file": "cases/CW-002-trista-sorok-sem.md",
+      "tags": [
+        "case",
+        "lane",
+        "cw"
+      ],
+      "summary": "darksynth/coldwave 112bpm, детектор 2.0, score 8.4, якорь кнопка 347",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-CW-003-razmorozka",
+      "category": "cases",
+      "title": "РАЗМОРОЗКА",
+      "file": "cases/CW-003-razmorozka.md",
+      "tags": [
+        "case",
+        "lane",
+        "cw"
+      ],
+      "summary": "кейс лейна, статус генерация, разбор формы",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-CW-004-chuzhoy-etazh",
+      "category": "cases",
+      "title": "ЧУЖОЙ ЭТАЖ",
+      "file": "cases/CW-004-chuzhoy-etazh.md",
+      "tags": [
+        "case",
+        "lane",
+        "cw"
+      ],
+      "summary": "кейс лейна darksynth/coldwave",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-CW-005-schetchik",
+      "category": "cases",
+      "title": "СЧЁТЧИК",
+      "file": "cases/CW-005-schetchik.md",
+      "tags": [
+        "case",
+        "lane",
+        "cw"
+      ],
+      "summary": "кейс лейна",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-CW-006-vtoraya-smena",
+      "category": "cases",
+      "title": "ВТОРАЯ СМЕНА",
+      "file": "cases/CW-006-vtoraya-smena.md",
+      "tags": [
+        "case",
+        "lane",
+        "cw"
+      ],
+      "summary": "кейс лейна",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-CW-007-kruglosutochny",
+      "category": "cases",
+      "title": "КРУГЛОСУТОЧНЫЙ",
+      "file": "cases/CW-007-kruglosutochny.md",
+      "tags": [
+        "case",
+        "lane",
+        "cw"
+      ],
+      "summary": "кейс лейна",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-CW-008-po-tu-storonu-kassy",
+      "category": "cases",
+      "title": "ПО ТУ СТОРОНУ КАССЫ",
+      "file": "cases/CW-008-po-tu-storonu-kassy.md",
+      "tags": [
+        "case",
+        "lane",
+        "cw"
+      ],
+      "summary": "кейс лейна",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-CW-009-dnevnoy-svet",
+      "category": "cases",
+      "title": "ДНЕВНОЙ СВЕТ",
+      "file": "cases/CW-009-dnevnoy-svet.md",
+      "tags": [
+        "case",
+        "lane",
+        "cw"
+      ],
+      "summary": "кейс лейна",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-IND-001-third-pass",
+      "category": "cases",
+      "title": "THIRD PASS",
+      "file": "cases/IND-001-third-pass.md",
+      "tags": [
+        "case",
+        "lane",
+        "ind"
+      ],
+      "summary": "industrial/neurofunk кейс",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-IND-002-kill-the-crest",
+      "category": "cases",
+      "title": "KILL THE CREST",
+      "file": "cases/IND-002-kill-the-crest.md",
+      "tags": [
+        "case",
+        "lane",
+        "ind"
+      ],
+      "summary": "industrial/neurofunk кейс",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-MC-001-toxic",
+      "category": "cases",
+      "title": "TOXIC",
+      "file": "cases/MC-001-toxic.md",
+      "tags": [
+        "case",
+        "lane",
+        "mc"
+      ],
+      "summary": "металкор/пост-хардкор кейс",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-SWP-010-mara",
+      "category": "cases",
+      "title": "МАРА",
+      "file": "cases/SWP-010-mara.md",
+      "tags": [
+        "case",
+        "lane",
+        "swp"
+      ],
+      "summary": "болотный фолк-электроник, цикл ГАТЬ, score 8.6",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-SWP-011-shishiga",
+      "category": "cases",
+      "title": "ШИШИГА",
+      "file": "cases/SWP-011-shishiga.md",
+      "tags": [
+        "case",
+        "lane",
+        "swp"
+      ],
+      "summary": "болотный лейн кейс",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-SWP-012-staritsa",
+      "category": "cases",
+      "title": "СТАРИЦА",
+      "file": "cases/SWP-012-staritsa.md",
+      "tags": [
+        "case",
+        "lane",
+        "swp"
+      ],
+      "summary": "болотный лейн кейс",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "case-SWP-013-bylichka",
+      "category": "cases",
+      "title": "БЫЛИЧКА",
+      "file": "cases/SWP-013-bylichka.md",
+      "tags": [
+        "case",
+        "lane",
+        "swp"
+      ],
+      "summary": "болотный лейн кейс",
+      "source": "mirror lyrics-kb",
+      "added": "2026-08-04"
+    },
+    {
+      "id": "suno-bitwize-v5-practices",
+      "category": "suno",
+      "tags": [
+        "suno",
+        "v5.5",
+        "style-tags",
+        "kpop",
+        "lyrics",
+        "prompt-engineering"
+      ],
+      "title": "bitwize V5/V5.5 best practices — дистиллят новых ядер",
+      "file": "suno/bitwize_v5_practices.md",
+      "summary": "Synonym-pile rule (4-7 descriptors не канон, ~10 ок), 4-частная анатомия стиль-бокса, длины лирики 200-350 слов, динамика по секциям, K-pop мини-лейн, саунд-эффекты в скобках.",
+      "added": "2026-08-04",
+      "source": "github:bitwize"
+    },
+    {
+      "id": "social-telegram-f5ac3be051a8",
+      "category": "suno",
+      "tags": [
+        "udio",
+        "audio generation"
+      ],
+      "title": "Open-Model 'MiniMax H3(Hailuo 3",
+      "file": "suno/open-model-minimax-h3-hailuo-3.md",
+      "summary": "Open-Model 'MiniMax H3(Hailuo 3",
+      "source": "social_intake",
+      "status": "draft",
+      "added": "2026-08-04T10:23:57.280086+00:00"
+    }
+  ],
+  "count": 103
+}

@@ -1,3 +1,10 @@
+---
+id: CW
+track: 
+status: Генерация (выбор генерации не зафиксирован)
+source: mirror lyrics-kb
+---
+
 # CW-003 — РАЗМОРОЗКА
 
 - **Лейн:** darksynth / coldwave · **BPM:** 108 · **Вокал:** deep husky bass

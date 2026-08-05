@@ -1,3 +1,10 @@
+---
+id: CW
+track: 
+status: Генерация
+source: mirror lyrics-kb
+---
+
 # CW-006 — ВТОРАЯ СМЕНА
 
 - **Лейн:** darksynth / coldwave · **BPM:** 98 · **Вокал:** deep husky bass

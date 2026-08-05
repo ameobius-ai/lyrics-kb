@@ -1,3 +1,10 @@
+---
+id: IND
+track: 
+status: Генерация
+source: mirror lyrics-kb
+---
+
 # IND-002 — KILL THE CREST
 
 - **Лейн:** industrial / neurofunk · **BPM:** 134 (дифференциация от IND-001 140) · **Тональность:** C# minor · **Язык:** EN

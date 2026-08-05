@@ -1,3 +1,10 @@
+---
+id: IND
+track: 
+status: Генерация
+source: mirror lyrics-kb
+---
+
 # IND-001 — THIRD PASS
 
 - **Лейн:** industrial / neurofunk · **BPM:** 140 (якорь лейна) · **Тональность:** F minor · **Язык:** EN

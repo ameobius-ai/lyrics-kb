@@ -1,3 +1,10 @@
+---
+id: SWP
+track: 
+status: Генерация
+source: mirror lyrics-kb
+---
+
 # SWP-012 — СТАРИЦА
 
 - **Лейн:** болотный фолк-электроник · **Цикл:** ГАТЬ (болото-012) · **BPM:** 66 · **Score:** 8.6 EXCELLENT

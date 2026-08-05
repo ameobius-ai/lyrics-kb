@@ -1,3 +1,10 @@
+---
+id: MC
+track: 
+status: Мастеринг (fail: требуется ремастер)
+source: mirror lyrics-kb
+---
+
 # MC-001 — TOXIC
 
 - **Лейн:** металкор / пост-хардкор · **BPM:** 160 (half-time брейкдаун ≈ 80) · **Тональность:** E minor / drop-D · **Язык:** EN

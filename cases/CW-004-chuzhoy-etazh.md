@@ -1,3 +1,10 @@
+---
+id: CW
+track: 
+status: Генерация
+source: mirror lyrics-kb
+---
+
 # CW-004 — ЧУЖОЙ ЭТАЖ
 
 - **Лейн:** darksynth / coldwave · **BPM:** 104 · **Вокал:** deep husky bass

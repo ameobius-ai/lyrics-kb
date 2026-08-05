@@ -1,3 +1,10 @@
+---
+id: CW
+track: 
+status: CLOSED (postmortem)
+source: mirror lyrics-kb
+---
+
 # CW-002 — ГИЛЬОТИНА / ТРИСТА СОРОК СЕМЬ
 
 - **Лейн:** darksynth / coldwave · **BPM:** 112 · **Вокал:** deep husky bass, mid-register, no scream

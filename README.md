@@ -1,47 +1,99 @@
-# lyrics-kb
+# 🦀 База знаний: русскоязычная лирика, сонграйтинг, продакшен и AI-промптинг
 
-База знаний по сонграйтингу и звуку музыкального хаба.
+Рабочая база знаний для AI-музыкантов и продюсеров: **лирика → саунд-дизайн → промптинг → продакшен → мастеринг**.
 
-**Правило зеркала:** источник правды — Notion (карточки базы «Треки и релизы» + канон-страницы в «Плейбуках»). Этот репозиторий — зеркало для кейсов и референсов, а не второй источник правды.
+## Что внутри
 
-## Структура
+**101 запись, 8 категорий:**
 
-- `cases/` — кейсы треков: лирика-аудит, метрики, fail_mode, урок. Именование: `{LANE}-{NNN}-{slug}.md`
-- `references/` — справочники по всем кейсам: `sound_corpus.md` (звуковые метрики и таргеты) · `swamp-lane.md` (хаб болотной полосы) · `release-pipeline-v1.md` (канон пайплайна) · `blake_crosley_v55.md` (дистиллят Suno V5.5: метатеги, слайдеры, стемы, траблшутинг) · `blake_crosley_suno_guide_v55.md` (полный гайд Blake Crosley, 110k, обновлён 2026-07-25) · `t16_sngx_lite.md` (непроверенный community-промпт: Exclude-матрица, словарь железо→дескрипторы, Defense Layers)
-- `suno/` — пакеты Style / behavior-тегов: `style-tag-grammar.md` (канон всех лейнов) + per-lane `coldwave.md` · `swamp.md` · `industrial.md` · `metalcore.md`
-- `songwriting/` — сонграйтинг-канон: `anti-patterns.md` · `top-texts-teardown.md` · `cw-lessons.md` · `swamp-playbook.md` · `industrial-danger-levers.md` · `en/EN_CRAFT_LAYER.md` · `ru/` (энциклопедия, 4 части)
+| Категория | Файлов | Описание |
+|---|---|---|
+| `suno/` | 35 | Промпт-инженерия (meta-tags, style tags, behavior tags), версии (v3.5→v5.5), вокал-якоря (24), genre→BPM (420 жанров), **packages** (9 жанровых пакетов), procedures, **lanes** (style-tag-grammar + coldwave/industrial/metalcore/swamp из зеркала lyrics-kb), T16-SNGX-LITE, Blake Crosley V5.5 |
+| `production/` | 8 | Сведение, мастеринг (LUFS, streaming), openDAW DSP (111 скриптов), BandLab пресеты, post-master pipeline (pro2/pro3), coldwave 7-stem mix, QC gate |
+| `vocals/` | 1 | Типы голоса, регистры, обработка |
+| `genres/` | 4 | Фолк-хоррор (плейбук), darksynth/coldwave (плейбук), саундклауд-волна (плейбук), общие жанровые характеристики |
+| `songwriting/` | 15 | Энциклопедия v2.0, современная русская лирика, демо-EP + из зеркала lyrics-kb: анти-паттерны, CW-уроки, industrial levers, болотный плейбук, разбор топ-текстов, EN CRAFT LAYER, энциклопедия RU (4 части), Детектор 2.0 |
+| `references/` | 18 | Пантеон 2.0, разведка сцены, золотой корпус, SiliconSense каталоги, writing craft books, звуковой корпус (sound_corpus), swamp-lane, release-pipeline-v1, Blake Crosley полный гайд, GigaChat интеграция |
+| `pipeline/` | 1 | Release pipeline v1 — канон end-to-end (бриф→лирика→детектор→пакет→генерация→микс→мастер→релиз→postmortem) |
+| `cases/` | 19 | Sound-cases: CW-001..014 (локальные + зеркальные CW-002..009), IND-001/002, MC-001, SWP-010..013 |
 
-## Лейны
+## Пайплайн
 
-| Код | Лейн |
-|---|---|
-| CW | darksynth / coldwave |
-| SWP | болотный фолк-электроник |
-| IND | industrial / neurofunk |
-| MC | металкор / пост-хардкор |
-| FH | фолк-хоррор |
+### Лирика → детекция → оценка
 
-## Кейсы (12)
+```
+Энциклопедия v2.0 (30 разделов)
+    ↓
+Детектор 2.0 (25 паттернов + white-list 25.27 + hard-fail)
+    ↓
+3 жанровых плейбука (фолк-хоррор / darksynth / саундклауд-волна)
+    ↓
+Золотой корпус (14 регрессионных кейсов, FP=0 FN=0)
+    ↓
+Пантеон 2.0 + blend-карта → разведка сцены
+```
 
-| Файл | Трек | Score | Статус |
-|---|---|---|---|
-| `cases/CW-001-poslednee-okno.md` | ПОСЛЕДНЕЕ ОКНО | 8.1 | CLOSED, калибровка серии |
-| `cases/CW-002-trista-sorok-sem.md` | ГИЛЬОТИНА / ТРИСТА СОРОК СЕМЬ | 8.4 | CLOSED, result good |
-| `cases/CW-003-razmorozka.md` | РАЗМОРОЗКА | 8.3 | Генерация |
-| `cases/CW-004-chuzhoy-etazh.md` | ЧУЖОЙ ЭТАЖ | 8.1 | Генерация |
-| `cases/CW-005-schetchik.md` | СЧЁТЧИК | 8.2 | Генерация |
-| `cases/SWP-010-mara.md` | МАРА | 8.6 | Генерация |
-| `cases/SWP-011-shishiga.md` | ШИШИГА | 8.5 | Генерация |
-| `cases/SWP-012-staritsa.md` | СТАРИЦА | 8.6 | Генерация |
-| `cases/SWP-013-bylichka.md` | БЫЛИЧКА | 8.7 | Генерация · максимум хаба |
-| `cases/IND-001-third-pass.md` | THIRD PASS | 8.4 | GEN READY |
-| `cases/IND-002-kill-the-crest.md` | KILL THE CREST | 8.3 | GEN READY |
-| `cases/MC-001-toxic.md` | TOXIC | 7.6 → 8.6 | Мастеринг (over_master) |
+### Промптинг → генерация → продакшен
 
-## Статус зеркала (2026-08-02)
+```
+Suno промпт-инженерия (meta-tags, style tags, vocal anchors, behavior tags)
+    ↓
+Genre→BPM карта (420 жанров) + 865 артистов (name-free style prompts)
+    ↓
+Генерация (procedures: workflow, v5 framework, vocal fix, arrangement fix)
+    ↓
+suno/packages/* → generation → cases/
+    ↓
+Стем-микс (Suno Studio, 6-полосный EQ, панорама, моно-проверка)
+    ↓
+Постобработка (FlashSR, BS-Roformer, MIDI extraction)
+    ↓
+Мастеринг (post-master pro2/pro3, BandLab пресеты, LUFS по платформам)
+```
 
-Зеркало собрано: 12 кейсов, 3 референса, 5 suno-файлов, 6 файлов сонграйтинг-канона + энциклопедия в 4 частях (`songwriting/ru/`). Дальше — режим поддержки: новые кейсы и правки канона идут сюда следом за Notion.
+### Энциклопедия v2.0 (`songwriting/encyclopedia.md`)
 
-Открытый хвост: §22–27 энциклопедии (AI-карта, деревья, векторы, паттерны, трансформации, шаблоны) — догрузить отдельным проходом.
+30 разделов: теория (пантеон, метрика, рифма, структура, образы, синтаксис, голос, регистры, уродливое, звукопись, интертекст, 10 жанров, хук, explicit, сленг, анти-AI) + AI-операционная карта (детектор, трансформации, функция оценки, скаффолды).
 
-Исторический долг закрыт: файл `cases/CW-012-tri-cifry.md` со старого репо здесь не воссоздаётся — кейс сразу лежит под правильным именем. Из старого репо не перенесены: `cases/EN-001…EN-010`, `suno/genre_bpm_map.md`, `suno/persona.md`, `references/siliconsense_genre_bpm.json` — судьба решается человеком (см. ишью в Notion).
+**Детектор 2.0:** 25 паттернов AI-маркеров с весами, hard-fail правило (вес 2.0 → cap SUSPECT), white-list 25.27 (причитное усечение, припев-формула с накоплением).
+
+**Функция оценки 2.0:** 12 параметров (P1–P12), жанровые веса по 6 жанрам, REPAIR-приоритизация, delta-формат.
+
+### Жанровые плейбуки
+
+- **Фолк-хоррор** (`genres/folk_horror.md`) — быт+миф=жуть, двухсловарная лексика, мифологемы
+- **Darksynth/Coldwave** (`genres/darksynth_coldwave.md`) — холодный неон, разговорный синтаксис
+- **Саундклауд-волна** (`genres/cloud_bedroom.md`) — спальник+интернет+самоирония
+
+### Золотой корпус (`references/golden_corpus.md`)
+
+14 тест-кейсов: 3 живых эталона, 6 слопов, 5 пограничных (white-list ловушки). Регрессионный протокол: FP=0, FN≤1.
+
+## Валидация
+
+```bash
+python3 validate.py
+```
+
+Проверяет: JSON валидность, соответствие count, наличие всех файлов, отсутствие дублей.
+
+## Источники
+
+- Telegram: SUNO ПРОМПТ от @sergiyp, SUNO Лоджия
+- Discord: Producers (guild 1506284805464260648)
+- Notion: рабочие страницы (энциклопедия, детектор, плейбуки, корпус)
+- Практика и собственный ресёрч
+
+## Sync (Notion ↔ Git)
+
+| Content | Master | Slave |
+|---|---|---|
+| pipeline, packages, golden corpus rules, encyclopedia KB | **Git** | Notion mirror |
+| Track board, draft lyrics WIP, personal postmortems | **Notion** | export to cases/ only when closed |
+
+Last sync: 2026-07-11
+Notion-only: Треки/Релизы board, agent threads
+
+## Лицензия
+
+CC BY-NC 4.0 — некоммерческое использование с атрибуцией.
