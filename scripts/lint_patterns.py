@@ -575,6 +575,22 @@ def check_uniform_line_length(text):
     return []
 
 
+# ---------------------------------------------------------------------------
+# simile_chain (issue #23, 10th pass): §25.20 / §30.2, weight 1.0. Closed
+# token set verbatim from the spec's own definition («словно/будто/как
+# будто»), >= 2 in one stanza (blank-line-separated block).
+# Bare «как» is deliberately NOT a token: it is the ordinary Russian
+# comparative and appears constantly in living texts (lyrics/ uses it
+# freely -- «ржавая, как гвоздь»), while the spec's chain markers are the
+# *marked* similes. The spec's "штамп vs осознанная градация" judgment
+# stays out of scope; a conscious long chain uses lint_exempt +
+# lint_exempt_note (issue #14 mechanism).
+# ---------------------------------------------------------------------------
+SIMILE_MARKERS_RE = re.compile(
+    r"\b(?:словно|будто|как\s+будто)\b", re.IGNORECASE
+)
+
+
 def check_simile_chain(text):
     """§25.20 / §30.2 simile_chain, weight 1.0. Closed token set verbatim from
     the spec's own definition («словно/будто/как будто»), >= 2 in one stanza
