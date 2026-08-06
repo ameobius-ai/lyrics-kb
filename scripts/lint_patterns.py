@@ -575,6 +575,23 @@ def check_uniform_line_length(text):
     return []
 
 
+def check_simile_chain(text):
+    """§25.20 / §30.2 simile_chain, weight 1.0. Closed token set verbatim from
+    the spec's own definition («словно/будто/как будто»), >= 2 in one stanza
+    (blank-line-separated block) -- see the comment above SIMILE_MARKERS_RE
+    for why bare «как» is excluded and what stays out of scope."""
+    flags = []
+    stanzas = re.split(r"\n\s*\n", text)
+    for idx, stanza in enumerate(stanzas, 1):
+        hits = SIMILE_MARKERS_RE.findall(stanza)
+        if len(hits) >= 2:
+            flags.append((
+                "simile_chain", 1.0,
+                f"stanza {idx}: {len(hits)} marked similes (словно/будто/как будто)",
+            ))
+    return flags
+
+
 # ---------------------------------------------------------------------------
 # parallel_shift_candidate (issue #3): mechanical *detector*, not a verdict.
 # Finds pairs of repeated multi-line blocks (e.g. two pre-chorus instances)
@@ -632,6 +649,7 @@ MECHANICAL_CHECKS = [
     check_banal_rhyme,
     check_verb_rhyme,
     check_uniform_line_length,
+    check_simile_chain,
 ]
 
 ADVISORY_CHECKS = [check_parallel_shift_candidate]
@@ -700,6 +718,7 @@ IMPLEMENTED_FLAG_NAMES = {
     "genre_autopilot", "chorus_checklist", "marker_word", "organ_cliche",
     "not_x_but_y", "position_explanation", "truncation", "tech_metaphor",
     "hypophora", "banal_rhyme", "verb_rhyme", "uniform_line_length",
+    "simile_chain",
 }
 
 
@@ -795,6 +814,10 @@ if __name__ == "__main__":
 #     texts in lyrics/); genre stays undecidable from text alone -- a
 #     conscious long mantra/refrain text uses lint_exempt + lint_exempt_note
 #     (the issue #14 mechanism), which is what the mechanism is for.
+#   - simile_chain's "штамп vs осознанная градация" judgment: the closed
+#     marked-simile count itself IS linted (check_simile_chain); whether a
+#     chain is deliberate build-up stays a scoring-layer concern (the
+#     lint_exempt mechanism covers a conscious long chain).
 #   - binary_light_dark / noun_stack / adj_pile:
 #     §30.2 gives closed lists or regexes for these too, but each carries a
 #     real false-positive risk on live text without more corpus evidence or
@@ -812,7 +835,9 @@ if __name__ == "__main__":
 #     immediately adjacent physical line), banal_rhyme and verb_rhyme
 #     (closed pair lists, both members required in line-final rhyme
 #     position), uniform_line_length (fragment exemption + threshold
-#     tightened 1.5 -> 0.75, calibrated on the living long-form CW-002);
-#     each keeps the spec's flag name but documents its narrowing next to
-#     the pattern definition.
+#     tightened 1.5 -> 0.75, calibrated on the living long-form CW-002),
+#     simile_chain (closed marked-simile token set «словно/будто/как будто»
+#     verbatim from §25.20, >= 2 per stanza, bare «как» excluded per the
+#     spec's own list); each keeps the spec's flag name but documents its
+#     narrowing next to the pattern definition.
 # ---------------------------------------------------------------------------
