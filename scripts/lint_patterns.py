@@ -286,6 +286,65 @@ HYPOPHORA_ANSWER_RE = re.compile(
     r"^\s*(?:потому\s+что|оттого\s+что|затем\s+что)\b", re.IGNORECASE
 )
 
+# ---------------------------------------------------------------------------
+# banal_rhyme / verb_rhyme (issue #4, 8th pass): §25.10 / §16.4 / §30.2
+# detector.banal_rhymes and detector.verb_rhymes, weights 1.0 each. Closed
+# pair lists taken verbatim from §30.2.
+# A pair counts only when BOTH words stand in rhyme position -- the final
+# token of a line. The same words in the middle of a line are just
+# vocabulary ("ночь стоит за окном ... я иду прочь" is not a rhyme, see
+# G-30), and a naive whole-text word search would false-positive on living
+# texts constantly. The final token is split on a hyphen because a
+# line-ending compound like "любовь-морковь" (G-13) still puts its first
+# part in rhyme position. ё/е are normalised ("слёзы" is typed both ways),
+# same rationale as the е-spelling acceptance in position_explanation.
+# banal_rhyme's own corpus TP is the pre-existing G-13 (осознанная пара
+# «любовь/кровь» в поппанк-рамке): the flag fires there, and the
+# «осознанно» discount (score weight P3 = 0.3) stays a scoring-layer
+# concern, not a lint concern -- same separation as the
+# parallel_shift_candidate advisory.
+# ---------------------------------------------------------------------------
+BANAL_RHYME_PAIRS = [
+    ("любовь", "кровь"), ("любовь", "вновь"), ("кровь", "вновь"),
+    ("ночь", "дочь"), ("ночь", "прочь"), ("дочь", "прочь"),
+    ("пора", "гора"), ("слёзы", "грёзы"), ("беда", "звезда"),
+    ("туман", "обман"), ("пожар", "пожал"),
+]
+VERB_RHYME_PAIRS = [
+    ("любить", "забыть"), ("идти", "найти"), ("летать", "мечтать"),
+    ("кричать", "молчать"), ("гореть", "тереть"), ("ждать", "бежать"),
+]
+_LINE_END_STRIP = ",.!?…:;—–-()[]«»\"'"
+
+
+def _norm_token(token):
+    return token.lower().replace("ё", "е")
+
+
+def _line_end_tokens(text):
+    """Collect the normalised rhyme-position token(s) of each line: the final
+    whitespace token, stripped of surrounding punctuation, split on hyphen
+    (a line-final compound still rhymes on its parts -- see G-13)."""
+    tokens = []
+    for line in text.splitlines():
+        words = line.split()
+        if not words:
+            continue
+        last = words[-1].strip(_LINE_END_STRIP)
+        if not last:
+            continue
+        for part in last.split("-"):
+            part = part.strip(_LINE_END_STRIP)
+            if part:
+                tokens.append(_norm_token(part))
+    return tokens
+
+
+def _rhyme_pair_hits(text, pairs):
+    end_tokens = set(_line_end_tokens(text))
+    return [(a, b) for a, b in pairs
+            if _norm_token(a) in end_tokens and _norm_token(b) in end_tokens]
+
 
 def check_denial_gap(text):
     """anti-patterns.md §B: denial construction legal <= 1 time per text."""
@@ -401,6 +460,22 @@ def check_hypophora(text):
     return flags
 
 
+def check_banal_rhyme(text):
+    """§30.2 detector.banal_rhymes, weight 1.0. Both pair members must stand
+    in rhyme position (line end) -- see the comment above BANAL_RHYME_PAIRS
+    for the position requirement, the hyphen-split and ё/е normalisation."""
+    hits = _rhyme_pair_hits(text, BANAL_RHYME_PAIRS)
+    return [("banal_rhyme", 1.0, f"pair {a}/{b} at line ends") for a, b in hits]
+
+
+def check_verb_rhyme(text):
+    """§30.2 detector.verb_rhymes, weight 1.0. Both pair members must stand
+    in rhyme position (line end) -- see the comment above BANAL_RHYME_PAIRS
+    for the position requirement, the hyphen-split and ё/е normalisation."""
+    hits = _rhyme_pair_hits(text, VERB_RHYME_PAIRS)
+    return [("verb_rhyme", 1.0, f"pair {a}/{b} at line ends") for a, b in hits]
+
+
 # ---------------------------------------------------------------------------
 # parallel_shift_candidate (issue #3): mechanical *detector*, not a verdict.
 # Finds pairs of repeated multi-line blocks (e.g. two pre-chorus instances)
@@ -455,6 +530,8 @@ MECHANICAL_CHECKS = [
     check_truncation,
     check_tech_metaphor,
     check_hypophora,
+    check_banal_rhyme,
+    check_verb_rhyme,
 ]
 
 ADVISORY_CHECKS = [check_parallel_shift_candidate]
@@ -509,7 +586,7 @@ IMPLEMENTED_FLAG_NAMES = {
     "kantselyarit", "genitive_metaphor", "em_dash_cascade", "triple_rhetoric",
     "genre_autopilot", "chorus_checklist", "marker_word", "organ_cliche",
     "not_x_but_y", "position_explanation", "truncation", "tech_metaphor",
-    "hypophora",
+    "hypophora", "banal_rhyme", "verb_rhyme",
 }
 
 
@@ -525,7 +602,7 @@ def self_test():
         got_names = {name for name, _w, _detail in flags}
         want_names = expected.get(case_id, set()) & IMPLEMENTED_FLAG_NAMES
         # Only compare on the subset of flags we actually implement --
-        # unimplemented flags (banal_rhyme, vague_deixis, school_arc,
+        # unimplemented flags (vague_deixis, school_arc,
         # sentiment_flatline, perfect_grammar,
         # parallel_no_shift verdict) are explicitly out of scope, see module
         # docstring. We still check we don't fire flags we DO implement when
@@ -579,7 +656,10 @@ if __name__ == "__main__":
 #     the same event-trace judgment as vague_deixis and stays out of scope --
 #     it would hard-fail the 25.27 white-list cases G-01 and G-10. Only the
 #     four literal cop-out markers of §25.13 are linted (check_truncation).
-#   - banal_rhyme conscious-framing: requires judging authorial irony.
+#   - banal_rhyme conscious-framing: the closed pair list itself IS linted
+#     (check_banal_rhyme); only the authorial-irony discount (G-13
+#     «осознанно», score weight P3 = 0.3) stays a scoring-layer concern and
+#     is deliberately not part of the lint flag.
 #   - school_arc: requires judging whether the closing line is an earned
 #     action/image vs a stated moral.
 #   - sentiment_flatline: requires judging overall tonal register, not
@@ -594,20 +674,22 @@ if __name__ == "__main__":
 #     check_hypophora); a broader semantic "does this line answer the
 #     question" judgment is not, matching the same narrowing pattern as
 #     tech_metaphor above.
-#   - binary_light_dark / noun_stack / adj_pile / verb_rhyme /
-#     uniform_line_length: §30.2 gives closed lists or regexes for these
-#     too, but each carries a real false-positive risk on live text without
-#     more corpus evidence or tooling we don't have (e.g. binary_light_dark's
-#     own spec flags `frame_check: true`, meaning it needs to distinguish a
-#     philosophical light/dark frame from a literal detail like a hallway
-#     lamp -- not decidable from the regex alone; noun_stack/adj_pile need
-#     POS tagging). Left for a follow-up pass, one flag at a time, each with
-#     its own golden-corpus TP/FP pair per §0 protocol.
+#   - binary_light_dark / noun_stack / adj_pile / uniform_line_length:
+#     §30.2 gives closed lists or regexes for these too, but each carries a
+#     real false-positive risk on live text without more corpus evidence or
+#     tooling we don't have (e.g. binary_light_dark's own spec flags
+#     `frame_check: true`, meaning it needs to distinguish a philosophical
+#     light/dark frame from a literal detail like a hallway lamp -- not
+#     decidable from the regex alone; noun_stack/adj_pile need POS tagging).
+#     Left for a follow-up pass, one flag at a time, each with its own
+#     golden-corpus TP/FP pair per §0 protocol.
 #     Promoted out of this list so far: not_x_but_y (narrowed to the literal
 #     redundant-copula formula), position_explanation (closed phrase list),
 #     truncation (closed marker list only, omission judgment excluded),
-#     tech_metaphor (closed regex list with a bounded same-line gap) and
+#     tech_metaphor (closed regex list with a bounded same-line gap),
 #     hypophora (closed causal-connective set, matched only on the
-#     immediately adjacent physical line); each keeps the spec's flag name
-#     but documents its narrowing next to the pattern definition.
+#     immediately adjacent physical line), banal_rhyme and verb_rhyme
+#     (closed pair lists, both members required in line-final rhyme
+#     position); each keeps the spec's flag name but documents its
+#     narrowing next to the pattern definition.
 # ---------------------------------------------------------------------------
