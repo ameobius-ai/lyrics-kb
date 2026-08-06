@@ -14,6 +14,14 @@ Usage:
   python3 scripts/lint_patterns.py [files...]      # lint given files
   python3 scripts/lint_patterns.py --self-test      # run golden-corpus regression
 
+Lyrics files (lyrics/<ID>.md, issue #14): if a file carries a "## Текст"
+heading followed by a fenced block, ONLY that block is linted (card prose,
+front-matter and notes are not lyrics and must not be swept). Front-matter
+may declare `lint_exempt: [flag_name, ...]` together with a mandatory
+`lint_exempt_note: <reason>`; an exemption without a note is itself a
+hard-fail (lint_exempt_without_note). This is the legal exemption mechanism
+for conscious devices (e.g. G-13's осознанная банальная рифма).
+
 Exit code: 0 if no hard-fail flags found (or self-test passes), 1 otherwise.
 All non-hard-fail flags are printed as warnings and do not affect exit code,
 matching validate.py's existing pattern of hard structural gates only.
@@ -346,6 +354,46 @@ def _rhyme_pair_hits(text, pairs):
             if _norm_token(a) in end_tokens and _norm_token(b) in end_tokens]
 
 
+# ---------------------------------------------------------------------------
+# Lyrics-file extraction + legal exemptions (issue #14): the blocking CI
+# sweep over lyrics/ lints ONLY the fenced block under a "## Текст" heading
+# -- card prose, front-matter and notes are not lyrics and must not be
+# swept (a whole-file sweep of docs produced spurious chorus_checklist
+# hard-fails in early CI wiring). A file may declare
+# `lint_exempt: [flag_name, ...]` in front-matter for a conscious device
+# (the G-13 case), but only together with a non-empty `lint_exempt_note:`
+# giving the reason; an exemption without a note is itself a hard-fail
+# (lint_exempt_without_note), so the exemption mechanism cannot silently
+# mute the detector.
+# ---------------------------------------------------------------------------
+LYRICS_TEXT_RE = re.compile(r"## Текст\s*\n\s*```[^\n]*\n(.*?)\n```", re.DOTALL)
+_FRONT_MATTER_RE = re.compile(r"\A---\n(.*?)\n---", re.DOTALL)
+_LINT_EXEMPT_RE = re.compile(r"lint_exempt:\s*\[([^\]]*)\]")
+_LINT_EXEMPT_NOTE_RE = re.compile(r"lint_exempt_note:\s*(\S.*)")
+
+
+def extract_lint_text(text):
+    """Return the lyric text to lint: the fenced block under '## Текст' when
+    present (lyrics/<ID>.md format), otherwise the whole file as before."""
+    m = LYRICS_TEXT_RE.search(text)
+    return m.group(1) if m else text
+
+
+def extract_lint_exemptions(text):
+    """Parse front-matter `lint_exempt` / `lint_exempt_note`.
+    Returns (exempt_flag_names, has_note)."""
+    m = _FRONT_MATTER_RE.match(text)
+    if not m:
+        return set(), False
+    fm = m.group(1)
+    exempt = set()
+    em = _LINT_EXEMPT_RE.search(fm)
+    if em:
+        exempt = {n.strip().strip("\"'") for n in em.group(1).split(",") if n.strip()}
+    has_note = bool(_LINT_EXEMPT_NOTE_RE.search(fm))
+    return exempt, has_note
+
+
 def check_denial_gap(text):
     """anti-patterns.md §B: denial construction legal <= 1 time per text."""
     matches = DENIAL_RE.findall(text)
@@ -550,9 +598,22 @@ def lint_text(text):
 
 
 def lint_file(path):
+    """Lint one file. Returns (flags, advisories, exempted_flags).
+    Applies lyric-block extraction and front-matter exemptions -- see the
+    comment above LYRICS_TEXT_RE (issue #14)."""
     with open(path, encoding="utf-8") as f:
-        text = f.read()
-    return lint_text(text)
+        raw = f.read()
+    exempt, has_note = extract_lint_exemptions(raw)
+    flags, advisories = lint_text(extract_lint_text(raw))
+    if exempt and not has_note:
+        flags = flags + [(
+            "lint_exempt_without_note", 2.0,
+            "lint_exempt in front-matter requires a non-empty lint_exempt_note",
+        )]
+        return flags, advisories, []
+    kept = [f for f in flags if f[0] not in exempt]
+    exempted = [f for f in flags if f[0] in exempt]
+    return kept, advisories, exempted
 
 
 def _extract_golden_corpus_cases(md_text):
@@ -631,15 +692,17 @@ def main():
 
     exit_code = 0
     for path in args:
-        flags, advisories = lint_file(path)
+        flags, advisories, exempted = lint_file(path)
         hard_fail = [f for f in flags if f[1] >= HARD_FAIL_WEIGHT]
-        if flags or advisories:
+        if flags or advisories or exempted:
             print(f"{path}:")
             for name, weight, detail in flags:
                 marker = "HARD-FAIL" if weight >= HARD_FAIL_WEIGHT else "warn"
                 print(f"  [{marker}] {name} (w={weight}): {detail}")
             for name, _weight, detail in advisories:
                 print(f"  [advisory] {name}: {detail}")
+            for name, weight, detail in exempted:
+                print(f"  [exempt] {name} (w={weight}): {detail}")
         if hard_fail:
             exit_code = 1
     sys.exit(exit_code)
