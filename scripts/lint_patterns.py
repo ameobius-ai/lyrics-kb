@@ -737,7 +737,15 @@ if __name__ == "__main__":
 #     check_hypophora); a broader semantic "does this line answer the
 #     question" judgment is not, matching the same narrowing pattern as
 #     tech_metaphor above.
-#   - binary_light_dark / noun_stack / adj_pile / uniform_line_length:
+#   - uniform_line_length (§25.14, вес 1.0): measured against the corpus
+#     before shipping (syllable count approximated by vowel count). The
+#     variance < 1.5 rule fires on the LIVING эталоны G-01, G-02 and G-11
+#     (4-line fragments with even lines -- that is craft, not a tell), even
+#     at advisory weight. The AI signature is evenness sustained across a
+#     whole long text, so the rule needs long-form living texts to
+#     calibrate min_lines/threshold against -- parked until lyrics/
+#     coverage grows (started with the PRE lane, issue #14).
+#   - binary_light_dark / noun_stack / adj_pile:
 #     §30.2 gives closed lists or regexes for these too, but each carries a
 #     real false-positive risk on live text without more corpus evidence or
 #     tooling we don't have (e.g. binary_light_dark's own spec flags
