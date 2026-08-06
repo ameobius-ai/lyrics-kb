@@ -30,8 +30,11 @@ jobs:
 
       - name: Detector 2.0 mechanical lint - real lyrics (blocking, issue #14)
         run: |
+          # README.md excluded: it documents the format (incl. slop examples)
+          # and must not be swept itself. -r: never run the lint on zero
+          # files (an empty xargs would fall through to --self-test).
           if [ -d lyrics ]; then
-            find lyrics -name '*.md' -print0 | xargs -0 python3 scripts/lint_patterns.py
+            find lyrics -name '*.md' ! -name 'README.md' -print0 | xargs -0 -r python3 scripts/lint_patterns.py
           fi
 
       - name: Detector 2.0 mechanical lint - existing cases (advisory, non-blocking)
