@@ -355,6 +355,33 @@ def _rhyme_pair_hits(text, pairs):
 
 
 # ---------------------------------------------------------------------------
+# uniform_line_length (issue #4, 9th pass): §25.14 / §30.2, weight 1.0.
+# Parked in the 8th pass, calibrated here against the living texts in
+# lyrics/. Syllables are approximated by vowel count (a Russian syllable
+# carries one vowel).
+# Two narrowings vs the spec's bare "variance < 1.5", both measured, not
+# guessed:
+#   1. Fragment exemption (UNIFORM_MIN_LINES = 12): §25.14 was written for
+#      whole songs; the living corpus эталоны G-01, G-02, G-11 are 4-line
+#      fragments with even lines -- that is craft, not a tell (§2.3: разная
+#      длина строк is about long texts). Below 12 non-empty lines the check
+#      stays silent.
+#   2. Threshold tightened 1.5 -> 0.75: the living 16-line CW-002 in lyrics/
+#      measures ~1.3 vowel-count variance, so the spec's 1.5 would
+#      false-positive on living long-form texts. Below 0.75 only
+#      robot-uniform texts sit (G-31: variance 0). The 0.75-1.5 zone stays
+#      deliberately uncalibrated.
+# The spec's genre exemptions (genre != поппанк AND genre != mantra_refrain)
+# are not decidable from text alone; a conscious long mantra/refrain text
+# uses lint_exempt + lint_exempt_note (issue #14 mechanism) -- that is what
+# the mechanism is for.
+# ---------------------------------------------------------------------------
+_VOWELS = frozenset("аеёиоуыэюя")
+UNIFORM_MIN_LINES = 12
+UNIFORM_VARIANCE_THRESHOLD = 0.75
+
+
+# ---------------------------------------------------------------------------
 # Lyrics-file extraction + legal exemptions (issue #14): the blocking CI
 # sweep over lyrics/ lints ONLY the fenced block under a "## Текст" heading
 # -- card prose, front-matter and notes are not lyrics and must not be
@@ -524,6 +551,30 @@ def check_verb_rhyme(text):
     return [("verb_rhyme", 1.0, f"pair {a}/{b} at line ends") for a, b in hits]
 
 
+def check_uniform_line_length(text):
+    """§25.14 / §30.2 uniform_line_length, weight 1.0. Calibrated narrowings
+    (fragment exemption + tightened threshold) -- see the comment above
+    UNIFORM_MIN_LINES for the measurements behind both."""
+    counts = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped:
+            counts.append(sum(1 for ch in stripped.lower() if ch in _VOWELS))
+    if len(counts) < UNIFORM_MIN_LINES:
+        return []
+    mean = sum(counts) / len(counts)
+    if mean == 0:
+        return []
+    variance = sum((c - mean) ** 2 for c in counts) / len(counts)
+    if variance < UNIFORM_VARIANCE_THRESHOLD:
+        return [(
+            "uniform_line_length", 1.0,
+            f"{len(counts)} lines, syllable-count variance {variance:.2f} "
+            f"< {UNIFORM_VARIANCE_THRESHOLD}",
+        )]
+    return []
+
+
 # ---------------------------------------------------------------------------
 # parallel_shift_candidate (issue #3): mechanical *detector*, not a verdict.
 # Finds pairs of repeated multi-line blocks (e.g. two pre-chorus instances)
@@ -580,6 +631,7 @@ MECHANICAL_CHECKS = [
     check_hypophora,
     check_banal_rhyme,
     check_verb_rhyme,
+    check_uniform_line_length,
 ]
 
 ADVISORY_CHECKS = [check_parallel_shift_candidate]
@@ -647,7 +699,7 @@ IMPLEMENTED_FLAG_NAMES = {
     "kantselyarit", "genitive_metaphor", "em_dash_cascade", "triple_rhetoric",
     "genre_autopilot", "chorus_checklist", "marker_word", "organ_cliche",
     "not_x_but_y", "position_explanation", "truncation", "tech_metaphor",
-    "hypophora", "banal_rhyme", "verb_rhyme",
+    "hypophora", "banal_rhyme", "verb_rhyme", "uniform_line_length",
 }
 
 
@@ -737,14 +789,12 @@ if __name__ == "__main__":
 #     check_hypophora); a broader semantic "does this line answer the
 #     question" judgment is not, matching the same narrowing pattern as
 #     tech_metaphor above.
-#   - uniform_line_length (§25.14, вес 1.0): measured against the corpus
-#     before shipping (syllable count approximated by vowel count). The
-#     variance < 1.5 rule fires on the LIVING эталоны G-01, G-02 and G-11
-#     (4-line fragments with even lines -- that is craft, not a tell), even
-#     at advisory weight. The AI signature is evenness sustained across a
-#     whole long text, so the rule needs long-form living texts to
-#     calibrate min_lines/threshold against -- parked until lyrics/
-#     coverage grows (started with the PRE lane, issue #14).
+#   - uniform_line_length's spec genre exemptions (поппанк, mantra_refrain):
+#     the calibrated core IS linted (check_uniform_line_length: min_lines 12
+#     + vowel-variance threshold 0.75, both measured against the living
+#     texts in lyrics/); genre stays undecidable from text alone -- a
+#     conscious long mantra/refrain text uses lint_exempt + lint_exempt_note
+#     (the issue #14 mechanism), which is what the mechanism is for.
 #   - binary_light_dark / noun_stack / adj_pile:
 #     §30.2 gives closed lists or regexes for these too, but each carries a
 #     real false-positive risk on live text without more corpus evidence or
@@ -761,6 +811,8 @@ if __name__ == "__main__":
 #     hypophora (closed causal-connective set, matched only on the
 #     immediately adjacent physical line), banal_rhyme and verb_rhyme
 #     (closed pair lists, both members required in line-final rhyme
-#     position); each keeps the spec's flag name but documents its
-#     narrowing next to the pattern definition.
+#     position), uniform_line_length (fragment exemption + threshold
+#     tightened 1.5 -> 0.75, calibrated on the living long-form CW-002);
+#     each keeps the spec's flag name but documents its narrowing next to
+#     the pattern definition.
 # ---------------------------------------------------------------------------
