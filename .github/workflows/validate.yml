@@ -28,6 +28,15 @@ jobs:
       - name: Detector 2.0 mechanical lint - self-test (blocking regression gate)
         run: python3 scripts/lint_patterns.py --self-test
 
+      - name: Detector 2.0 mechanical lint - real lyrics (blocking, issue #14)
+        run: |
+          if [ -d lyrics ]; then
+            find lyrics -name '*.md' -print0 | xargs -0 python3 scripts/lint_patterns.py
+          fi
+
       - name: Detector 2.0 mechanical lint - existing cases (advisory, non-blocking)
         run: |
+          # Known toothless while cards hold no lyric text (issue #14); kept
+          # so card-level linting activates automatically if cards ever gain
+          # marked '## Текст' blocks (extract_lint_text handles them too).
           find cases -name '*.md' -print0 | xargs -0 python3 scripts/lint_patterns.py || true
