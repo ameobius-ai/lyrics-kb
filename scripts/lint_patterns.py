@@ -261,6 +261,31 @@ def _tech_metaphor_patterns():
 
 TECH_METAPHOR_RE = re.compile("|".join(_tech_metaphor_patterns()), re.IGNORECASE)
 
+# ---------------------------------------------------------------------------
+# hypophora (issue #4, 7th pass): §30.2 detector.constructions pattern
+# "line_ends_with_? AND next_line_answers", weight 1.5. The spec's own
+# definition of "next_line_answers" is semantic (does the following line
+# function as a reply to the question), which is exactly the kind of
+# judgment call this module avoids -- see the docstring and the pre-existing
+# backlog comment at the bottom of this file, which had hypophora on the
+# deferred list for that reason.
+# This pass narrows "answers" mechanically to the closed set of Russian
+# causal-answer connectives that can ONLY function as an answer opener --
+# "потому что", "оттого что", "затем что" -- there is no other syntactic
+# role these three phrases play at the start of a line. The match is
+# restricted to the immediate next physical line (no blank line in
+# between), so a question at the end of one stanza followed by an unrelated
+# new stanza does not fire.
+# "просто" was deliberately excluded even though it is the most common
+# informal AI-slop answer opener ("Почему? Просто устал.") because it is
+# also an ordinary sentence adverb with no answer-marking role at all
+# ("просто иду домой" as a fresh scene beat, not a reply) -- including it
+# would need the same semantic judgment this rule exists to avoid.
+# ---------------------------------------------------------------------------
+HYPOPHORA_ANSWER_RE = re.compile(
+    r"^\s*(?:потому\s+что|оттого\s+что|затем\s+что)\b", re.IGNORECASE
+)
+
 
 def check_denial_gap(text):
     """anti-patterns.md §B: denial construction legal <= 1 time per text."""
@@ -359,6 +384,23 @@ def check_tech_metaphor(text):
     return [("tech_metaphor", 2.0, f"{len(hits)}x")] if hits else []
 
 
+def check_hypophora(text):
+    """§30.2 detector construction hypophora, weight 1.5. Mechanical
+    narrowing of "next_line_answers" to a closed causal-connective set --
+    see the comment above HYPOPHORA_ANSWER_RE for why "просто" is excluded
+    and why the match requires the immediately adjacent physical line."""
+    lines = text.splitlines()
+    flags = []
+    for i in range(1, len(lines)):
+        prev_line = lines[i - 1].strip()
+        curr_line = lines[i].strip()
+        if prev_line.endswith("?") and HYPOPHORA_ANSWER_RE.match(curr_line):
+            flags.append(
+                ("hypophora", 1.5, f"line {i+1} answers question on line {i}: {curr_line!r}")
+            )
+    return flags
+
+
 # ---------------------------------------------------------------------------
 # parallel_shift_candidate (issue #3): mechanical *detector*, not a verdict.
 # Finds pairs of repeated multi-line blocks (e.g. two pre-chorus instances)
@@ -412,6 +454,7 @@ MECHANICAL_CHECKS = [
     check_position_explanation,
     check_truncation,
     check_tech_metaphor,
+    check_hypophora,
 ]
 
 ADVISORY_CHECKS = [check_parallel_shift_candidate]
@@ -466,6 +509,7 @@ IMPLEMENTED_FLAG_NAMES = {
     "kantselyarit", "genitive_metaphor", "em_dash_cascade", "triple_rhetoric",
     "genre_autopilot", "chorus_checklist", "marker_word", "organ_cliche",
     "not_x_but_y", "position_explanation", "truncation", "tech_metaphor",
+    "hypophora",
 }
 
 
@@ -545,10 +589,12 @@ if __name__ == "__main__":
 #     linted (see check_tech_metaphor); only this semantic carve-out is not,
 #     and it is largely moot because every alternative already requires an
 #     emotion noun next to the tech word.
-#   - parallel_no_shift final verdict: this script only *detects candidates*
-#     (see check_parallel_shift_candidate); the shift-vs-filler call in
-#     §25.27 stays a human/model REPAIR-review step.
-#   - hypophora / binary_light_dark / noun_stack / adj_pile / verb_rhyme /
+#   - hypophora's spec EXCEPTION (any line after a question that reads as an
+#     answer): the closed causal-connective subset IS linted (see
+#     check_hypophora); a broader semantic "does this line answer the
+#     question" judgment is not, matching the same narrowing pattern as
+#     tech_metaphor above.
+#   - binary_light_dark / noun_stack / adj_pile / verb_rhyme /
 #     uniform_line_length: §30.2 gives closed lists or regexes for these
 #     too, but each carries a real false-positive risk on live text without
 #     more corpus evidence or tooling we don't have (e.g. binary_light_dark's
@@ -559,8 +605,9 @@ if __name__ == "__main__":
 #     its own golden-corpus TP/FP pair per §0 protocol.
 #     Promoted out of this list so far: not_x_but_y (narrowed to the literal
 #     redundant-copula formula), position_explanation (closed phrase list),
-#     truncation (closed marker list only, omission judgment excluded) and
-#     tech_metaphor (closed regex list with a bounded same-line gap); each
-#     keeps the spec's flag name but documents its narrowing next to the
-#     pattern definition.
+#     truncation (closed marker list only, omission judgment excluded),
+#     tech_metaphor (closed regex list with a bounded same-line gap) and
+#     hypophora (closed causal-connective set, matched only on the
+#     immediately adjacent physical line); each keeps the spec's flag name
+#     but documents its narrowing next to the pattern definition.
 # ---------------------------------------------------------------------------
