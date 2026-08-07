@@ -23,6 +23,24 @@ REQUIRED_CASE_FIELDS = ["id:", "status:"]
 # Required front-matter fields in each lyrics file (see lyrics/README.md)
 REQUIRED_LYRICS_FIELDS = ["id:", "title:", "case:"]
 
+
+def check_orphaned_cases():
+    """Check for case files in cases/ that are not registered in index.json."""
+    with open(os.path.join(KB_DIR, "index.json"), "r", encoding="utf-8") as f:
+        idx = json.load(f)
+    indexed_files = {e.get("file") for e in idx.get("entries", []) if e.get("file")}
+    orphans = []
+    
+    cases_dir = os.path.join(KB_DIR, "cases")
+    if os.path.isdir(cases_dir):
+        for fname in os.listdir(cases_dir):
+            if fname.endswith(".md"):
+                rel_path = f"cases/{fname}"
+                if rel_path not in indexed_files:
+                    orphans.append(rel_path)
+    
+    return orphans
+
 def main():
     errors = []
 
@@ -121,6 +139,11 @@ def main():
                     errors.append(f"lyrics {fname}: case link target missing: {m.group(1)}")
 
     # Report
+    # Check for orphaned case files (should cause CI failure)
+    orphans = check_orphaned_cases()
+    if orphans:
+        errors.append(f"{len(orphans)} orphaned case files not registered in index.json")
+
     if errors:
         print(f"FAIL: {len(errors)} errors")
         for e in errors:
@@ -142,7 +165,7 @@ def main():
         print(f"  packages: {pkg_count}")
         print(f"  cases: {case_count}")
         print(f"  lyrics: {lyrics_count}")
-        sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
