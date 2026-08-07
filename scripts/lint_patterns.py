@@ -668,6 +668,17 @@ except ImportError:
 
 _POS_WORD_RE = re.compile(r"[А-Яа-яЁё]+")
 
+# --pos-trace (CLI): append the pymorphy3 token:POS sequence of each hit line
+# to the advisory detail -- for FP analysis without local access to the
+# analyser (see issue #31 and the PR #37/#38 measurement comments).
+_POS_TRACE = False
+
+
+def _pos_trace_detail(line):
+    return " ".join(
+        f"{word}:{_MORPH.parse(word)[0].tag.POS}" for word in _POS_WORD_RE.findall(line)
+    )
+
 
 def _pos_max_run(line, pos_names):
     """Longest run of consecutive tokens whose pymorphy3 POS is in pos_names."""
@@ -691,7 +702,7 @@ def check_noun_stack(text):
     if _MORPH is None:
         return []
     return [
-        ("noun_stack", 0.0, f"line {i}: 3+ consecutive nouns")
+        ("noun_stack", 0.0, f"line {i}: 3+ consecutive nouns" + (f" [{_pos_trace_detail(line)}]" if _POS_TRACE else ""))
         for i, line in enumerate(text.splitlines(), 1)
         if _pos_max_run(line, {"NOUN"}) >= 3
     ]
@@ -703,7 +714,7 @@ def check_adj_pile(text):
     if _MORPH is None:
         return []
     return [
-        ("adj_pile", 0.0, f"line {i}: 3+ consecutive adjectives")
+        ("adj_pile", 0.0, f"line {i}: 3+ consecutive adjectives" + (f" [{_pos_trace_detail(line)}]" if _POS_TRACE else ""))
         for i, line in enumerate(text.splitlines(), 1)
         if _pos_max_run(line, {"ADJF"}) >= 3
     ]
@@ -839,7 +850,11 @@ def self_test():
 
 
 def main():
+    global _POS_TRACE
     args = sys.argv[1:]
+    if "--pos-trace" in args:
+        _POS_TRACE = True
+        args = [a for a in args if a != "--pos-trace"]
     if not args or args == ["--self-test"]:
         sys.exit(self_test())
 
