@@ -647,6 +647,68 @@ def check_parallel_shift_candidate(text, block_lines=2, min_len=8):
     return flags
 
 
+# ---------------------------------------------------------------------------
+# Optional POS layer (issue #31): pymorphy3-based advisory checks for the two
+# parked §30.2 flags noun_stack (3+ consecutive nouns in a line) and adj_pile
+# (3+ consecutive adjectives in a line). Ending-based heuristics were evaluated
+# and rejected (FP storm: «животное», «столовая» -- see #23), so the layer sits
+# on a real morphological analyser.
+# Strictly advisory: both checks report on the advisory channel with weight 0.0
+# and never affect the exit code. Strictly optional: without pymorphy3 they
+# silently no-op, so self-test and the blocking sweep are byte-identical to the
+# pre-POS behaviour. Narrowing vs the spec's "без глагола": ANY non-noun token
+# breaks the noun run (conservative -- fewer FPs). Tokens are Cyrillic words;
+# POS is pymorphy3's first parse.
+# ---------------------------------------------------------------------------
+try:
+    import pymorphy3
+    _MORPH = pymorphy3.MorphAnalyzer()
+except ImportError:
+    _MORPH = None
+
+_POS_WORD_RE = re.compile(r"[А-Яа-яЁё]+")
+
+
+def _pos_max_run(line, pos_names):
+    """Longest run of consecutive tokens whose pymorphy3 POS is in pos_names."""
+    if _MORPH is None:
+        return 0
+    best = run = 0
+    for word in _POS_WORD_RE.findall(line):
+        tag = _MORPH.parse(word)[0].tag.POS
+        if tag in pos_names:
+            run += 1
+            if run > best:
+                best = run
+        else:
+            run = 0
+    return best
+
+
+def check_noun_stack(text):
+    """§30.2 noun_stack, advisory only (weight 0.0): 3+ consecutive nouns in a
+    line. No-op without pymorphy3 -- see the comment above _MORPH."""
+    if _MORPH is None:
+        return []
+    return [
+        ("noun_stack", 0.0, f"line {i}: 3+ consecutive nouns")
+        for i, line in enumerate(text.splitlines(), 1)
+        if _pos_max_run(line, {"NOUN"}) >= 3
+    ]
+
+
+def check_adj_pile(text):
+    """§30.2 adj_pile, advisory only (weight 0.0): 3+ consecutive adjectives in
+    a line. No-op without pymorphy3 -- see the comment above _MORPH."""
+    if _MORPH is None:
+        return []
+    return [
+        ("adj_pile", 0.0, f"line {i}: 3+ consecutive adjectives")
+        for i, line in enumerate(text.splitlines(), 1)
+        if _pos_max_run(line, {"ADJF"}) >= 3
+    ]
+
+
 MECHANICAL_CHECKS = [
     check_denial_gap,
     check_em_dash_cascade,
@@ -668,7 +730,11 @@ MECHANICAL_CHECKS = [
     check_simile_chain,
 ]
 
-ADVISORY_CHECKS = [check_parallel_shift_candidate]
+ADVISORY_CHECKS = [
+    check_parallel_shift_candidate,
+    check_noun_stack,
+    check_adj_pile,
+]
 
 HARD_FAIL_WEIGHT = 2.0
 
