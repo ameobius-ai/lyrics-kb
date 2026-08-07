@@ -745,7 +745,7 @@ ADVISORY_CHECKS = [
     check_parallel_shift_candidate,
     check_noun_stack,
     check_adj_pile,
-]
+    check_school_arc,\n]
 
 HARD_FAIL_WEIGHT = 2.0
 
@@ -812,7 +812,7 @@ IMPLEMENTED_FLAG_NAMES = {
     "not_x_but_y", "position_explanation", "truncation", "tech_metaphor",
     "hypophora", "banal_rhyme", "verb_rhyme", "uniform_line_length",
     "simile_chain",
-}
+    "school_arc",\n}
 
 
 def self_test():
@@ -847,6 +847,97 @@ def self_test():
     print(f"SELF-TEST OK: {len(cases)} golden-corpus cases match on implemented flags "
           f"({', '.join(sorted(IMPLEMENTED_FLAG_NAMES))})")
     return 0
+
+
+
+# ---------------------------------------------------------------------------
+# school_arc (issue #23, #47): section 25.23 "shkolnaya arka", weight 1.0.
+# Detects exposition-verse + moral-finale structure typical of school essays
+# and AI-generated texts.
+# PATTERN: verse 1 = introduction/exposition AND finale = conclusion/moral
+# FIX: section 26.22 - start in medias res, end with action not moral
+# This is a mechanical narrowing of the semantic judgment: we only flag when
+# BOTH explicit exposition markers AND explicit moral markers are present.
+# A text with moral but no exposition (or vice versa) does not fire.
+# ---------------------------------------------------------------------------
+
+SCHOOL_ARC_MORAL_PHRASES = [
+    r"и\s+тогда\s+я\s+понял",
+    r"теперь\s+я\s+знаю",
+    r"я\s+осознал",
+    r"я\s+понял",
+    r"наконец\s+я\s+понял",
+    r"в\s+итоге\s+я\s+понял",
+    r"и\s+вот\s+что\s+я\s+понял",
+    r"мораль\s+такова",
+    r"вывод\s+прост",
+    r"жизнь\s+одна",
+    r"жизнь\s+коротка",
+    r"время\s+лечит",
+    r"всё\s+пройдёт",
+]
+SCHOOL_ARC_MORAL_RE = re.compile("|".join(SCHOOL_ARC_MORAL_PHRASES), re.IGNORECASE)
+
+SCHOOL_ARC_EXPOSITION_PHRASES = [
+    r"когда-то\s+давно",
+    r"в\s+начале",
+    r"сначала\s+было",
+    r"однажды",
+    r"было\s+время",
+    r"помню\s+как",
+    r"когда\s+я\s+был",
+    r"в\s+детстве",
+    r"раньше\s+было",
+    r"когда-то\s+было",
+]
+SCHOOL_ARC_EXPOSITION_RE = re.compile("|".join(SCHOOL_ARC_EXPOSITION_PHRASES), re.IGNORECASE)
+
+
+def check_school_arc(text):
+    """Detect school essay structure: exposition verse + moral finale.
+    
+    Section 25.23: verse 1 = introduction/exposition AND finale = conclusion/moral.
+    Examples:
+      BAD: "kogda-to davno..." + "i togda ya ponyal, chto zhizn odna"
+      FIX: "avtobus ushel. ya ostalsya stoyat"
+    
+    Mechanical narrowing: flag only when BOTH exposition patterns (first 2-3
+    lines) AND moral patterns (last 2-3 lines) are explicitly present.
+    Weight 1.0 (advisory).
+    """
+    lines = [line.strip() for line in text.split("\n") if line.strip()]
+    
+    if len(lines) < 6:
+        # Too short for meaningful structure analysis
+        return []
+    
+    # Check first 2-3 lines for exposition patterns
+    intro_lines = lines[:3]
+    has_exposition = any(SCHOOL_ARC_EXPOSITION_RE.search(line) for line in intro_lines)
+    
+    # Check last 2-3 lines for moral patterns
+    finale_lines = lines[-3:]
+    moral_matches = []
+    for line in finale_lines:
+        match = SCHOOL_ARC_MORAL_RE.search(line)
+        if match:
+            moral_matches.append((line, match.group()))
+    
+    has_moral = len(moral_matches) > 0
+    
+    # Flag if both exposition and moral present
+    if has_exposition and has_moral:
+        flags = []
+        for line, phrase in moral_matches:
+            line_num = lines.index(line) + 1
+            flags.append((
+                "school_arc",
+                1.0,
+                f"exposition + moral structure: '{phrase}' at line {line_num}",
+            ))
+        return flags
+    
+    return []
 
 
 def main():
