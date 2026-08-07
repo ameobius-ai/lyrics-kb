@@ -56,8 +56,10 @@ jobs:
         run: |
           pip show pymorphy3 >/dev/null 2>&1 || { echo "pymorphy3 unavailable, POS layer skipped"; exit 0; }
           VER=$(pip show pymorphy3 | awk '/^Version:/{print $2}')
-          OUT=$(find lyrics -name '*.md' ! -name 'README.md' -print0 | xargs -0 -r python3 scripts/lint_patterns.py 2>&1 | grep -E 'noun_stack|adj_pile' || true)
-          BODY=$(printf '### POS advisory (pymorphy3 %s, issue #31)\n\nnoun_stack/adj_pile hits on lyrics/:\n\n```\n%s\n```\n\nAdvisory only (weight 0.0) — never blocks the build. Weights come only after a G-pair and a zero-FP live measurement per the §0 protocol.' "$VER" "${OUT:-<no hits>}")
+          # Full lint output, no grep: only files with flags/advisories/exempts
+          # print anything, so the POS hits stay attributed to their files.
+          OUT=$(find lyrics -name '*.md' ! -name 'README.md' -print0 | xargs -0 -r python3 scripts/lint_patterns.py 2>&1 || true)
+          BODY=$(printf '### POS advisory (pymorphy3 %s, issue #31)\n\nLint output on lyrics/ (advisory/exempt lines, attributed):\n\n```\n%s\n```\n\nAdvisory only (weight 0.0) — never blocks the build. Weights come only after a G-pair and a zero-FP live measurement per the §0 protocol.' "$VER" "${OUT:-<no hits>}")
           echo "$BODY" >> "$GITHUB_STEP_SUMMARY"
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             gh pr comment "${{ github.event.pull_request.number }}" --body "$BODY" || true
