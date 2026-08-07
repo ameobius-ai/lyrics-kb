@@ -334,7 +334,7 @@
 | G-06 | chorus_checklist | hard-fail |
 | G-07 | kantselyarit ×2, perfect_grammar | SLOP |
 | G-08 | school_arc | подозрение |
-| G-09 | genre_autopilot ×3 | SLOP | SLOP |
+| G-09 | genre_autopilot ×3 | SLOP |
 | G-10 | — (white-list 25.27) | живое |
 | G-11 | — (white-list 25.27) | живое |
 | G-12 | vague_deixis ×2 | подозрение |
