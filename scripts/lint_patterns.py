@@ -878,11 +878,136 @@ def check_sentiment_flatline(text):
 
 
 
+# ---------------------------------------------------------------------------
+# school_arc (issue #23, #51): section 25.23, weight 1.0.
+# Detects school essay structure: exposition + moral.
+# Conservative implementation with explicit markers only.
+# G-08 has only 4 non-empty lines, so minimum is 4 (not 6).
+# ---------------------------------------------------------------------------
+
+EXPOSITION_MARKERS = [
+    r'я расскажу вам',
+    r'это история о',
+    r'однажды',
+    r'когда-то давно',
+    r'я хочу рассказать',
+    r'позвольте представить',
+    r'давайте я расскажу',
+    r'сейчас расскажу'
+]
+EXPOSITION_RE = re.compile('|'.join(EXPOSITION_MARKERS), re.IGNORECASE)
+
+MORAL_MARKERS = [
+    r'и тогда я понял',
+    r'мораль такова',
+    r'вывод прост',
+    r'главное —',
+    r'теперь я знаю',
+    r'я осознал',
+    r'я понял что',
+    r'так я понял'
+]
+MORAL_RE = re.compile('|'.join(MORAL_MARKERS), re.IGNORECASE)
+
+
+def check_school_arc(text):
+    """Detect school essay structure: exposition + moral.
+    
+    Conservative implementation (issue #51 retry):
+    1. Minimum 4 non-empty lines (G-08 has 4)
+    2. Exposition marker in first 2 lines
+    3. Moral marker in last 2 lines
+    4. Requires BOTH conditions
+    
+    Weight: 1.0 (advisory)
+    """
+    lines_list = [line.strip() for line in text.split('\n') if line.strip()]
+    
+    if len(lines_list) < 4:
+        return []
+    
+    first_lines = '\n'.join(lines_list[:2])
+    has_exposition = bool(EXPOSITION_RE.search(first_lines))
+    
+    last_lines = '\n'.join(lines_list[-2:])
+    has_moral = bool(MORAL_RE.search(last_lines))
+    
+    if has_exposition and has_moral:
+        return [(
+            "school_arc",
+            1.0,
+            f"школьная арка: экспозиция + мораль"
+        )]
+    
+    return []
+
+
+# ---------------------------------------------------------------------------
+# binary_light_dark (issue #23): section 25.4, weight 1.5.
+# Conservative: word boundaries, min 3 words, contrast required.
+# ---------------------------------------------------------------------------
+
+BINARY_LIGHT_PATTERNS = [
+    r'\bсвет\b', r'\bсиян\w*', r'\bярк\w*',
+    r'\bлуч\b', r'\bсолнц\w*', r'\bрассвет\w*',
+    r'\bутро\b', r'\bдень\b'
+]
+
+BINARY_DARK_PATTERNS = [
+    r'\bтьм\w*', r'\bмрак\w*', r'\bтемн\w*',
+    r'\bночь\b', r'\bсумер\w*', r'\bтень\b',
+    r'\bчёрн\w*', r'\bчерн\w*'
+]
+
+BINARY_LIGHT_RE = re.compile('|'.join(BINARY_LIGHT_PATTERNS), re.IGNORECASE)
+BINARY_DARK_RE = re.compile('|'.join(BINARY_DARK_PATTERNS), re.IGNORECASE)
+
+
+def check_binary_light_dark(text):
+    """Detect binary light/dark opposition as central theme.
+    Weight: 1.5 (advisory)
+    """
+    light_count = len(BINARY_LIGHT_RE.findall(text))
+    dark_count = len(BINARY_DARK_RE.findall(text))
+    total = light_count + dark_count
+    
+    if total < 3:
+        return []
+    
+    if light_count == 0 or dark_count == 0:
+        return []
+    
+    has_contrast = False
+    
+    if re.search(r'между.*(?:свет|тьм|мрак|темн).*и.*(?:свет|тьм|мрак|темн)', 
+                 text, re.IGNORECASE):
+        has_contrast = True
+    
+    if re.search(r'из.*(?:тьм|мрак|темн).*в.*(?:свет|сиян)', 
+                 text, re.IGNORECASE):
+        has_contrast = True
+    
+    if total >= 5:
+        has_contrast = True
+    
+    if has_contrast:
+        return [(
+            "binary_light_dark",
+            1.5,
+            f"оппозиция свет/тьма: {light_count} слов света, {dark_count} слов тьмы"
+        )]
+    
+    return []
+
+
+
 ADVISORY_CHECKS = [
     check_parallel_shift_candidate,
     check_noun_stack,
     check_adj_pile,
     check_sentiment_flatline,
+    check_binary_light_dark,
+    check_school_arc,
 ]
 
 HARD_FAIL_WEIGHT = 2.0
@@ -951,6 +1076,13 @@ IMPLEMENTED_FLAG_NAMES = {
     "hypophora", "banal_rhyme", "verb_rhyme", "uniform_line_length",
     "simile_chain",
     "sentiment_flatline",
+    "vague_deixis",
+    "binary_light_dark",
+    "school_arc",
+    "denial_gap",
+    "noun_stack",
+    "adj_pile",
+    "parallel_shift_candidate",
 }
 
 
