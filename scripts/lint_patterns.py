@@ -745,7 +745,7 @@ ADVISORY_CHECKS = [
     check_parallel_shift_candidate,
     check_noun_stack,
     check_adj_pile,
-    check_school_arc,\n]
+]
 
 HARD_FAIL_WEIGHT = 2.0
 
@@ -812,7 +812,7 @@ IMPLEMENTED_FLAG_NAMES = {
     "not_x_but_y", "position_explanation", "truncation", "tech_metaphor",
     "hypophora", "banal_rhyme", "verb_rhyme", "uniform_line_length",
     "simile_chain",
-    "school_arc",\n}
+}
 
 
 def self_test():
