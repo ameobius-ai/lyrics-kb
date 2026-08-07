@@ -741,10 +741,81 @@ MECHANICAL_CHECKS = [
     check_simile_chain,
 ]
 
+# ---------------------------------------------------------------------------
+# binary_light_dark (issue #23, #58): section 25.4, weight 1.5.
+# Detects binary light/dark opposition as central thematic frame.
+# Conservative implementation to minimize false positives:
+# 1. Word boundaries only (no substring matches like "лучше" containing "луч")
+# 2. Minimum 3 total light/dark words
+# 3. Requires contrastive structure OR 5+ total words
+#
+# False positives eliminated:
+# - CW-009: literal "дневной свет" (lamp light) + "тень на обоях" (shadow)
+# - CW-006: morphological "лучше" (better) contains "луч" (light)
+# ---------------------------------------------------------------------------
+
+BINARY_LIGHT_PATTERNS = [
+    r'\bсвет\b', r'\bсиян\w*', r'\bярк\w*',
+    r'\bлуч\b', r'\bсолнц\w*', r'\bрассвет\w*',
+    r'\bутро\b', r'\bдень\b'
+]
+
+BINARY_DARK_PATTERNS = [
+    r'\bтьм\w*', r'\bмрак\w*', r'\bтемн\w*',
+    r'\bночь\b', r'\bсумер\w*', r'\bтень\b',
+    r'\bчёрн\w*', r'\bчерн\w*'
+]
+
+BINARY_LIGHT_RE = re.compile('|'.join(BINARY_LIGHT_PATTERNS), re.IGNORECASE)
+BINARY_DARK_RE = re.compile('|'.join(BINARY_DARK_PATTERNS), re.IGNORECASE)
+
+
+def check_binary_light_dark(text):
+    """Detect binary light/dark opposition as central thematic frame.
+    
+    Section 25.4: light/dark words forming central theme.
+    Conservative algorithm: word boundaries, min 3 words, requires contrast.
+    Weight: 1.5 (advisory)
+    """
+    light_count = len(BINARY_LIGHT_RE.findall(text))
+    dark_count = len(BINARY_DARK_RE.findall(text))
+    total = light_count + dark_count
+    
+    if total < 3:
+        return []
+    
+    if light_count == 0 or dark_count == 0:
+        return []
+    
+    has_contrast = False
+    
+    if re.search(r'между.*(?:свет|тьм|мрак|темн).*и.*(?:свет|тьм|мрак|темн)', 
+                 text, re.IGNORECASE):
+        has_contrast = True
+    
+    if re.search(r'из.*(?:тьм|мрак|темн).*в.*(?:свет|сиян)', 
+                 text, re.IGNORECASE):
+        has_contrast = True
+    
+    if total >= 5:
+        has_contrast = True
+    
+    if has_contrast:
+        return [(
+            "binary_light_dark",
+            1.5,
+            f"оппозиция свет/тьма: {light_count} слов света, {dark_count} слов тьмы"
+        )]
+    
+    return []
+
+
+
 ADVISORY_CHECKS = [
     check_parallel_shift_candidate,
     check_noun_stack,
     check_adj_pile,
+    check_binary_light_dark,
 ]
 
 HARD_FAIL_WEIGHT = 2.0
@@ -812,6 +883,7 @@ IMPLEMENTED_FLAG_NAMES = {
     "not_x_but_y", "position_explanation", "truncation", "tech_metaphor",
     "hypophora", "banal_rhyme", "verb_rhyme", "uniform_line_length",
     "simile_chain",
+    "binary_light_dark",
 }
 
 
