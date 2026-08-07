@@ -139,6 +139,11 @@ def main():
                     errors.append(f"lyrics {fname}: case link target missing: {m.group(1)}")
 
     # Report
+    # Check for orphaned case files (should cause CI failure)
+    orphans = check_orphaned_cases()
+    if orphans:
+        errors.append(f"{len(orphans)} orphaned case files not registered in index.json")
+
     if errors:
         print(f"FAIL: {len(errors)} errors")
         for e in errors:
@@ -161,16 +166,6 @@ def main():
         print(f"  cases: {case_count}")
         print(f"  lyrics: {lyrics_count}")
 
-        # Check for orphaned case files
-        orphans = check_orphaned_cases()
-        if orphans:
-            print(f"  WARNING: {len(orphans)} orphaned case files not in index.json:")
-            for o in sorted(orphans)[:5]:
-                print(f"    {o}")
-            if len(orphans) > 5:
-                print(f"    ... and {len(orphans)-5} more")
-
-                sys.exit(0)
 
 if __name__ == "__main__":
     main()
