@@ -741,10 +741,148 @@ MECHANICAL_CHECKS = [
     check_simile_chain,
 ]
 
+
+# ---------------------------------------------------------------------------
+# sentiment_flatline (issue #23, #53): section 25.21, weight 1.0.
+# Detects uniformly elevated tone without sharp/dirty words, concrete details,
+# or repetition patterns. Refined specification after validation found 3 false
+# positives in living texts (CW-010, MC-003, PRE-009).
+#
+# Detection criteria:
+# 1. Minimum 12 non-empty lines (matching uniform_line_length)
+# 2. No sharp/dirty words (colloquial, harsh, rough verbs)
+# 3. No concrete details (numbers, proper names, technical terms)
+# 4. No repetition patterns (same line repeated 3 or more times)
+#
+# All four conditions must be met to flag. This avoids false positives on:
+# - Mantra/chant structures (CW-010)
+# - Concrete narratives (MC-003)
+# - Technical/professional texts (PRE-009)
+# ---------------------------------------------------------------------------
+
+SENTIMENT_FLATLINE_MIN_LINES = 12
+
+# Sharp/dirty words that break elevated tone
+SHARP_WORDS_PATTERNS = [
+    # Colloquial/Harsh
+    r'бля\w*', r'сука', r'хуй\w*', r'пизд\w*', r'чёрт\w*', r'блин',
+    # Physical/Concrete harsh
+    r'ржав\w*', r'гнил\w*', r'гряз\w*', r'вон\w*', r'потн\w*',
+    r'кров\w*', r'мясн\w*', r'рван\w*', r'бит\w*', r'кол\w*',
+    r'резк\w*', r'груб\w*', r'жёстк\w*',
+    # Negative emotion
+    r'зл\w*', r'ярос\w*', r'бешен\w*', r'агресси\w*',
+    # Rough action verbs
+    r'рв\w*', r'бь\w*', r'кол\w*', r'реж\w*', r'грыз\w*', r'дав\w*',
+]
+SHARP_WORD_RE = re.compile('|'.join(SHARP_WORDS_PATTERNS), re.IGNORECASE)
+
+# Concrete detail indicators
+CONCRETE_INDICATORS = [
+    # Numbers (digits and words)
+    r'\d+',
+    r'(один|два|три|четыре|пять|шесть|семь|восемь|девять|десять|сто|тысяч\w*)',
+    # Technical/professional terms
+    r'пульт\w*', r'лампочк\w*', r'таксопарк\w*', r'диспетчер\w*',
+    r'бармен\w*', r'охранник\w*', r'таксист\w*', r'касс\w*',
+    r'пикап\w*', r'гараж\w*', r'маршрутк\w*', r'кондуктор\w*',
+]
+CONCRETE_RE = re.compile('|'.join(CONCRETE_INDICATORS), re.IGNORECASE)
+
+# Proper names (capitalized words not at sentence start)
+PROPER_NAME_RE = re.compile(r'(?<![.!?]\s)[А-Я][а-я]{2,}', re.UNICODE)
+
+
+def _has_sharp_words(text):
+    """Check if text contains sharp/dirty/rough words."""
+    return bool(SHARP_WORD_RE.search(text))
+
+
+def _has_concrete_details(text):
+    """Check if text has concrete details (numbers, names, technical terms).
+    
+    Threshold: 3 or more concrete indicators total.
+    """
+    # Count concrete indicators
+    concrete_count = len(CONCRETE_RE.findall(text))
+    
+    # Count proper names (excluding sentence-initial capitals)
+    lines = text.split('\n')
+    for line in lines:
+        # Skip sentence-initial capitals
+        words = line.split()
+        for i, word in enumerate(words):
+            if i > 0 and PROPER_NAME_RE.match(word):
+                concrete_count += 1
+    
+    return concrete_count >= 3
+
+
+def _has_repetition(text):
+    """Check if text has repetition patterns (same line repeated 3 or more times).
+    
+    Excludes empty lines and very short lines (less than 10 chars).
+    """
+    lines = [line.strip() for line in text.split('\n') if line.strip() and len(line.strip()) >= 10]
+    
+    # Count line occurrences
+    line_counts = {}
+    for line in lines:
+        line_counts[line] = line_counts.get(line, 0) + 1
+    
+    # Flag if any line repeats 3 or more times
+    return any(count >= 3 for count in line_counts.values())
+
+
+def check_sentiment_flatline(text):
+    """Detect uniformly elevated tone without grounding or variation.
+    
+    Section 25.21: "ни одного резкого/грязного слова, тон ровно-возвышенный"
+    
+    Refined algorithm (issue #53):
+    1. Require minimum 12 non-empty lines
+    2. Check for sharp/dirty words
+    3. Check for concrete details (numbers, names, technical terms)
+    4. Check for repetition patterns (mantra/chant)
+    
+    Only flags if ALL conditions met:
+    - No sharp words
+    - No concrete details (less than 3 indicators)
+    - No repetition (no line repeated 3 or more times)
+    
+    Weight 1.0 (advisory).
+    """
+    lines = [line.strip() for line in text.split('\n') if line.strip()]
+    
+    if len(lines) < SENTIMENT_FLATLINE_MIN_LINES:
+        return []  # Too short
+    
+    # Check for sharp/dirty words
+    if _has_sharp_words(text):
+        return []  # Has roughness
+    
+    # Check for concrete details
+    if _has_concrete_details(text):
+        return []  # Grounded in reality
+    
+    # Check for repetition (mantra/chant)
+    if _has_repetition(text):
+        return []  # Conscious repetition device
+    
+    # All conditions met - flag it
+    return [(
+        "sentiment_flatline",
+        1.0,
+        f"{len(lines)} lines: no sharp words, no concrete details, no repetition - uniformly elevated tone"
+    )]
+
+
+
 ADVISORY_CHECKS = [
     check_parallel_shift_candidate,
     check_noun_stack,
     check_adj_pile,
+    check_sentiment_flatline,
 ]
 
 HARD_FAIL_WEIGHT = 2.0
@@ -812,6 +950,7 @@ IMPLEMENTED_FLAG_NAMES = {
     "not_x_but_y", "position_explanation", "truncation", "tech_metaphor",
     "hypophora", "banal_rhyme", "verb_rhyme", "uniform_line_length",
     "simile_chain",
+    "sentiment_flatline",
 }
 
 
