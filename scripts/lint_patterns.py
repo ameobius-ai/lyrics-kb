@@ -741,73 +741,140 @@ MECHANICAL_CHECKS = [
     check_simile_chain,
 ]
 
+
 # ---------------------------------------------------------------------------
-# binary_light_dark (issue #23, #58): section 25.4, weight 1.5.
-# Detects binary light/dark opposition as central thematic frame.
-# Conservative implementation to minimize false positives:
-# 1. Word boundaries only (no substring matches like "лучше" containing "луч")
-# 2. Minimum 3 total light/dark words
-# 3. Requires contrastive structure OR 5+ total words
+# sentiment_flatline (issue #23, #53): section 25.21, weight 1.0.
+# Detects uniformly elevated tone without sharp/dirty words, concrete details,
+# or repetition patterns. Refined specification after validation found 3 false
+# positives in living texts (CW-010, MC-003, PRE-009).
 #
-# False positives eliminated:
-# - CW-009: literal "дневной свет" (lamp light) + "тень на обоях" (shadow)
-# - CW-006: morphological "лучше" (better) contains "луч" (light)
+# Detection criteria:
+# 1. Minimum 12 non-empty lines (matching uniform_line_length)
+# 2. No sharp/dirty words (colloquial, harsh, rough verbs)
+# 3. No concrete details (numbers, proper names, technical terms)
+# 4. No repetition patterns (same line repeated 3 or more times)
+#
+# All four conditions must be met to flag. This avoids false positives on:
+# - Mantra/chant structures (CW-010)
+# - Concrete narratives (MC-003)
+# - Technical/professional texts (PRE-009)
 # ---------------------------------------------------------------------------
 
-BINARY_LIGHT_PATTERNS = [
-    r'\bсвет\b', r'\bсиян\w*', r'\bярк\w*',
-    r'\bлуч\b', r'\bсолнц\w*', r'\bрассвет\w*',
-    r'\bутро\b', r'\bдень\b'
+SENTIMENT_FLATLINE_MIN_LINES = 12
+
+# Sharp/dirty words that break elevated tone
+SHARP_WORDS_PATTERNS = [
+    # Colloquial/Harsh
+    r'бля\w*', r'сука', r'хуй\w*', r'пизд\w*', r'чёрт\w*', r'блин',
+    # Physical/Concrete harsh
+    r'ржав\w*', r'гнил\w*', r'гряз\w*', r'вон\w*', r'потн\w*',
+    r'кров\w*', r'мясн\w*', r'рван\w*', r'бит\w*', r'кол\w*',
+    r'резк\w*', r'груб\w*', r'жёстк\w*',
+    # Negative emotion
+    r'зл\w*', r'ярос\w*', r'бешен\w*', r'агресси\w*',
+    # Rough action verbs
+    r'рв\w*', r'бь\w*', r'кол\w*', r'реж\w*', r'грыз\w*', r'дав\w*',
 ]
+SHARP_WORD_RE = re.compile('|'.join(SHARP_WORDS_PATTERNS), re.IGNORECASE)
 
-BINARY_DARK_PATTERNS = [
-    r'\bтьм\w*', r'\bмрак\w*', r'\bтемн\w*',
-    r'\bночь\b', r'\bсумер\w*', r'\bтень\b',
-    r'\bчёрн\w*', r'\bчерн\w*'
+# Concrete detail indicators
+CONCRETE_INDICATORS = [
+    # Numbers (digits and words)
+    r'\d+',
+    r'(один|два|три|четыре|пять|шесть|семь|восемь|девять|десять|сто|тысяч\w*)',
+    # Technical/professional terms
+    r'пульт\w*', r'лампочк\w*', r'таксопарк\w*', r'диспетчер\w*',
+    r'бармен\w*', r'охранник\w*', r'таксист\w*', r'касс\w*',
+    r'пикап\w*', r'гараж\w*', r'маршрутк\w*', r'кондуктор\w*',
 ]
+CONCRETE_RE = re.compile('|'.join(CONCRETE_INDICATORS), re.IGNORECASE)
 
-BINARY_LIGHT_RE = re.compile('|'.join(BINARY_LIGHT_PATTERNS), re.IGNORECASE)
-BINARY_DARK_RE = re.compile('|'.join(BINARY_DARK_PATTERNS), re.IGNORECASE)
+# Proper names (capitalized words not at sentence start)
+PROPER_NAME_RE = re.compile(r'(?<![.!?]\s)[А-Я][а-я]{2,}', re.UNICODE)
 
 
-def check_binary_light_dark(text):
-    """Detect binary light/dark opposition as central thematic frame.
+def _has_sharp_words(text):
+    """Check if text contains sharp/dirty/rough words."""
+    return bool(SHARP_WORD_RE.search(text))
+
+
+def _has_concrete_details(text):
+    """Check if text has concrete details (numbers, names, technical terms).
     
-    Section 25.4: light/dark words forming central theme.
-    Conservative algorithm: word boundaries, min 3 words, requires contrast.
-    Weight: 1.5 (advisory)
+    Threshold: 3 or more concrete indicators total.
     """
-    light_count = len(BINARY_LIGHT_RE.findall(text))
-    dark_count = len(BINARY_DARK_RE.findall(text))
-    total = light_count + dark_count
+    # Count concrete indicators
+    concrete_count = len(CONCRETE_RE.findall(text))
     
-    if total < 3:
-        return []
+    # Count proper names (excluding sentence-initial capitals)
+    lines = text.split('\n')
+    for line in lines:
+        # Skip sentence-initial capitals
+        words = line.split()
+        for i, word in enumerate(words):
+            if i > 0 and PROPER_NAME_RE.match(word):
+                concrete_count += 1
     
-    if light_count == 0 or dark_count == 0:
-        return []
+    return concrete_count >= 3
+
+
+def _has_repetition(text):
+    """Check if text has repetition patterns (same line repeated 3 or more times).
     
-    has_contrast = False
+    Excludes empty lines and very short lines (less than 10 chars).
+    """
+    lines = [line.strip() for line in text.split('\n') if line.strip() and len(line.strip()) >= 10]
     
-    if re.search(r'между.*(?:свет|тьм|мрак|темн).*и.*(?:свет|тьм|мрак|темн)', 
-                 text, re.IGNORECASE):
-        has_contrast = True
+    # Count line occurrences
+    line_counts = {}
+    for line in lines:
+        line_counts[line] = line_counts.get(line, 0) + 1
     
-    if re.search(r'из.*(?:тьм|мрак|темн).*в.*(?:свет|сиян)', 
-                 text, re.IGNORECASE):
-        has_contrast = True
+    # Flag if any line repeats 3 or more times
+    return any(count >= 3 for count in line_counts.values())
+
+
+def check_sentiment_flatline(text):
+    """Detect uniformly elevated tone without grounding or variation.
     
-    if total >= 5:
-        has_contrast = True
+    Section 25.21: "ни одного резкого/грязного слова, тон ровно-возвышенный"
     
-    if has_contrast:
-        return [(
-            "binary_light_dark",
-            1.5,
-            f"оппозиция свет/тьма: {light_count} слов света, {dark_count} слов тьмы"
-        )]
+    Refined algorithm (issue #53):
+    1. Require minimum 12 non-empty lines
+    2. Check for sharp/dirty words
+    3. Check for concrete details (numbers, names, technical terms)
+    4. Check for repetition patterns (mantra/chant)
     
-    return []
+    Only flags if ALL conditions met:
+    - No sharp words
+    - No concrete details (less than 3 indicators)
+    - No repetition (no line repeated 3 or more times)
+    
+    Weight 1.0 (advisory).
+    """
+    lines = [line.strip() for line in text.split('\n') if line.strip()]
+    
+    if len(lines) < SENTIMENT_FLATLINE_MIN_LINES:
+        return []  # Too short
+    
+    # Check for sharp/dirty words
+    if _has_sharp_words(text):
+        return []  # Has roughness
+    
+    # Check for concrete details
+    if _has_concrete_details(text):
+        return []  # Grounded in reality
+    
+    # Check for repetition (mantra/chant)
+    if _has_repetition(text):
+        return []  # Conscious repetition device
+    
+    # All conditions met - flag it
+    return [(
+        "sentiment_flatline",
+        1.0,
+        f"{len(lines)} lines: no sharp words, no concrete details, no repetition - uniformly elevated tone"
+    )]
 
 
 
@@ -816,6 +883,7 @@ ADVISORY_CHECKS = [
     check_noun_stack,
     check_adj_pile,
     check_binary_light_dark,
+    check_sentiment_flatline,
 ]
 
 HARD_FAIL_WEIGHT = 2.0
@@ -884,6 +952,7 @@ IMPLEMENTED_FLAG_NAMES = {
     "hypophora", "banal_rhyme", "verb_rhyme", "uniform_line_length",
     "simile_chain",
     "binary_light_dark",
+    "sentiment_flatline",
 }
 
 
@@ -919,6 +988,136 @@ def self_test():
     print(f"SELF-TEST OK: {len(cases)} golden-corpus cases match on implemented flags "
           f"({', '.join(sorted(IMPLEMENTED_FLAG_NAMES))})")
     return 0
+
+
+
+# ---------------------------------------------------------------------------
+# vague_deixis (issue #23, #47): section 30.2 detector.patterns.vague_deixis,
+# weight 0.5. Detects vague phrases without concrete event trace in context.
+# Implements section 25.27 criterion: uncertainty is legal if neighboring
+# 1-2 lines contain a concrete, "photographable" event trace.
+# ---------------------------------------------------------------------------
+
+VAGUE_DEIXIS_PHRASES = [
+    r"всё\s+это",
+    r"что-то\s+большее",
+    r"что-то\s+важное",
+    r"что-то\s+настоящее",
+    r"нечто\s+большее",
+    r"нечто\s+важное",
+    r"это\s+всё",
+    r"всё\s+то",
+]
+VAGUE_DEIXIS_RE = re.compile("|".join(VAGUE_DEIXIS_PHRASES), re.IGNORECASE)
+
+EVENT_VERBS_SPECIFIC = [
+    r"позвал\w*", r"крикнул\w*", r"прошептал\w*", r"сказал\w*",
+    r"открыл\w*", r"закрыл\w*", r"взял\w*", r"положил\w*",
+    r"нашёл\w*", r"потерял\w*", r"уронил\w*", r"поднял\w*",
+    r"увидел\w*", r"услышал\w*",
+]
+
+EVENT_NOUNS_SPECIFIC = [
+    r"протоптан\w*", r"след\w*", r"троп\w*",
+    r"крюк\w*", r"куртк\w*", r"фотк\w*", r"письм\w*",
+    r"записк\w*", r"ключ\w*", r"телефон\w*",
+]
+
+EVENT_RE_SPECIFIC = re.compile(
+    "|".join(EVENT_VERBS_SPECIFIC + EVENT_NOUNS_SPECIFIC),
+    re.IGNORECASE
+)
+
+NEGATION_WORDS = [r"не\s+", r"без\s+", r"нет\s+", r"ни\s+"]
+NEGATION_RE = re.compile("|".join(NEGATION_WORDS), re.IGNORECASE)
+
+
+def _has_positive_event(text):
+    """Check if text contains a concrete event WITHOUT negation."""
+    for match in EVENT_RE_SPECIFIC.finditer(text):
+        event_pos = match.start()
+        context_before = text[max(0, event_pos-30):event_pos]
+        if NEGATION_RE.search(context_before):
+            continue
+        return True
+    return False
+
+
+def check_vague_deixis(text):
+    """Detect vague deixis without concrete event trace in neighboring lines."""
+    lines = text.split("\n")
+    flags = []
+    
+    for i, line in enumerate(lines):
+        if VAGUE_DEIXIS_RE.search(line):
+            context_lines = []
+            for j in range(max(0, i-2), i):
+                context_lines.append(lines[j])
+            for j in range(i+1, min(len(lines), i+3)):
+                context_lines.append(lines[j])
+            
+            has_event = any(_has_positive_event(ctx_line) for ctx_line in context_lines)
+            
+            if not has_event:
+                match = VAGUE_DEIXIS_RE.search(line)
+                flags.append((
+                    "vague_deixis",
+                    0.5,
+                    f"'{match.group()}' at line {i+1} without event trace"
+                ))
+    
+    return flags
+
+
+def check_binary_light_dark(text):
+    """Detect binary light/dark opposition as central thematic frame.
+    
+    Section 25.4: light/dark words forming central theme.
+    Conservative algorithm: word boundaries, min 3 words, requires contrast.
+    Weight: 1.5 (advisory)
+    """
+    light_count = len(BINARY_LIGHT_RE.findall(text))
+    dark_count = len(BINARY_DARK_RE.findall(text))
+    total = light_count + dark_count
+    
+    if total < 3:
+        return []
+    
+    if light_count == 0 or dark_count == 0:
+        return []
+    
+    has_contrast = False
+    
+    if re.search(r'между.*(?:свет|тьм|мрак|темн).*и.*(?:свет|тьм|мрак|темн)', 
+                 text, re.IGNORECASE):
+        has_contrast = True
+    
+    if re.search(r'из.*(?:тьм|мрак|темн).*в.*(?:свет|сиян)', 
+                 text, re.IGNORECASE):
+        has_contrast = True
+    
+    if total >= 5:
+        has_contrast = True
+    
+    if has_contrast:
+        return [(
+            "binary_light_dark",
+            1.5,
+            f"оппозиция свет/тьма: {light_count} слов света, {dark_count} слов тьмы"
+        )]
+    
+    return []
+
+
+
+ADVISORY_CHECKS = [
+    check_parallel_shift_candidate,
+    check_noun_stack,
+    check_adj_pile,
+    check_binary_light_dark,
+]
+
+HARD_FAIL_WEIGHT = 2.0
 
 
 def main():
