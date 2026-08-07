@@ -1886,7 +1886,103 @@
       "summary": "pre-cyberpunk analog 100bpm A minor, титульный трек, score 8.2 (REPAIR×1), статус pending_generation",
       "source": "album Три коротких",
       "added": "2026-08-05"
+    },
+    {
+      "id": "CW-010",
+      "title": "Плановое обесточивание",
+      "category": "cases",
+      "subcategory": "coldwave",
+      "file": "cases/CW-010-planovoe-obestoichivanie.md",
+      "status": "active",
+      "tags": [
+        "coldwave",
+        "case"
+      ]
+    },
+    {
+      "id": "CW-011",
+      "title": "Ночной разговор",
+      "category": "cases",
+      "subcategory": "coldwave",
+      "file": "cases/CW-011-nochnoy-razgovor.md",
+      "status": "active",
+      "tags": [
+        "coldwave",
+        "case"
+      ]
+    },
+    {
+      "id": "CW-015",
+      "title": "Дежурный по подстанции",
+      "category": "cases",
+      "subcategory": "coldwave",
+      "file": "cases/CW-015-dezhurny-po-podstantsii.md",
+      "status": "active",
+      "tags": [
+        "coldwave",
+        "case"
+      ]
+    },
+    {
+      "id": "IND-003",
+      "title": "Ночной автобус",
+      "category": "cases",
+      "subcategory": "indie",
+      "file": "cases/IND-003-nochnoy-avtobus.md",
+      "status": "active",
+      "tags": [
+        "indie",
+        "case"
+      ]
+    },
+    {
+      "id": "MC-002",
+      "title": "Сердечки",
+      "category": "cases",
+      "subcategory": "mainstream-club",
+      "file": "cases/MC-002-serdechki.md",
+      "status": "active",
+      "tags": [
+        "mainstream-club",
+        "case"
+      ]
+    },
+    {
+      "id": "MC-003",
+      "title": "Медленный свет",
+      "category": "cases",
+      "subcategory": "mainstream-club",
+      "file": "cases/MC-003-medlenny-svet.md",
+      "status": "active",
+      "tags": [
+        "mainstream-club",
+        "case"
+      ]
+    },
+    {
+      "id": "PRE-009",
+      "title": "Диспетчерская",
+      "category": "cases",
+      "subcategory": "pre-cyberpunk",
+      "file": "cases/PRE-009-dispecherskaya.md",
+      "status": "active",
+      "tags": [
+        "pre-cyberpunk",
+        "case"
+      ]
+    },
+    {
+      "id": "SWP-014",
+      "title": "Морошка",
+      "category": "cases",
+      "subcategory": "swamp",
+      "file": "cases/SWP-014-moroshka.md",
+      "status": "active",
+      "tags": [
+        "swamp",
+        "case"
+      ]
     }
   ],
-  "count": 112
+  "count": 120
 }
