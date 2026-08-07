@@ -741,10 +741,89 @@ MECHANICAL_CHECKS = [
     check_simile_chain,
 ]
 
+# ---------------------------------------------------------------------------
+# school_arc (issue #23, #51 retry): section 25.23, weight 1.0.
+# Detects school essay structure: exposition + moral.
+# Conservative implementation with explicit markers only:
+# 1. Minimum 6 non-empty lines
+# 2. Exposition marker in first 2 lines
+# 3. Moral marker in last 2 lines
+# 4. Requires BOTH conditions
+#
+# Test case: G-08 from golden corpus (TRUE POSITIVE)
+# "я расскажу вам про свою жизнь и судьбу,
+#  как я искал себя и не нашёл.
+#  ...
+#  и тогда я понял: главное — любить."
+# ---------------------------------------------------------------------------
+
+EXPOSITION_MARKERS = [
+    r'я расскажу вам',
+    r'это история о',
+    r'однажды',
+    r'когда-то давно',
+    r'я хочу рассказать',
+    r'позвольте представить',
+    r'давайте я расскажу',
+    r'сейчас расскажу'
+]
+EXPOSITION_RE = re.compile('|'.join(EXPOSITION_MARKERS), re.IGNORECASE)
+
+MORAL_MARKERS = [
+    r'и тогда я понял',
+    r'мораль такова',
+    r'вывод прост',
+    r'главное —',
+    r'теперь я знаю',
+    r'я осознал',
+    r'я понял что',
+    r'так я понял'
+]
+MORAL_RE = re.compile('|'.join(MORAL_MARKERS), re.IGNORECASE)
+
+
+def check_school_arc(text):
+    """Detect school essay structure: exposition + moral.
+    
+    Conservative implementation (issue #51 retry):
+    1. Minimum 6 non-empty lines
+    2. Exposition marker in first 2 lines
+    3. Moral marker in last 2 lines
+    4. Requires BOTH conditions
+    
+    Only flags if both exposition and moral markers present.
+    Weight: 1.0 (advisory)
+    """
+    lines = [line.strip() for line in text.split('\n') if line.strip()]
+    
+    if len(lines) < 6:
+        return []  # Too short
+    
+    # Check first 2 lines for exposition
+    first_lines = '\n'.join(lines[:2])
+    has_exposition = bool(EXPOSITION_RE.search(first_lines))
+    
+    # Check last 2 lines for moral
+    last_lines = '\n'.join(lines[-2:])
+    has_moral = bool(MORAL_RE.search(last_lines))
+    
+    # Flag only if both present
+    if has_exposition and has_moral:
+        return [(
+            "school_arc",
+            1.0,
+            f"школьная арка: экспозиция + мораль"
+        )]
+    
+    return []
+
+
+
 ADVISORY_CHECKS = [
     check_parallel_shift_candidate,
     check_noun_stack,
     check_adj_pile,
+    check_school_arc,
 ]
 
 HARD_FAIL_WEIGHT = 2.0
@@ -812,6 +891,7 @@ IMPLEMENTED_FLAG_NAMES = {
     "not_x_but_y", "position_explanation", "truncation", "tech_metaphor",
     "hypophora", "banal_rhyme", "verb_rhyme", "uniform_line_length",
     "simile_chain",
+    "school_arc",
 }
 
 
