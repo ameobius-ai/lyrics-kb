@@ -849,6 +849,85 @@ def self_test():
     return 0
 
 
+
+# ---------------------------------------------------------------------------
+# vague_deixis (issue #23, #47): section 30.2 detector.patterns.vague_deixis,
+# weight 0.5. Detects vague phrases without concrete event trace in context.
+# Implements section 25.27 criterion: uncertainty is legal if neighboring
+# 1-2 lines contain a concrete, "photographable" event trace.
+# ---------------------------------------------------------------------------
+
+VAGUE_DEIXIS_PHRASES = [
+    r"всё\s+это",
+    r"что-то\s+большее",
+    r"что-то\s+важное",
+    r"что-то\s+настоящее",
+    r"нечто\s+большее",
+    r"нечто\s+важное",
+    r"это\s+всё",
+    r"всё\s+то",
+]
+VAGUE_DEIXIS_RE = re.compile("|".join(VAGUE_DEIXIS_PHRASES), re.IGNORECASE)
+
+EVENT_VERBS_SPECIFIC = [
+    r"позвал\w*", r"крикнул\w*", r"прошептал\w*", r"сказал\w*",
+    r"открыл\w*", r"закрыл\w*", r"взял\w*", r"положил\w*",
+    r"нашёл\w*", r"потерял\w*", r"уронил\w*", r"поднял\w*",
+    r"увидел\w*", r"услышал\w*",
+]
+
+EVENT_NOUNS_SPECIFIC = [
+    r"протоптан\w*", r"след\w*", r"троп\w*",
+    r"крюк\w*", r"куртк\w*", r"фотк\w*", r"письм\w*",
+    r"записк\w*", r"ключ\w*", r"телефон\w*",
+]
+
+EVENT_RE_SPECIFIC = re.compile(
+    "|".join(EVENT_VERBS_SPECIFIC + EVENT_NOUNS_SPECIFIC),
+    re.IGNORECASE
+)
+
+NEGATION_WORDS = [r"не\s+", r"без\s+", r"нет\s+", r"ни\s+"]
+NEGATION_RE = re.compile("|".join(NEGATION_WORDS), re.IGNORECASE)
+
+
+def _has_positive_event(text):
+    """Check if text contains a concrete event WITHOUT negation."""
+    for match in EVENT_RE_SPECIFIC.finditer(text):
+        event_pos = match.start()
+        context_before = text[max(0, event_pos-30):event_pos]
+        if NEGATION_RE.search(context_before):
+            continue
+        return True
+    return False
+
+
+def check_vague_deixis(text):
+    """Detect vague deixis without concrete event trace in neighboring lines."""
+    lines = text.split("\n")
+    flags = []
+    
+    for i, line in enumerate(lines):
+        if VAGUE_DEIXIS_RE.search(line):
+            context_lines = []
+            for j in range(max(0, i-2), i):
+                context_lines.append(lines[j])
+            for j in range(i+1, min(len(lines), i+3)):
+                context_lines.append(lines[j])
+            
+            has_event = any(_has_positive_event(ctx_line) for ctx_line in context_lines)
+            
+            if not has_event:
+                match = VAGUE_DEIXIS_RE.search(line)
+                flags.append((
+                    "vague_deixis",
+                    0.5,
+                    f"'{match.group()}' at line {i+1} without event trace"
+                ))
+    
+    return flags
+
+
 def main():
     global _POS_TRACE
     args = sys.argv[1:]
