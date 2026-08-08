@@ -994,32 +994,6 @@ def check_perfect_grammar(text):
     )]
 
 
-MECHANICAL_CHECKS = [
-    check_denial_gap,
-    check_em_dash_cascade,
-    check_kantselyarit,
-    check_genitive_metaphor,
-    check_triple_rhetoric,
-    check_genre_autopilot,
-    check_chorus_checklist,
-    check_marker_word,
-    check_organ_cliche,
-    check_not_x_but_y,
-    check_position_explanation,
-    check_truncation,
-    check_tech_metaphor,
-    check_hypophora,
-    check_banal_rhyme,
-    check_verb_rhyme,
-    check_uniform_line_length,
-    check_simile_chain,
-    check_school_arc,
-    check_binary_light_dark,
-    check_vague_deixis,
-    check_perfect_grammar,
-]
-
-
 # ---------------------------------------------------------------------------
 # sentiment_flatline (issue #23, #53): section 25.21, weight 1.0.
 # Detects uniformly elevated tone without sharp/dirty words, concrete details,
@@ -1051,15 +1025,15 @@ SHARP_WORDS_PATTERNS = [
     # Negative emotion
     r'зл\w*', r'ярос\w*', r'бешен\w*', r'агресси\w*',
     # Rough action verbs
-    r'рв\w*', r'бь\w*', r'кол\w*', r'реж\w*', r'грыз\w*', r'дав\w*',
+    r'\bрв\w*', r'\bбь\w*', r'\bкол\w*', r'\bреж\w*', r'\bгрыз\w*', r'\bдав\w*',
 ]
 SHARP_WORD_RE = re.compile('|'.join(SHARP_WORDS_PATTERNS), re.IGNORECASE)
 
 # Concrete detail indicators
 CONCRETE_INDICATORS = [
     # Numbers (digits and words)
-    r'\d+',
-    r'(один|два|три|четыре|пять|шесть|семь|восемь|девять|десять|сто|тысяч\w*)',
+    r'\b\d+\b',
+    r'\b(один|два|три|четыре|пять|шесть|семь|восемь|девять|десять|сто|тысяч\w*)\b',
     # Technical/professional terms
     r'пульт\w*', r'лампочк\w*', r'таксопарк\w*', r'диспетчер\w*',
     r'бармен\w*', r'охранник\w*', r'таксист\w*', r'касс\w*',
@@ -1079,7 +1053,10 @@ def _has_sharp_words(text):
 def _has_concrete_details(text):
     """Check if text has concrete details (numbers, names, technical terms).
     
-    Threshold: 3 or more concrete indicators total.
+    Threshold: 2 or more concrete indicators total (lowered 3 -> 2 in the
+    issue #72 pass: the living etalon G-32 grounds itself with just
+    "шесть утра" + "парк номер пять" -- two measured details -- and the
+    threshold-3 rule would false-positive it as "ungrounded").
     """
     # Count concrete indicators
     concrete_count = len(CONCRETE_RE.findall(text))
@@ -1093,7 +1070,7 @@ def _has_concrete_details(text):
             if i > 0 and PROPER_NAME_RE.match(word):
                 concrete_count += 1
     
-    return concrete_count >= 3
+    return concrete_count >= 2
 
 
 def _has_repetition(text):
@@ -1128,7 +1105,8 @@ def check_sentiment_flatline(text):
     - No concrete details (less than 3 indicators)
     - No repetition (no line repeated 3 or more times)
     
-    Weight 1.0 (advisory).
+    Weight 1.0 (warn channel; promoted advisory -> mechanical in the issue
+    #72 pass after the concrete-detail threshold was re-measured on G-32).
     """
     lines = [line.strip() for line in text.split('\n') if line.strip()]
     
@@ -1155,12 +1133,37 @@ def check_sentiment_flatline(text):
     )]
 
 
+MECHANICAL_CHECKS = [
+    check_denial_gap,
+    check_em_dash_cascade,
+    check_kantselyarit,
+    check_genitive_metaphor,
+    check_triple_rhetoric,
+    check_genre_autopilot,
+    check_chorus_checklist,
+    check_marker_word,
+    check_organ_cliche,
+    check_not_x_but_y,
+    check_position_explanation,
+    check_truncation,
+    check_tech_metaphor,
+    check_hypophora,
+    check_banal_rhyme,
+    check_verb_rhyme,
+    check_uniform_line_length,
+    check_simile_chain,
+    check_school_arc,
+    check_binary_light_dark,
+    check_vague_deixis,
+    check_perfect_grammar,
+    check_sentiment_flatline,
+]
+
 
 ADVISORY_CHECKS = [
     check_parallel_shift_candidate,
     check_noun_stack,
     check_adj_pile,
-    check_sentiment_flatline,
 ]
 
 HARD_FAIL_WEIGHT = 2.0
@@ -1331,8 +1334,12 @@ if __name__ == "__main__":
 #     exposition-marker + moral-marker core IS linted (check_school_arc,
 #     G-08 TP / G-37 FP pair); whether a stated moral is *earned* stays a
 #     scoring-layer concern.
-#   - sentiment_flatline: requires judging overall tonal register, not
-#     matchable by a fixed word list without heavy false positives.
+#   - sentiment_flatline's tonal-register judgment BEYOND the four proxy
+#     signals: the calibrated core IS linted (check_sentiment_flatline:
+#     >= 12 lines, no sharp words, < 2 concrete details -- threshold
+#     re-measured on G-32 in the issue #72 pass -- no mantra repetition).
+#     What "elevated" means beyond those proxies stays a scoring-layer
+#     concern.
 #   - tech_metaphor's spec EXCEPTION (tech lexicon as the hero's ground
 #     rather than an emotion metaphor): the closed regex list itself IS
 #     linted (see check_tech_metaphor); only this semantic carve-out is not,
@@ -1379,7 +1386,8 @@ if __name__ == "__main__":
 #     binary_light_dark (distinct-lexeme counting + contrastive structure,
 #     calibrated on lyrics/ MC-003), vague_deixis (closed phrase list +
 #     closed event lists + measured-detail trace via TRACE_NUMBER_RE, the
-#     issue #64 widening that saved G-32 without touching G-12); each keeps
-#     the spec's flag name but documents its narrowing next to the pattern
-#     definition.
+#     issue #64 widening that saved G-32 without touching G-12),
+#     sentiment_flatline (four proxy signals, concrete-detail threshold 2
+#     calibrated on G-32, issue #72); each keeps the spec's flag name but
+#     documents its narrowing next to the pattern definition.
 # ---------------------------------------------------------------------------
