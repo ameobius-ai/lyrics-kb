@@ -849,30 +849,6 @@ def check_binary_light_dark(text):
     return []
 
 
-MECHANICAL_CHECKS = [
-    check_denial_gap,
-    check_em_dash_cascade,
-    check_kantselyarit,
-    check_genitive_metaphor,
-    check_triple_rhetoric,
-    check_genre_autopilot,
-    check_chorus_checklist,
-    check_marker_word,
-    check_organ_cliche,
-    check_not_x_but_y,
-    check_position_explanation,
-    check_truncation,
-    check_tech_metaphor,
-    check_hypophora,
-    check_banal_rhyme,
-    check_verb_rhyme,
-    check_uniform_line_length,
-    check_simile_chain,
-    check_school_arc,
-    check_binary_light_dark,
-]
-
-
 # ---------------------------------------------------------------------------
 # sentiment_flatline (issue #23, #53): section 25.21, weight 1.0.
 # Detects uniformly elevated tone without sharp/dirty words, concrete details,
@@ -904,15 +880,15 @@ SHARP_WORDS_PATTERNS = [
     # Negative emotion
     r'зл\w*', r'ярос\w*', r'бешен\w*', r'агресси\w*',
     # Rough action verbs
-    r'рв\w*', r'бь\w*', r'кол\w*', r'реж\w*', r'грыз\w*', r'дав\w*',
+    r'\bрв\w*', r'\bбь\w*', r'\bкол\w*', r'\bреж\w*', r'\bгрыз\w*', r'\bдав\w*',
 ]
 SHARP_WORD_RE = re.compile('|'.join(SHARP_WORDS_PATTERNS), re.IGNORECASE)
 
 # Concrete detail indicators
 CONCRETE_INDICATORS = [
     # Numbers (digits and words)
-    r'\d+',
-    r'(один|два|три|четыре|пять|шесть|семь|восемь|девять|десять|сто|тысяч\w*)',
+    r'\b\d+\b',
+    r'\b(один|два|три|четыре|пять|шесть|семь|восемь|девять|десять|сто|тысяч\w*)\b',
     # Technical/professional terms
     r'пульт\w*', r'лампочк\w*', r'таксопарк\w*', r'диспетчер\w*',
     r'бармен\w*', r'охранник\w*', r'таксист\w*', r'касс\w*',
@@ -1010,10 +986,21 @@ def check_sentiment_flatline(text):
 
 
 # ---------------------------------------------------------------------------
-# vague_deixis (issue #23, #47): section 30.2 detector.patterns.vague_deixis,
-# weight 0.5. Detects vague phrases without concrete event trace in context.
+# vague_deixis (issue #23, #47, #64): section 30.2 detector.patterns.vague_deixis,
+# weight 0.5. Detects vague phrases without a concrete trace in context.
 # Implements section 25.27 criterion: uncertainty is legal if neighboring
-# 1-2 lines contain a concrete, "photographable" event trace.
+# 1-2 lines contain a concrete, "photographable" trace. Two trace tiers,
+# both closed lists grown only via measured corpus pairs:
+#   1. event trace (EVENT_*_SPECIFIC): an explicit event verb/noun (G-01's
+#      «позвал»).
+#   2. state trace (STATE_TRACE_*, issue #64): a physical-world noun paired
+#      with a state/change-of-state predicate in the same line — the
+#      image-state that saves G-32 («мороз стоит третий день» / «стёкла в
+#      подъезде заиндевели насквозь»). The noun alone is NOT a trace (G-38
+#      guard); a negated predicate is no trace (same guard as tier 1).
+#      The measure-word tier (option 2 from #64) was considered and
+#      deliberately deferred: no corpus case requires it yet, and a number
+#      in the window is a proxy of groundedness, not 25.27's trace itself.
 # ---------------------------------------------------------------------------
 
 VAGUE_DEIXIS_PHRASES = [
@@ -1049,6 +1036,31 @@ EVENT_RE_SPECIFIC = re.compile(
 NEGATION_WORDS = [r"не\s+", r"без\s+", r"нет\s+", r"ни\s+"]
 NEGATION_RE = re.compile("|".join(NEGATION_WORDS), re.IGNORECASE)
 
+# Tier-2 trace (issue #64): concrete image-state. Closed lists seeded from
+# G-32's saving lines («мороз стоит третий день», «стёкла в подъезде
+# заиндевели насквозь») and calibrated against the living texts: every entry
+# must keep G-12 firing and the lyrics/ sweep silent. Physical-world nouns:
+STATE_TRACE_NOUNS = [
+    r"мороз\w*", r"ине[йю]\w*", r"ст[её]кл\w*", r"окн\w*", r"двер\w*",
+    r"л[её]д\b", r"снег\w*", r"дожд\w*", r"дым\w*", r"чайник\w*",
+    r"батаре\w*", r"ламп\w*", r"труб\w*", r"провод\w*", r"подъезд\w*",
+    r"этаж\w*", r"крыш\w*", r"стен\w*", r"потолк\w*",
+]
+# State / change-of-state predicates (incl. impersonal weather states):
+STATE_TRACE_PREDICATES = [
+    r"стоит\b", r"стоят\b", r"стоял\w*", r"гудит\b", r"гудят\b", r"гудел\w*",
+    r"пахнет\b", r"пахнут\b", r"пахл[ои]\w*", r"лежит\b", r"лежат\b",
+    r"лежал\w*", r"горит\b", r"горят\b", r"горел\w*", r"гаснет\b",
+    r"гаснут\b", r"гасл\w*", r"светит\b", r"светится\b", r"мигает\b",
+    r"мигают\b", r"капает\b", r"капают\b", r"тикает\b", r"дышит\b",
+    r"дышат\b", r"жужжит\b", r"м[её]рзн\w*", r"заиндеве\w*", r"запоте\w*",
+    r"стынет\b", r"остыл\w*", r"остывает\b", r"темнеет\b", r"светлеет\b",
+    r"свистит\b", r"бурлит\b", r"сгорел\w*", r"холодно\b", r"тепло\b",
+    r"темно\b", r"тихо\b",
+]
+STATE_TRACE_NOUN_RE = re.compile("|".join(STATE_TRACE_NOUNS), re.IGNORECASE)
+STATE_TRACE_PRED_RE = re.compile("|".join(STATE_TRACE_PREDICATES), re.IGNORECASE)
+
 
 def _has_positive_event(text):
     """Check if text contains a concrete event WITHOUT negation."""
@@ -1061,8 +1073,21 @@ def _has_positive_event(text):
     return False
 
 
+def _has_state_trace(line):
+    """Tier-2 trace (issue #64): a physical-world noun paired with a
+    non-negated state/change-of-state predicate in the same line."""
+    if not STATE_TRACE_NOUN_RE.search(line):
+        return False
+    for match in STATE_TRACE_PRED_RE.finditer(line):
+        context_before = line[max(0, match.start()-30):match.start()]
+        if NEGATION_RE.search(context_before):
+            continue
+        return True
+    return False
+
+
 def check_vague_deixis(text):
-    """Detect vague deixis without concrete event trace in neighboring lines."""
+    """Detect vague deixis without a concrete trace in neighboring lines."""
     lines = text.split("\n")
     flags = []
     
@@ -1074,17 +1099,45 @@ def check_vague_deixis(text):
             for j in range(i+1, min(len(lines), i+3)):
                 context_lines.append(lines[j])
             
-            has_event = any(_has_positive_event(ctx_line) for ctx_line in context_lines)
+            has_trace = any(
+                _has_positive_event(ctx_line) or _has_state_trace(ctx_line)
+                for ctx_line in context_lines
+            )
             
-            if not has_event:
+            if not has_trace:
                 match = VAGUE_DEIXIS_RE.search(line)
                 flags.append((
                     "vague_deixis",
                     0.5,
-                    f"'{match.group()}' at line {i+1} without event trace"
+                    f"'{match.group()}' at line {i+1} without event/state trace"
                 ))
     
     return flags
+
+
+MECHANICAL_CHECKS = [
+    check_denial_gap,
+    check_em_dash_cascade,
+    check_kantselyarit,
+    check_genitive_metaphor,
+    check_triple_rhetoric,
+    check_genre_autopilot,
+    check_chorus_checklist,
+    check_marker_word,
+    check_organ_cliche,
+    check_not_x_but_y,
+    check_position_explanation,
+    check_truncation,
+    check_tech_metaphor,
+    check_hypophora,
+    check_banal_rhyme,
+    check_verb_rhyme,
+    check_uniform_line_length,
+    check_simile_chain,
+    check_school_arc,
+    check_binary_light_dark,
+    check_vague_deixis,
+]
 
 
 ADVISORY_CHECKS = [
@@ -1092,7 +1145,6 @@ ADVISORY_CHECKS = [
     check_noun_stack,
     check_adj_pile,
     check_sentiment_flatline,
-    check_vague_deixis,
 ]
 
 HARD_FAIL_WEIGHT = 2.0
@@ -1167,12 +1219,12 @@ IMPLEMENTED_FLAG_NAMES = {
     "noun_stack",
     "adj_pile",
     "parallel_shift_candidate",
-    # NOT vague_deixis: its check fires a false positive on the living
-    # etalon G-32 ("всё это зима" is saved by the concrete trace "мороз
-    # стоит третий день / стёкла заиндевели" two lines up, which the closed
-    # event list does not cover). Per the corpus protocol (FP = 0) it stays
-    # advisory-only and out of the enforced set until the 25.27 trace
-    # detection is widened -- tracked in issue #64.
+    # vague_deixis IS enforced: the 25.27 trace detection was widened with
+    # the state-image tier (issue #64) -- G-12 still catches x2, G-32 stays
+    # silent (its saving lines "мороз стоит третий день" / "стёкла
+    # заиндевели" are a concrete state trace, now covered), G-38 guards the
+    # noun-only boundary, and the lyrics/ sweep shows zero hits.
+    "vague_deixis",
 }
 
 
@@ -1243,13 +1295,13 @@ if __name__ == "__main__":
 
 # ---------------------------------------------------------------------------
 # Out of scope (needs semantic/contextual judgment, not a lint rule):
-#   - vague_deixis's 25.27 trace judgment in full: the closed phrase/event
-#     lists ARE implemented (check_vague_deixis) but sit on the advisory
-#     channel only -- the closed event list false-positives on the living
-#     etalon G-32 ("всё это зима" is saved by the concrete trace "мороз
-#     стоит третий день / стёкла заиндевели" two lines up), so the flag is
-#     deliberately outside IMPLEMENTED_FLAG_NAMES until trace detection is
-#     widened (issue #64).
+#   - vague_deixis's "is the trace sufficient" judgment: the mechanical core
+#     IS linted and enforced (check_vague_deixis) -- closed vague-phrase
+#     list plus two closed trace tiers (event verb/noun; physical noun +
+#     state predicate image-state, issue #64: G-12 TP x2 / G-32 silent /
+#     G-38 noun-only guard / G-39 generalization pair). Whether an existing
+#     trace makes the omission *earned* stays with the 25.27 white-list
+#     review, as before.
 #   - truncation as *omission*: the "text stops before the event" reading is
 #     the same event-trace judgment as vague_deixis and stays out of scope --
 #     it would hard-fail the 25.27 white-list cases G-01 and G-10. Only the
@@ -1308,6 +1360,9 @@ if __name__ == "__main__":
 #     spec's own list), school_arc (closed exposition/moral marker lists,
 #     >= 4 lines, markers required in the first and last two lines),
 #     binary_light_dark (distinct-lexeme counting + contrastive structure,
-#     calibrated on lyrics/ MC-003); each keeps the spec's flag name but
-#     documents its narrowing next to the pattern definition.
+#     calibrated on lyrics/ MC-003), vague_deixis (closed vague-phrase list
+#     + two closed trace tiers: event verb/noun, and physical noun + state
+#     predicate image-state per issue #64, measured on the corpus and the
+#     lyrics/ sweep); each keeps the spec's flag name but documents its
+#     narrowing next to the pattern definition.
 # ---------------------------------------------------------------------------
