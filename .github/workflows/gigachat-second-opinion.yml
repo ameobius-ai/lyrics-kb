@@ -16,16 +16,27 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   opinion:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.12"
+
+      - name: Require a branch ref
+        run: |
+          if [ "$GITHUB_REF_TYPE" != "branch" ]; then
+            echo "GigaChat second opinion must run from a branch, not $GITHUB_REF_TYPE" >&2
+            exit 1
+          fi
 
       - name: Install deps
         run: pip install -r integrations/gigachat/requirements.txt
@@ -40,15 +51,34 @@ jobs:
         env:
           GIGACHAT_AUTH_KEY: ${{ secrets.GIGACHAT_AUTH_KEY }}
           GIGACHAT_MODEL: ${{ inputs.model }}
+          LYRICS_PATH: ${{ inputs.lyrics_path }}
           REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
-        run: python integrations/gigachat/second_opinion.py "${{ inputs.lyrics_path }}"
+        run: python integrations/gigachat/second_opinion.py "$LYRICS_PATH"
 
-      - name: Commit opinion
+      - name: Publish opinion as pull request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LYRICS_PATH: ${{ inputs.lyrics_path }}
         run: |
+          SRC="$LYRICS_PATH"
+          OUT="${SRC%.*}.gigachat-opinion.md"
+          BRANCH="gigachat-opinion-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+
+          git switch -c "$BRANCH"
+          git add -- "$OUT"
+          if git diff --cached --quiet; then
+            echo "nothing to publish"
+            exit 0
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          SRC="${{ inputs.lyrics_path }}"
-          OUT="${SRC%.*}.gigachat-opinion.md"
-          git add "$OUT"
-          git commit -m "gigachat second opinion: $OUT" || echo "nothing to commit"
-          git push
+          git commit -m "gigachat second opinion: $OUT"
+
+          gh auth setup-git
+          git push --set-upstream origin "$BRANCH"
+          gh pr create \
+            --base "$GITHUB_REF_NAME" \
+            --head "$BRANCH" \
+            --title "gigachat: second opinion for $SRC" \
+            --body "Automated advisory GigaChat second opinion for: $SRC"

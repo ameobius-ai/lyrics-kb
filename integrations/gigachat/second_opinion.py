@@ -7,6 +7,9 @@ GigaChat second opinion — advisory-вердикт «второго мнени�
 РЯДОМ с оценками Детектора, а не вместо них. Сценарий канона — ручные
 прогоны на ключевых текстах, не пакетные пайплайны.
 
+Файловый режим принимает только существующий repo-relative Markdown-путь,
+который после canonical/symlink resolution остаётся внутри репозитория.
+
 Модель по умолчанию: GigaChat 3.5 Ultra (флагман). Переопределяется
 переменной окружения GIGACHAT_MODEL. Если API отклоняет указанное имя,
 скрипт запрашивает /api/v1/models и берёт первую модель с «Ultra» в имени.
@@ -26,6 +29,13 @@ import uuid
 from pathlib import Path
 
 import requests
+
+try:
+    from integrations.gigachat.path_policy import InputPathError, resolve_lyrics_path
+except ModuleNotFoundError:
+    # Direct execution (`python integrations/gigachat/second_opinion.py ...`)
+    # puts this directory, not the repository root, first on sys.path.
+    from path_policy import InputPathError, resolve_lyrics_path
 
 OAUTH_URL = "https://ngw.devices.sberbank.ru:9443/api/v2/oauth"
 API_BASE = "https://gigachat.devices.sberbank.ru/api/v1"
@@ -83,22 +93,25 @@ def chat(headers: dict, model: str, lyrics: str) -> str:
 
 
 def main() -> None:
-    auth_key = os.environ.get("GIGACHAT_AUTH_KEY")
-    if not auth_key:
-        sys.exit("GIGACHAT_AUTH_KEY не задан. Добавь Authorization Key из Sber Studio.")
+    if len(sys.argv) != 2:
+        sys.exit("Укажи один путь к файлу с текстом или --stdin.")
 
-    if len(sys.argv) > 1 and sys.argv[1] == "--stdin":
+    if sys.argv[1] == "--stdin":
         lyrics = sys.stdin.read()
         out_path = Path("second-opinion.gigachat.md")
-    elif len(sys.argv) > 1:
-        src = Path(sys.argv[1])
-        lyrics = src.read_text(encoding="utf-8")
-        out_path = src.with_suffix("").with_name(src.stem + ".gigachat-opinion.md")
     else:
-        sys.exit("Укажи путь к файлу с текстом или --stdin.")
+        try:
+            src, out_path = resolve_lyrics_path(sys.argv[1])
+        except InputPathError as exc:
+            sys.exit(f"Недопустимый путь: {exc}")
+        lyrics = src.read_text(encoding="utf-8")
 
     if not lyrics.strip():
         sys.exit("Пустой ввод — нечего оценивать.")
+
+    auth_key = os.environ.get("GIGACHAT_AUTH_KEY")
+    if not auth_key:
+        sys.exit("GIGACHAT_AUTH_KEY не задан. Добавь Authorization Key из Sber Studio.")
 
     token = get_access_token(auth_key)
     headers = {"Authorization": f"Bearer {token}"}
