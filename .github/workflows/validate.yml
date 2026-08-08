@@ -47,7 +47,9 @@ jobs:
 
       - name: Install optional POS layer (pymorphy3, advisory only - issue #31)
         continue-on-error: true
-        run: pip install pymorphy3
+        # Pinned so POS advisory measurements stay comparable across PRs
+        # (baseline measurement: 2.0.6, PR #38 comment).
+        run: pip install pymorphy3==2.0.6
 
       - name: POS advisory measurement - noun_stack/adj_pile on lyrics/ (non-blocking, issue #31)
         continue-on-error: true
