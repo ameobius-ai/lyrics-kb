@@ -29,7 +29,7 @@
     ↓
 3 жанровых плейбука (фолк-хоррор / darksynth / саундклауд-волна)
     ↓
-Золотой корпус (37 регрессионных кейсов, FP=0 FN=0 на реализованных флагах)
+Золотой корпус (38 регрессионных кейсов, FP=0 FN=0 на реализованных флагах)
     ↓
 Пантеон 2.0 + blend-карта → разведка сцены
 ```
@@ -68,7 +68,7 @@ suno/packages/* → generation → cases/
 
 ### Золотой корпус (`references/golden_corpus.md`)
 
-37 тест-кейсов (G-01…G-37): живые эталоны, слоп, пограничные пары TP/FP для каждого механизируемого флага. Регрессионный протокол: FP=0, FN≤1. Статус: все 37 пройдены — прогон встроен в CI как блокирующий self-test.
+38 тест-кейсов (G-01…G-38): живые эталоны, слоп, пограничные пары TP/FP для каждого механизируемого флага. Регрессионный протокол: FP=0, FN≤1. Статус: все 38 пройдены — прогон встроен в CI как блокирующий self-test.
 
 ## Валидация
 
@@ -77,13 +77,13 @@ CI (`.github/workflows/validate.yml`) — четыре блокирующих ш
 ```bash
 python3 scripts/check_encoding.py .   # ноль U+FFFD / не-UTF-8 байтов в тексте
 python3 validate.py                   # index.json (count, файлы, дубли) + структура packages/cases/lyrics
-python3 scripts/lint_patterns.py --self-test   # золотой корпус: все 37 кейсов
+python3 scripts/lint_patterns.py --self-test   # золотой корпус: все 38 кейсов
 find lyrics -name '*.md' ! -name 'README.md' -print0 | xargs -0 -r python3 scripts/lint_patterns.py   # блокирующий sweep по живым текстам
 ```
 
 Неблокирующее: advisory sweep по `cases/` и опциональный POS-слой (`noun_stack`/`adj_pile` через pymorphy3, вес 0.0; замер FP публикуется комментарием в PR, `--pos-trace` добавляет разбор токенов к каждому хиту).
 
-Механический линтер (`scripts/lint_patterns.py`): 21 механический флаг (hard-fail только при весе ≥2.0) + 4 advisory; sweep по `lyrics/` линтит только fenced-блок под `## Текст`. Осознанный флагируемый приём оформляется `lint_exempt` + `lint_exempt_note` во front-matter (исключение без причины — само hard-fail; подробности в `lyrics/README.md`).
+Механический линтер (`scripts/lint_patterns.py`): 22 механических флага (hard-fail только при весе ≥2.0) + 4 advisory; sweep по `lyrics/` линтит только fenced-блок под `## Текст`. Осознанный флагируемый приём оформляется `lint_exempt` + `lint_exempt_note` во front-matter (исключение без причины — само hard-fail; подробности в `lyrics/README.md`).
 
 ## Источники
 
