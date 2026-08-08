@@ -720,6 +720,135 @@ def check_adj_pile(text):
     ]
 
 
+# ---------------------------------------------------------------------------
+# school_arc (issue #23, #51): section 25.23, weight 1.0.
+# Detects school essay structure: exposition + moral.
+# Conservative implementation with explicit markers only.
+# G-08 has only 4 non-empty lines, so minimum is 4 (not 6).
+# ---------------------------------------------------------------------------
+
+EXPOSITION_MARKERS = [
+    r'я расскажу вам',
+    r'это история о',
+    r'однажды',
+    r'когда-то давно',
+    r'я хочу рассказать',
+    r'позвольте представить',
+    r'давайте я расскажу',
+    r'сейчас расскажу'
+]
+EXPOSITION_RE = re.compile('|'.join(EXPOSITION_MARKERS), re.IGNORECASE)
+
+MORAL_MARKERS = [
+    r'и тогда я понял',
+    r'мораль такова',
+    r'вывод прост',
+    r'главное —',
+    r'теперь я знаю',
+    r'я осознал',
+    r'я понял что',
+    r'так я понял'
+]
+MORAL_RE = re.compile('|'.join(MORAL_MARKERS), re.IGNORECASE)
+
+
+def check_school_arc(text):
+    """Detect school essay structure: exposition + moral.
+    
+    Conservative implementation (issue #51 retry):
+    1. Minimum 4 non-empty lines (G-08 has 4)
+    2. Exposition marker in first 2 lines
+    3. Moral marker in last 2 lines
+    4. Requires BOTH conditions
+    
+    Weight: 1.0 (advisory)
+    """
+    lines_list = [line.strip() for line in text.split('\n') if line.strip()]
+    
+    if len(lines_list) < 4:
+        return []
+    
+    first_lines = '\n'.join(lines_list[:2])
+    has_exposition = bool(EXPOSITION_RE.search(first_lines))
+    
+    last_lines = '\n'.join(lines_list[-2:])
+    has_moral = bool(MORAL_RE.search(last_lines))
+    
+    if has_exposition and has_moral:
+        return [(
+            "school_arc",
+            1.0,
+            f"школьная арка: экспозиция + мораль"
+        )]
+    
+    return []
+
+
+# ---------------------------------------------------------------------------
+# binary_light_dark (issue #23): section 25.4, weight 1.5.
+# Conservative: word boundaries, min 3 words, contrast required.
+# ---------------------------------------------------------------------------
+
+BINARY_LIGHT_PATTERNS = [
+    r'\bсвет\b', r'\bсиян\w*', r'\bярк\w*',
+    r'\bлуч\b', r'\bсолнц\w*', r'\bрассвет\w*',
+    r'\bутро\b', r'\bдень\b'
+]
+
+BINARY_DARK_PATTERNS = [
+    r'\bтьм\w*', r'\bмрак\w*', r'\bтемн\w*',
+    r'\bночь\b', r'\bсумер\w*', r'\bтень\b',
+    r'\bчёрн\w*', r'\bчерн\w*'
+]
+
+BINARY_LIGHT_RE = re.compile('|'.join(BINARY_LIGHT_PATTERNS), re.IGNORECASE)
+BINARY_DARK_RE = re.compile('|'.join(BINARY_DARK_PATTERNS), re.IGNORECASE)
+
+
+def check_binary_light_dark(text):
+    """Detect binary light/dark opposition as central theme.
+    Weight: 1.5 (advisory)
+    
+    Counts DISTINCT matched lexemes (lowercased surface forms), not raw
+    occurrences: a repeated chorus must not inflate the counter. Measured
+    on lyrics/: MC-003 («медленный свет») reaches 6 raw occurrences only
+    through the verbatim chorus repeat (свет×3, ночь×2) — 3 distinct lexemes
+    (свет/утро/ночь) with no contrastive structure stay silent, as that is
+    literal club lighting, not a philosophical frame.
+    """
+    light_words = {m.group(0).lower() for m in BINARY_LIGHT_RE.finditer(text)}
+    dark_words = {m.group(0).lower() for m in BINARY_DARK_RE.finditer(text)}
+    total = len(light_words) + len(dark_words)
+    
+    if total < 3:
+        return []
+    
+    if not light_words or not dark_words:
+        return []
+    
+    has_contrast = False
+    
+    if re.search(r'между.*(?:свет|тьм|мрак|темн).*и.*(?:свет|тьм|мрак|темн)', 
+                 text, re.IGNORECASE):
+        has_contrast = True
+    
+    if re.search(r'из.*(?:тьм|мрак|темн).*в.*(?:свет|сиян)', 
+                 text, re.IGNORECASE):
+        has_contrast = True
+    
+    if total >= 5:
+        has_contrast = True
+    
+    if has_contrast:
+        return [(
+            "binary_light_dark",
+            1.5,
+            f"оппозиция свет/тьма: {len(light_words)} лексем света, {len(dark_words)} лексем тьмы"
+        )]
+    
+    return []
+
+
 MECHANICAL_CHECKS = [
     check_denial_gap,
     check_em_dash_cascade,
@@ -739,6 +868,8 @@ MECHANICAL_CHECKS = [
     check_verb_rhyme,
     check_uniform_line_length,
     check_simile_chain,
+    check_school_arc,
+    check_binary_light_dark,
 ]
 
 
@@ -878,117 +1009,6 @@ def check_sentiment_flatline(text):
 
 
 
-ADVISORY_CHECKS = [
-    check_parallel_shift_candidate,
-    check_noun_stack,
-    check_adj_pile,
-    check_sentiment_flatline,
-]
-
-HARD_FAIL_WEIGHT = 2.0
-
-
-def lint_text(text):
-    flags = []
-    for check in MECHANICAL_CHECKS:
-        flags.extend(check(text))
-    advisories = []
-    for check in ADVISORY_CHECKS:
-        advisories.extend(check(text))
-    return flags, advisories
-
-
-def lint_file(path):
-    """Lint one file. Returns (flags, advisories, exempted_flags).
-    Applies lyric-block extraction and front-matter exemptions -- see the
-    comment above LYRICS_TEXT_RE (issue #14)."""
-    with open(path, encoding="utf-8") as f:
-        raw = f.read()
-    exempt, has_note = extract_lint_exemptions(raw)
-    flags, advisories = lint_text(extract_lint_text(raw))
-    if exempt and not has_note:
-        flags = flags + [(
-            "lint_exempt_without_note", 2.0,
-            "lint_exempt in front-matter requires a non-empty lint_exempt_note",
-        )]
-        return flags, advisories, []
-    kept = [f for f in flags if f[0] not in exempt]
-    exempted = [f for f in flags if f[0] in exempt]
-    return kept, advisories, exempted
-
-
-def _extract_golden_corpus_cases(md_text):
-    """Parse references/golden_corpus.md: returns {case_id: (code_block_text, expected_flag_names)}."""
-    cases = {}
-    case_blocks = re.split(r"### (G-\d+)", md_text)
-    # case_blocks: [preamble, 'G-01', body1, 'G-02', body2, ...]
-    for k in range(1, len(case_blocks), 2):
-        case_id = case_blocks[k]
-        body = case_blocks[k + 1]
-        code_match = re.search(r"```\n(.*?)\n```", body, re.DOTALL)
-        code = code_match.group(1) if code_match else ""
-        cases[case_id] = code
-
-    # Parse the summary table at the bottom for expected flag names.
-    expected = {}
-    table_match = re.search(
-        r"## Сводная таблица ожиданий\n\n(.*?)\n\n-", md_text, re.DOTALL
-    )
-    table = table_match.group(1) if table_match else ""
-    for line in table.splitlines():
-        m = re.match(r"\|\s*(G-\d+)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|", line)
-        if m:
-            case_id, flags_cell, _verdict = m.groups()
-            names = re.findall(r"[a-z_]+(?=\s*(?:×\d+)?)", flags_cell)
-            expected[case_id] = set(n for n in names if n not in ("×",))
-    return cases, expected
-
-
-IMPLEMENTED_FLAG_NAMES = {
-    "kantselyarit", "genitive_metaphor", "em_dash_cascade", "triple_rhetoric",
-    "genre_autopilot", "chorus_checklist", "marker_word", "organ_cliche",
-    "not_x_but_y", "position_explanation", "truncation", "tech_metaphor",
-    "hypophora", "banal_rhyme", "verb_rhyme", "uniform_line_length",
-    "simile_chain",
-    "sentiment_flatline",
-}
-
-
-def self_test():
-    corpus_path = os.path.join(KB_DIR, "references", "golden_corpus.md")
-    with open(corpus_path, encoding="utf-8") as f:
-        md_text = f.read()
-    cases, expected = _extract_golden_corpus_cases(md_text)
-
-    failures = []
-    for case_id, code in sorted(cases.items()):
-        flags, _advisories = lint_text(code)
-        got_names = {name for name, _w, _detail in flags}
-        want_names = expected.get(case_id, set()) & IMPLEMENTED_FLAG_NAMES
-        # Only compare on the subset of flags we actually implement --
-        # unimplemented flags (vague_deixis, school_arc,
-        # sentiment_flatline, perfect_grammar,
-        # parallel_no_shift verdict) are explicitly out of scope, see module
-        # docstring. We still check we don't fire flags we DO implement when
-        # they're not expected (false positive), and that we DO fire flags
-        # that ARE expected and implemented (false negative).
-        implemented_got = got_names & IMPLEMENTED_FLAG_NAMES
-        if implemented_got != want_names:
-            failures.append(
-                f"{case_id}: expected {sorted(want_names)}, got {sorted(implemented_got)}"
-            )
-
-    if failures:
-        print(f"SELF-TEST FAIL: {len(failures)}/{len(cases)} cases mismatched")
-        for f in failures:
-            print(f"  ✗ {f}")
-        return 1
-    print(f"SELF-TEST OK: {len(cases)} golden-corpus cases match on implemented flags "
-          f"({', '.join(sorted(IMPLEMENTED_FLAG_NAMES))})")
-    return 0
-
-
-
 # ---------------------------------------------------------------------------
 # vague_deixis (issue #23, #47): section 30.2 detector.patterns.vague_deixis,
 # weight 0.5. Detects vague phrases without concrete event trace in context.
@@ -1067,6 +1087,130 @@ def check_vague_deixis(text):
     return flags
 
 
+ADVISORY_CHECKS = [
+    check_parallel_shift_candidate,
+    check_noun_stack,
+    check_adj_pile,
+    check_sentiment_flatline,
+    check_vague_deixis,
+]
+
+HARD_FAIL_WEIGHT = 2.0
+
+
+def lint_text(text):
+    flags = []
+    for check in MECHANICAL_CHECKS:
+        flags.extend(check(text))
+    advisories = []
+    for check in ADVISORY_CHECKS:
+        advisories.extend(check(text))
+    return flags, advisories
+
+
+def lint_file(path):
+    """Lint one file. Returns (flags, advisories, exempted_flags).
+    Applies lyric-block extraction and front-matter exemptions -- see the
+    comment above LYRICS_TEXT_RE (issue #14)."""
+    with open(path, encoding="utf-8") as f:
+        raw = f.read()
+    exempt, has_note = extract_lint_exemptions(raw)
+    flags, advisories = lint_text(extract_lint_text(raw))
+    if exempt and not has_note:
+        flags = flags + [(
+            "lint_exempt_without_note", 2.0,
+            "lint_exempt in front-matter requires a non-empty lint_exempt_note",
+        )]
+        return flags, advisories, []
+    kept = [f for f in flags if f[0] not in exempt]
+    exempted = [f for f in flags if f[0] in exempt]
+    return kept, advisories, exempted
+
+
+def _extract_golden_corpus_cases(md_text):
+    """Parse references/golden_corpus.md: returns {case_id: (code_block_text, expected_flag_names)}."""
+    cases = {}
+    case_blocks = re.split(r"### (G-\d+)", md_text)
+    # case_blocks: [preamble, 'G-01', body1, 'G-02', body2, ...]
+    for k in range(1, len(case_blocks), 2):
+        case_id = case_blocks[k]
+        body = case_blocks[k + 1]
+        code_match = re.search(r"```\n(.*?)\n```", body, re.DOTALL)
+        code = code_match.group(1) if code_match else ""
+        cases[case_id] = code
+
+    # Parse the summary table at the bottom for expected flag names.
+    expected = {}
+    table_match = re.search(
+        r"## Сводная таблица ожиданий\n\n(.*?)\n\n-", md_text, re.DOTALL
+    )
+    table = table_match.group(1) if table_match else ""
+    for line in table.splitlines():
+        m = re.match(r"\|\s*(G-\d+)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|", line)
+        if m:
+            case_id, flags_cell, _verdict = m.groups()
+            names = re.findall(r"[a-z_]+(?=\s*(?:×\d+)?)", flags_cell)
+            expected[case_id] = set(n for n in names if n not in ("×",))
+    return cases, expected
+
+
+IMPLEMENTED_FLAG_NAMES = {
+    "kantselyarit", "genitive_metaphor", "em_dash_cascade", "triple_rhetoric",
+    "genre_autopilot", "chorus_checklist", "marker_word", "organ_cliche",
+    "not_x_but_y", "position_explanation", "truncation", "tech_metaphor",
+    "hypophora", "banal_rhyme", "verb_rhyme", "uniform_line_length",
+    "simile_chain",
+    "sentiment_flatline",
+    "binary_light_dark",
+    "school_arc",
+    "denial_gap",
+    "noun_stack",
+    "adj_pile",
+    "parallel_shift_candidate",
+    # NOT vague_deixis: its check fires a false positive on the living
+    # etalon G-32 ("всё это зима" is saved by the concrete trace "мороз
+    # стоит третий день / стёкла заиндевели" two lines up, which the closed
+    # event list does not cover). Per the corpus protocol (FP = 0) it stays
+    # advisory-only and out of the enforced set until the 25.27 trace
+    # detection is widened -- tracked in issue #64.
+}
+
+
+def self_test():
+    corpus_path = os.path.join(KB_DIR, "references", "golden_corpus.md")
+    with open(corpus_path, encoding="utf-8") as f:
+        md_text = f.read()
+    cases, expected = _extract_golden_corpus_cases(md_text)
+
+    failures = []
+    for case_id, code in sorted(cases.items()):
+        flags, _advisories = lint_text(code)
+        got_names = {name for name, _w, _detail in flags}
+        want_names = expected.get(case_id, set()) & IMPLEMENTED_FLAG_NAMES
+        # Only compare on the subset of flags we actually implement --
+        # unimplemented flags (vague_deixis, school_arc,
+        # sentiment_flatline, perfect_grammar,
+        # parallel_no_shift verdict) are explicitly out of scope, see module
+        # docstring. We still check we don't fire flags we DO implement when
+        # they're not expected (false positive), and that we DO fire flags
+        # that ARE expected and implemented (false negative).
+        implemented_got = got_names & IMPLEMENTED_FLAG_NAMES
+        if implemented_got != want_names:
+            failures.append(
+                f"{case_id}: expected {sorted(want_names)}, got {sorted(implemented_got)}"
+            )
+
+    if failures:
+        print(f"SELF-TEST FAIL: {len(failures)}/{len(cases)} cases mismatched")
+        for f in failures:
+            print(f"  ✗ {f}")
+        return 1
+    print(f"SELF-TEST OK: {len(cases)} golden-corpus cases match on implemented flags "
+          f"({', '.join(sorted(IMPLEMENTED_FLAG_NAMES))})")
+    return 0
+
+
+
 def main():
     global _POS_TRACE
     args = sys.argv[1:]
@@ -1099,8 +1243,13 @@ if __name__ == "__main__":
 
 # ---------------------------------------------------------------------------
 # Out of scope (needs semantic/contextual judgment, not a lint rule):
-#   - vague_deixis: requires checking neighbouring 1-2 lines for a concrete,
-#     "photographable" event trace (§25.27 умолчания criterion).
+#   - vague_deixis's 25.27 trace judgment in full: the closed phrase/event
+#     lists ARE implemented (check_vague_deixis) but sit on the advisory
+#     channel only -- the closed event list false-positives on the living
+#     etalon G-32 ("всё это зима" is saved by the concrete trace "мороз
+#     стоит третий день / стёкла заиндевели" two lines up), so the flag is
+#     deliberately outside IMPLEMENTED_FLAG_NAMES until trace detection is
+#     widened (issue #64).
 #   - truncation as *omission*: the "text stops before the event" reading is
 #     the same event-trace judgment as vague_deixis and stays out of scope --
 #     it would hard-fail the 25.27 white-list cases G-01 and G-10. Only the
@@ -1109,8 +1258,10 @@ if __name__ == "__main__":
 #     (check_banal_rhyme); only the authorial-irony discount (G-13
 #     «осознанно», score weight P3 = 0.3) stays a scoring-layer concern and
 #     is deliberately not part of the lint flag.
-#   - school_arc: requires judging whether the closing line is an earned
-#     action/image vs a stated moral.
+#   - school_arc's "is the closure earned" judgment: the closed
+#     exposition-marker + moral-marker core IS linted (check_school_arc,
+#     G-08 TP / G-37 FP pair); whether a stated moral is *earned* stays a
+#     scoring-layer concern.
 #   - sentiment_flatline: requires judging overall tonal register, not
 #     matchable by a fixed word list without heavy false positives.
 #   - tech_metaphor's spec EXCEPTION (tech lexicon as the hero's ground
@@ -1133,15 +1284,16 @@ if __name__ == "__main__":
 #     marked-simile count itself IS linted (check_simile_chain); whether a
 #     chain is deliberate build-up stays a scoring-layer concern (the
 #     lint_exempt mechanism covers a conscious long chain).
-#   - binary_light_dark / noun_stack / adj_pile:
-#     §30.2 gives closed lists or regexes for these too, but each carries a
-#     real false-positive risk on live text without more corpus evidence or
-#     tooling we don't have (e.g. binary_light_dark's own spec flags
-#     `frame_check: true`, meaning it needs to distinguish a philosophical
-#     light/dark frame from a literal detail like a hallway lamp -- not
-#     decidable from the regex alone; noun_stack/adj_pile need POS tagging).
-#     Left for a follow-up pass, one flag at a time, each with its own
-#     golden-corpus TP/FP pair per §0 protocol.
+#   - binary_light_dark's `frame_check: true` judgment (philosophical
+#     light/dark frame vs literal detail like a hallway lamp): the
+#     conservative core IS linted (check_binary_light_dark -- word
+#     boundaries, distinct-lexeme counting so a repeated chorus cannot
+#     inflate the counter, contrastive structure or 5+ distinct lexemes;
+#     G-35 TP / G-36 FP pair, zero warnings on lyrics/ including CW-009's
+#     literal lamp and MC-003's club lighting). What stays out of scope is
+#     the philosophical-vs-literal verdict itself.
+#   - noun_stack / adj_pile: need POS tagging; covered by the optional
+#     pymorphy3 advisory layer above (weight 0.0, never blocking).
 #     Promoted out of this list so far: not_x_but_y (narrowed to the literal
 #     redundant-copula formula), position_explanation (closed phrase list),
 #     truncation (closed marker list only, omission judgment excluded),
@@ -1153,6 +1305,9 @@ if __name__ == "__main__":
 #     tightened 1.5 -> 0.75, calibrated on the living long-form CW-002),
 #     simile_chain (closed marked-simile token set «словно/будто/как будто»
 #     verbatim from §25.20, >= 2 per stanza, bare «как» excluded per the
-#     spec's own list); each keeps the spec's flag name but documents its
-#     narrowing next to the pattern definition.
+#     spec's own list), school_arc (closed exposition/moral marker lists,
+#     >= 4 lines, markers required in the first and last two lines),
+#     binary_light_dark (distinct-lexeme counting + contrastive structure,
+#     calibrated on lyrics/ MC-003); each keeps the spec's flag name but
+#     documents its narrowing next to the pattern definition.
 # ---------------------------------------------------------------------------
