@@ -1,20 +1,27 @@
 #!/usr/bin/env python3
-"""Fail the build on mojibake (U+FFFD REPLACEMENT CHARACTER) in tracked text.
+"""Fail the build on mojibake (U+FFFD) or stray control chars in tracked text.
 
 Why this exists
 ---------------
 This KB is Russian-language, so effectively every source file is full of
 multi-byte characters. A single mangled character is invisible in review and
-can silently disable a rule. Real incident: scripts/lint_patterns.py shipped
-with one entry of MARKER_WORDS holding two U+FFFD bytes in the middle of the
-word. Python accepted it as a perfectly valid string literal, so the marker
-just never matched anything again -- a silent false-negative that no unit test
-and no golden-corpus case could catch, because the corpus does not contain
-that word either.
+can silently disable a rule. Real incidents:
 
-The damage class is mechanical, so the guard is mechanical: any U+FFFD in a
-tracked text file is a red build, not a latent bug. The same scan also
-rejects files that are not decodable as UTF-8 at all.
+1. scripts/lint_patterns.py shipped with one entry of MARKER_WORDS holding
+   two U+FFFD bytes in the middle of the word. Python accepted it as a
+   perfectly valid string literal, so the marker just never matched anything
+   again -- a silent false-negative that no unit test and no golden-corpus
+   case could catch, because the corpus does not contain that word either.
+2. Raw-string regex patterns shipped with U+0008 (BACKSPACE) where "\\b"
+   (word boundary) belonged (10 spots in SHARP_WORDS_PATTERNS /
+   CONCRETE_INDICATORS). Python accepted the backspace as a literal pattern
+   character, so the concrete-detail gate of check_sentiment_flatline
+   silently matched nothing (found and fixed in the issue #72 pass).
+
+The damage class is mechanical, so the guard is mechanical: any U+FFFD or
+C0 control character (other than \\n, \\t, \\r) in a tracked text file is a red
+build, not a latent bug. The same scan also rejects files that are not
+decodable as UTF-8 at all.
 
 Usage
 -----
@@ -27,6 +34,11 @@ import os
 import sys
 
 REPLACEMENT = "\ufffd"
+
+# C0 control characters that are legitimate in text files. Everything else
+# below U+0020 (U+0000-U+001F) is flagged: \\b/\\f/\\v/\\0 etc. have no business
+# in Markdown, JSON, YAML or Python sources and are invisible in diffs.
+ALLOWED_CONTROL = {"\n", "\t", "\r"}
 
 TEXT_SUFFIXES = (
     ".md",
@@ -72,8 +84,6 @@ def scan(root):
             problems.append((path, 0, "not valid UTF-8: %s" % exc))
             continue
         scanned += 1
-        if REPLACEMENT not in text:
-            continue
         for lineno, line in enumerate(text.splitlines(), 1):
             if REPLACEMENT in line:
                 count = line.count(REPLACEMENT)
@@ -81,6 +91,17 @@ def scan(root):
                     path,
                     lineno,
                     "%d replacement char(s): %s" % (count, line.strip()),
+                ))
+            bad = [c for c in line if ord(c) < 32 and c not in ALLOWED_CONTROL]
+            if bad:
+                problems.append((
+                    path,
+                    lineno,
+                    "%d control char(s), first U+%04X: %s" % (
+                        len(bad),
+                        ord(bad[0]),
+                        line.strip()[:80],
+                    ),
                 ))
     return scanned, problems
 
@@ -91,7 +112,7 @@ def main(argv):
     if problems:
         print(
             "ENCODING CHECK FAILED: damaged text "
-            "(U+FFFD replacement chars and/or non-UTF-8 bytes)"
+            "(U+FFFD replacement chars, stray control chars and/or non-UTF-8 bytes)"
         )
         for path, lineno, detail in problems:
             location = path if lineno == 0 else "%s:%d" % (path, lineno)
@@ -102,7 +123,7 @@ def main(argv):
             "bytes." % (len(problems), scanned)
         )
         return 1
-    print("ENCODING CHECK OK: %d text files scanned, no U+FFFD" % scanned)
+    print("ENCODING CHECK OK: %d text files scanned, no U+FFFD or stray control chars" % scanned)
     return 0
 
 
