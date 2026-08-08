@@ -23,8 +23,10 @@ jobs:
       - name: Encoding guard - no U+FFFD or non-UTF-8 bytes in tracked text
         run: python3 scripts/check_encoding.py .
 
-      - name: GigaChat input path policy - self-test
-        run: python3 -m unittest integrations/gigachat/test_path_policy.py
+      - name: GigaChat security policies - self-test
+        run: |
+          python3 integrations/gigachat/check_dependency_lock.py --manifest-only
+          python3 -m unittest integrations/gigachat/test_path_policy.py integrations/gigachat/test_dependency_lock.py
 
       - name: Run KB validation
         run: python3 validate.py

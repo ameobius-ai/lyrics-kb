@@ -1,0 +1,47 @@
+name: Validate GigaChat dependency lock
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "integrations/gigachat/requirements.txt"
+      - "integrations/gigachat/check_dependency_lock.py"
+      - "integrations/gigachat/test_dependency_lock.py"
+      - ".github/workflows/gigachat-second-opinion.yml"
+      - ".github/workflows/gigachat-dependencies.yml"
+      - ".github/dependabot.yml"
+  pull_request:
+    paths:
+      - "integrations/gigachat/requirements.txt"
+      - "integrations/gigachat/check_dependency_lock.py"
+      - "integrations/gigachat/test_dependency_lock.py"
+      - ".github/workflows/gigachat-second-opinion.yml"
+      - ".github/workflows/gigachat-dependencies.yml"
+      - ".github/dependabot.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gigachat-dependencies:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Verify wheel-only clean install
+        env:
+          PIP_DISABLE_PIP_VERSION_CHECK: "1"
+          PIP_NO_INPUT: "1"
+        run: |
+          python -m venv "$RUNNER_TEMP/gigachat-http"
+          "$RUNNER_TEMP/gigachat-http/bin/python" -m pip install --only-binary=:all: --requirement integrations/gigachat/requirements.txt
+          "$RUNNER_TEMP/gigachat-http/bin/python" -m pip check
+          "$RUNNER_TEMP/gigachat-http/bin/python" integrations/gigachat/check_dependency_lock.py

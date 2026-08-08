@@ -38,8 +38,15 @@ jobs:
             exit 1
           fi
 
-      - name: Install deps
-        run: pip install -r integrations/gigachat/requirements.txt
+      - name: Install locked HTTP deps
+        env:
+          PIP_DISABLE_PIP_VERSION_CHECK: "1"
+          PIP_NO_INPUT: "1"
+        run: |
+          python -m venv "$RUNNER_TEMP/gigachat-http"
+          "$RUNNER_TEMP/gigachat-http/bin/python" -m pip install --only-binary=:all: --requirement integrations/gigachat/requirements.txt
+          "$RUNNER_TEMP/gigachat-http/bin/python" -m pip check
+          "$RUNNER_TEMP/gigachat-http/bin/python" integrations/gigachat/check_dependency_lock.py
 
       - name: Install Russian Trusted CA (Минцифры)
         run: |
@@ -53,7 +60,8 @@ jobs:
           GIGACHAT_MODEL: ${{ inputs.model }}
           LYRICS_PATH: ${{ inputs.lyrics_path }}
           REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
-        run: python integrations/gigachat/second_opinion.py "$LYRICS_PATH"
+        run: |
+          "$RUNNER_TEMP/gigachat-http/bin/python" integrations/gigachat/second_opinion.py "$LYRICS_PATH"
 
       - name: Publish opinion as pull request
         env:

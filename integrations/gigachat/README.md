@@ -16,6 +16,12 @@ Advisory-прогон текстов через **GigaChat 3.5 Ultra** — «в�
    - Secret: Authorization Key целиком (base64-строка)
 3. Опционально секрет/переменная `GIGACHAT_MODEL` — переопределить модель. По умолчанию `GigaChat-3.5-Ultra`; если API отклонит имя, скрипт сам возьмёт первую модель с «Ultra» из `/api/v1/models`.
 
+## Lock зависимостей
+
+`requirements.txt` содержит полный HTTP runtime graph из пяти exact pins: Requests, certifi, charset-normalizer, idna и urllib3. Workflow устанавливает только wheels в отдельный venv, выполняет `pip check`, а `check_dependency_lock.py` сверяет фактические версии с manifest и печатает fingerprint до появления GigaChat key в окружении.
+
+Изменения lock проходят отдельный path-scoped clean-install check на Python 3.12. Вложенный manifest отслеживается собственным Dependabot pip-feed; обновление принимается только после зелёного install-smoke.
+
 ## Запуск
 
 ### Через GitHub Actions (рекомендуется)
@@ -36,7 +42,9 @@ sudo update-ca-certificates
 
 # затем (из корня репозитория):
 python3 -m venv .venv && source .venv/bin/activate
-pip install -r integrations/gigachat/requirements.txt
+python -m pip install --only-binary=:all: -r integrations/gigachat/requirements.txt
+python -m pip check
+python integrations/gigachat/check_dependency_lock.py
 GIGACHAT_AUTH_KEY=... REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
   python integrations/gigachat/second_opinion.py songwriting/ru/drafts/ottepel.md
 ```
@@ -49,7 +57,8 @@ GIGACHAT_AUTH_KEY=... REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
 - Checkout не сохраняет GitHub credential между steps.
 - `GITHUB_TOKEN` появляется только в финальном publish-step и используется для новой ветки/PR.
 - GigaChat key доступен только API-step; publish-step его не получает.
-- Path policy покрыта stdlib unit-тестами в blocking `validate`.
+- HTTP runtime проверяется в изолированном venv до secret-bearing step.
+- Path и dependency policies покрыты stdlib unit-тестами в blocking `validate`.
 
 ## Что на выходе
 
