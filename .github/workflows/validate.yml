@@ -45,23 +45,23 @@ jobs:
           # marked '## Текст' blocks (extract_lint_text handles them too).
           find cases -name '*.md' -print0 | xargs -0 python3 scripts/lint_patterns.py || true
 
-      - name: Install optional POS layer (pymorphy3, advisory only - issue #31)
+      - name: Install locked optional POS layer (advisory only - issue #81)
         continue-on-error: true
-        # Pinned so POS advisory measurements stay comparable across PRs
-        # (baseline measurement: 2.0.6, PR #38 comment).
-        run: pip install pymorphy3==2.0.6
+        run: |
+          pip install --requirement requirements-pos.txt
+          pip check
 
       - name: POS advisory measurement - noun_stack/adj_pile on lyrics/ (non-blocking, issue #31)
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pip show pymorphy3 >/dev/null 2>&1 || { echo "pymorphy3 unavailable, POS layer skipped"; exit 0; }
-          VER=$(pip show pymorphy3 | awk '/^Version:/{print $2}')
+          pip show pymorphy3 pymorphy3-dicts-ru dawg2-python >/dev/null 2>&1 || { echo "locked POS layer unavailable, measurement skipped"; exit 0; }
+          STACK=$(python3 -c 'from importlib.metadata import version; print("pymorphy3 {}; dicts-ru {}; dawg2-python {}".format(version("pymorphy3"), version("pymorphy3-dicts-ru"), version("dawg2-python")))')
           # Full lint output, no grep: only files with flags/advisories/exempts
           # print anything, so the POS hits stay attributed to their files.
           OUT=$(find lyrics -name '*.md' ! -name 'README.md' -print0 | xargs -0 -r python3 scripts/lint_patterns.py --pos-trace 2>&1 || true)
-          BODY=$(printf '### POS advisory (pymorphy3 %s, issue #31)\n\nLint output on lyrics/ (advisory/exempt lines, attributed):\n\n```\n%s\n```\n\nAdvisory only (weight 0.0) — never blocks the build. Weights come only after a G-pair and a zero-FP live measurement per the §0 protocol.' "$VER" "${OUT:-<no hits>}")
+          BODY=$(printf '### POS advisory (%s; issue #31)\n\nLint output on lyrics/ (advisory/exempt lines, attributed):\n\n```\n%s\n```\n\nAdvisory only (weight 0.0) — never blocks the build. Weights come only after a G-pair and a zero-FP live measurement per the §0 protocol.' "$STACK" "${OUT:-<no hits>}")
           echo "$BODY" >> "$GITHUB_STEP_SUMMARY"
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             gh pr comment "${{ github.event.pull_request.number }}" --body "$BODY" || true
