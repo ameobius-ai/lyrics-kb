@@ -1217,6 +1217,11 @@ def _extract_golden_corpus_cases(md_text):
         m = re.match(r"\|\s*(G-\d+)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|", line)
         if m:
             case_id, flags_cell, _verdict = m.groups()
+            # Strip parenthetical notes before extracting flag names: e.g.
+            # "— (white-list 25.27)" would otherwise leak the junk tokens
+            # "white"/"list" into the expected set (previously masked only by
+            # the IMPLEMENTED_FLAG_NAMES filter).
+            flags_cell = re.sub(r"\([^)]*\)", "", flags_cell)
             names = re.findall(r"[a-z_]+(?=\s*(?:×\d+)?)", flags_cell)
             expected[case_id] = set(n for n in names if n not in ("×",))
     return cases, expected
@@ -1252,10 +1257,10 @@ def self_test():
         got_names = {name for name, _w, _detail in flags}
         want_names = expected.get(case_id, set()) & IMPLEMENTED_FLAG_NAMES
         # Only compare on the subset of flags we actually implement --
-        # unimplemented flags (vague_deixis, school_arc,
-        # sentiment_flatline, perfect_grammar,
-        # parallel_no_shift verdict) are explicitly out of scope, see module
-        # docstring. We still check we don't fire flags we DO implement when
+        # the parallel_no_shift verdict and scoring-layer concerns stay
+        # explicitly out of scope (see the trailer comment below); every
+        # flag the corpus expects by name is implemented as of issue #69.
+        # We still check we don't fire flags we DO implement when
         # they're not expected (false positive), and that we DO fire flags
         # that ARE expected and implemented (false negative).
         implemented_got = got_names & IMPLEMENTED_FLAG_NAMES
