@@ -20,7 +20,9 @@ Advisory-прогон текстов через **GigaChat 3.5 Ultra** — «в�
 
 ### Через GitHub Actions (рекомендуется)
 
-Actions → **GigaChat second opinion** → Run workflow → укажи путь к файлу в репо (например `songwriting/ru/drafts/ottepel.md`). Вердикт придёт коммитом рядом: `<name>.gigachat-opinion.md`.
+Actions → **GigaChat second opinion** → Run workflow → укажи путь к файлу в репо (например `songwriting/ru/drafts/ottepel.md`). Workflow создаст отдельную ветку и PR с вердиктом рядом: `<name>.gigachat-opinion.md`; прямой push в исходную ветку не выполняется.
+
+Путь должен быть относительным существующим `.md` внутри репозитория. Абсолютные пути, выход через `..`/symlink, `.git`, уже сгенерированные отчёты, управляющие символы и файлы больше 128 KiB отклоняются до внешнего API-вызова.
 
 ### Локально
 
@@ -32,12 +34,22 @@ sudo cp integrations/gigachat/certs/russian-trusted-root-ca.pem /usr/local/share
 sudo cp integrations/gigachat/certs/russian-trusted-sub-ca.pem /usr/local/share/ca-certificates/russian-trusted-sub-ca.crt
 sudo update-ca-certificates
 
-# затем:
+# затем (из корня репозитория):
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r integrations/gigachat/requirements.txt
 GIGACHAT_AUTH_KEY=... REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt \
   python integrations/gigachat/second_opinion.py songwriting/ru/drafts/ottepel.md
 ```
+
+Файловый локальный режим применяет ту же repo-bound path policy. Режим `--stdin` остаётся доступен для явной локальной передачи текста.
+
+## Контур безопасности workflow
+
+- `lyrics_path` передаётся shell только через environment и quoted expansion.
+- Checkout не сохраняет GitHub credential между steps.
+- `GITHUB_TOKEN` появляется только в финальном publish-step и используется для новой ветки/PR.
+- GigaChat key доступен только API-step; publish-step его не получает.
+- Path policy покрыта stdlib unit-тестами в blocking `validate`.
 
 ## Что на выходе
 
