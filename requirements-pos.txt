@@ -1,0 +1,6 @@
+# Semantic POS stack used by the advisory noun_stack/adj_pile measurement.
+# Keep exact pins: analyzer, dictionary, and DAWG backend can change POS output.
+# Updates are proposed by Dependabot and accepted only after the live hit set is reviewed.
+dawg2-python==0.9.0
+pymorphy3==2.0.6
+pymorphy3-dicts-ru==2.4.417150.4580142
