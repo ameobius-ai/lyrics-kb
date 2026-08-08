@@ -849,6 +849,116 @@ def check_binary_light_dark(text):
     return []
 
 
+# ---------------------------------------------------------------------------
+# vague_deixis (issue #23, #47): section 30.2 detector.patterns.vague_deixis,
+# weight 0.5. Detects vague phrases without concrete event trace in context.
+# Implements section 25.27 criterion: uncertainty is legal if neighboring
+# 1-2 lines contain a concrete, "photographable" event trace.
+# ---------------------------------------------------------------------------
+
+VAGUE_DEIXIS_PHRASES = [
+    r"всё\s+это",
+    r"что-то\s+большее",
+    r"что-то\s+важное",
+    r"что-то\s+настоящее",
+    r"нечто\s+большее",
+    r"нечто\s+важное",
+    r"это\s+всё",
+    r"всё\s+то",
+]
+VAGUE_DEIXIS_RE = re.compile("|".join(VAGUE_DEIXIS_PHRASES), re.IGNORECASE)
+
+EVENT_VERBS_SPECIFIC = [
+    r"позвал\w*", r"крикнул\w*", r"прошептал\w*", r"сказал\w*",
+    r"открыл\w*", r"закрыл\w*", r"взял\w*", r"положил\w*",
+    r"нашёл\w*", r"потерял\w*", r"уронил\w*", r"поднял\w*",
+    r"увидел\w*", r"услышал\w*",
+]
+
+EVENT_NOUNS_SPECIFIC = [
+    r"протоптан\w*", r"след\w*", r"троп\w*",
+    r"крюк\w*", r"куртк\w*", r"фотк\w*", r"письм\w*",
+    r"записк\w*", r"ключ\w*", r"телефон\w*",
+]
+
+EVENT_RE_SPECIFIC = re.compile(
+    "|".join(EVENT_VERBS_SPECIFIC + EVENT_NOUNS_SPECIFIC),
+    re.IGNORECASE
+)
+
+NEGATION_WORDS = [r"не\s+", r"без\s+", r"нет\s+", r"ни\s+"]
+NEGATION_RE = re.compile("|".join(NEGATION_WORDS), re.IGNORECASE)
+
+# Issue #64 widening: a counted/measured detail inside the context window is
+# itself a concrete 25.27 trace -- «фотографируемость» through measure
+# (digit, cardinal, ordinal). Same concreteness signal that
+# sentiment_flatline's CONCRETE_INDICATORS already uses to ground a text.
+# Motivating case: living etalon G-32 ("всё это зима, и она наша") is saved
+# by "мороз стоит третий день" two lines up -- an ordinal measure, not an
+# event from the closed EVENT_* lists. Measures are not negated away
+# ("не было трёх дней" stays concrete), so no NEGATION_RE gate here.
+# Collision-prone stems are inflection-bounded (пят*/шест* must not catch
+# «пятно»/«пятница»/«шестерёнка»).
+_TRACE_CARDINALS = (
+    r"\b(?:один|одна|одно|одни|два|две|три|четыре|пять|шесть|семь|восемь|"
+    r"девять|десять|сто|тысяч\w*)\b"
+)
+_TRACE_ORDINALS = (
+    r"\b(?:перв\w*|втор\w*|трет\w*|четв[её]рт\w*"
+    r"|пят(?:ый|ого|ому|ым|ом|ое|ая|ой|ую|ые|ых|ыми)"
+    r"|шест(?:ой|ого|ому|ым|ом|ое|ая|ую|ые|ых|ыми)"
+    r"|седьм\w*|восьм\w*|девят\w*|десят\w*)\b"
+)
+TRACE_NUMBER_RE = re.compile(
+    r"\b\d+\b|" + _TRACE_CARDINALS + "|" + _TRACE_ORDINALS,
+    re.IGNORECASE,
+)
+
+
+def _has_positive_event(text):
+    """Check if text contains a concrete event WITHOUT negation."""
+    for match in EVENT_RE_SPECIFIC.finditer(text):
+        event_pos = match.start()
+        context_before = text[max(0, event_pos-30):event_pos]
+        if NEGATION_RE.search(context_before):
+            continue
+        return True
+    return False
+
+
+def check_vague_deixis(text):
+    """Detect vague deixis without concrete event trace in neighboring lines.
+
+    Trace = closed EVENT_* lists (positive, not negated) OR a measured detail
+    (TRACE_NUMBER_RE, issue #64 widening -- see the comment above it for the
+    G-32 motivation)."""
+    lines = text.split("\n")
+    flags = []
+    
+    for i, line in enumerate(lines):
+        if VAGUE_DEIXIS_RE.search(line):
+            context_lines = []
+            for j in range(max(0, i-2), i):
+                context_lines.append(lines[j])
+            for j in range(i+1, min(len(lines), i+3)):
+                context_lines.append(lines[j])
+            
+            has_event = any(
+                _has_positive_event(ctx_line) or TRACE_NUMBER_RE.search(ctx_line)
+                for ctx_line in context_lines
+            )
+            
+            if not has_event:
+                match = VAGUE_DEIXIS_RE.search(line)
+                flags.append((
+                    "vague_deixis",
+                    0.5,
+                    f"'{match.group()}' at line {i+1} without event trace"
+                ))
+    
+    return flags
+
+
 MECHANICAL_CHECKS = [
     check_denial_gap,
     check_em_dash_cascade,
@@ -870,6 +980,7 @@ MECHANICAL_CHECKS = [
     check_simile_chain,
     check_school_arc,
     check_binary_light_dark,
+    check_vague_deixis,
 ]
 
 
@@ -1009,90 +1120,11 @@ def check_sentiment_flatline(text):
 
 
 
-# ---------------------------------------------------------------------------
-# vague_deixis (issue #23, #47): section 30.2 detector.patterns.vague_deixis,
-# weight 0.5. Detects vague phrases without concrete event trace in context.
-# Implements section 25.27 criterion: uncertainty is legal if neighboring
-# 1-2 lines contain a concrete, "photographable" event trace.
-# ---------------------------------------------------------------------------
-
-VAGUE_DEIXIS_PHRASES = [
-    r"всё\s+это",
-    r"что-то\s+большее",
-    r"что-то\s+важное",
-    r"что-то\s+настоящее",
-    r"нечто\s+большее",
-    r"нечто\s+важное",
-    r"это\s+всё",
-    r"всё\s+то",
-]
-VAGUE_DEIXIS_RE = re.compile("|".join(VAGUE_DEIXIS_PHRASES), re.IGNORECASE)
-
-EVENT_VERBS_SPECIFIC = [
-    r"позвал\w*", r"крикнул\w*", r"прошептал\w*", r"сказал\w*",
-    r"открыл\w*", r"закрыл\w*", r"взял\w*", r"положил\w*",
-    r"нашёл\w*", r"потерял\w*", r"уронил\w*", r"поднял\w*",
-    r"увидел\w*", r"услышал\w*",
-]
-
-EVENT_NOUNS_SPECIFIC = [
-    r"протоптан\w*", r"след\w*", r"троп\w*",
-    r"крюк\w*", r"куртк\w*", r"фотк\w*", r"письм\w*",
-    r"записк\w*", r"ключ\w*", r"телефон\w*",
-]
-
-EVENT_RE_SPECIFIC = re.compile(
-    "|".join(EVENT_VERBS_SPECIFIC + EVENT_NOUNS_SPECIFIC),
-    re.IGNORECASE
-)
-
-NEGATION_WORDS = [r"не\s+", r"без\s+", r"нет\s+", r"ни\s+"]
-NEGATION_RE = re.compile("|".join(NEGATION_WORDS), re.IGNORECASE)
-
-
-def _has_positive_event(text):
-    """Check if text contains a concrete event WITHOUT negation."""
-    for match in EVENT_RE_SPECIFIC.finditer(text):
-        event_pos = match.start()
-        context_before = text[max(0, event_pos-30):event_pos]
-        if NEGATION_RE.search(context_before):
-            continue
-        return True
-    return False
-
-
-def check_vague_deixis(text):
-    """Detect vague deixis without concrete event trace in neighboring lines."""
-    lines = text.split("\n")
-    flags = []
-    
-    for i, line in enumerate(lines):
-        if VAGUE_DEIXIS_RE.search(line):
-            context_lines = []
-            for j in range(max(0, i-2), i):
-                context_lines.append(lines[j])
-            for j in range(i+1, min(len(lines), i+3)):
-                context_lines.append(lines[j])
-            
-            has_event = any(_has_positive_event(ctx_line) for ctx_line in context_lines)
-            
-            if not has_event:
-                match = VAGUE_DEIXIS_RE.search(line)
-                flags.append((
-                    "vague_deixis",
-                    0.5,
-                    f"'{match.group()}' at line {i+1} without event trace"
-                ))
-    
-    return flags
-
-
 ADVISORY_CHECKS = [
     check_parallel_shift_candidate,
     check_noun_stack,
     check_adj_pile,
     check_sentiment_flatline,
-    check_vague_deixis,
 ]
 
 HARD_FAIL_WEIGHT = 2.0
@@ -1163,16 +1195,11 @@ IMPLEMENTED_FLAG_NAMES = {
     "sentiment_flatline",
     "binary_light_dark",
     "school_arc",
+    "vague_deixis",
     "denial_gap",
     "noun_stack",
     "adj_pile",
     "parallel_shift_candidate",
-    # NOT vague_deixis: its check fires a false positive on the living
-    # etalon G-32 ("всё это зима" is saved by the concrete trace "мороз
-    # стоит третий день / стёкла заиндевели" two lines up, which the closed
-    # event list does not cover). Per the corpus protocol (FP = 0) it stays
-    # advisory-only and out of the enforced set until the 25.27 trace
-    # detection is widened -- tracked in issue #64.
 }
 
 
@@ -1243,13 +1270,13 @@ if __name__ == "__main__":
 
 # ---------------------------------------------------------------------------
 # Out of scope (needs semantic/contextual judgment, not a lint rule):
-#   - vague_deixis's 25.27 trace judgment in full: the closed phrase/event
-#     lists ARE implemented (check_vague_deixis) but sit on the advisory
-#     channel only -- the closed event list false-positives on the living
-#     etalon G-32 ("всё это зима" is saved by the concrete trace "мороз
-#     стоит третий день / стёкла заиндевели" two lines up), so the flag is
-#     deliberately outside IMPLEMENTED_FLAG_NAMES until trace detection is
-#     widened (issue #64).
+#   - vague_deixis's 25.27 trace judgment BEYOND events and measures: the
+#     closed phrase list + closed event lists + measured-detail trace
+#     (TRACE_NUMBER_RE) ARE linted (check_vague_deixis, enforced since the
+#     issue #64 widening: G-12 TP x2, living etalon G-32 saved by the
+#     ordinal trace "третий день" two lines up). Concrete *imagery* without
+#     an event or a count ("стёкла заиндевели") still does not count as a
+#     trace -- widening further needs new corpus pairs per §0 protocol.
 #   - truncation as *omission*: the "text stops before the event" reading is
 #     the same event-trace judgment as vague_deixis and stays out of scope --
 #     it would hard-fail the 25.27 white-list cases G-01 and G-10. Only the
@@ -1308,6 +1335,9 @@ if __name__ == "__main__":
 #     spec's own list), school_arc (closed exposition/moral marker lists,
 #     >= 4 lines, markers required in the first and last two lines),
 #     binary_light_dark (distinct-lexeme counting + contrastive structure,
-#     calibrated on lyrics/ MC-003); each keeps the spec's flag name but
-#     documents its narrowing next to the pattern definition.
+#     calibrated on lyrics/ MC-003), vague_deixis (closed phrase list +
+#     closed event lists + measured-detail trace via TRACE_NUMBER_RE, the
+#     issue #64 widening that saved G-32 without touching G-12); each keeps
+#     the spec's flag name but documents its narrowing next to the pattern
+#     definition.
 # ---------------------------------------------------------------------------

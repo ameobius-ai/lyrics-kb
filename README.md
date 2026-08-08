@@ -83,7 +83,7 @@ find lyrics -name '*.md' ! -name 'README.md' -print0 | xargs -0 -r python3 scrip
 
 Неблокирующее: advisory sweep по `cases/` и опциональный POS-слой (`noun_stack`/`adj_pile` через pymorphy3, вес 0.0; замер FP публикуется комментарием в PR, `--pos-trace` добавляет разбор токенов к каждому хиту).
 
-Механический линтер (`scripts/lint_patterns.py`): 20 механических флагов (hard-fail только при весе ≥2.0) + 5 advisory; sweep по `lyrics/` линтит только fenced-блок под `## Текст`. Осознанный флагируемый приём оформляется `lint_exempt` + `lint_exempt_note` во front-matter (исключение без причины — само hard-fail; подробности в `lyrics/README.md`).
+Механический линтер (`scripts/lint_patterns.py`): 21 механический флаг (hard-fail только при весе ≥2.0) + 4 advisory; sweep по `lyrics/` линтит только fenced-блок под `## Текст`. Осознанный флагируемый приём оформляется `lint_exempt` + `lint_exempt_note` во front-matter (исключение без причины — само hard-fail; подробности в `lyrics/README.md`).
 
 ## Источники
 
