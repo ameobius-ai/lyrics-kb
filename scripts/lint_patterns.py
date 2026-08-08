@@ -959,6 +959,41 @@ def check_vague_deixis(text):
     return flags
 
 
+# ---------------------------------------------------------------------------
+# perfect_grammar (issue #69): §25.x, weight 0.5. The spec's "suspiciously
+# perfect grammar" is the DEFAULT state of any competent text, so a bare
+# smoothness measure would false-positive on living texts constantly
+# (lyrics/ is grammatical). Mechanized as a CONJUNCTION, exactly the role the
+# flag plays in the corpus: G-07 reads as кantselyarit + гладкость.
+# Gate 1: KANTSELYARIT_RE must already fire on the text (measured: only G-07
+# in the whole corpus, 0 files in lyrics/ -- the gate is what makes this
+# safe). Gate 2: zero colloquial markers (closed list + ellipsis/double
+# punctuation): a broken-register канцелярит text does not get the boost
+# (G-38 FP trap). Regex-only on purpose: no pymorphy3 here -- the check sits
+# in MECHANICAL_CHECKS and must be byte-deterministic in CI with or without
+# the optional POS layer installed.
+# ---------------------------------------------------------------------------
+COLLOQUIAL_MARKERS_RE = re.compile(
+    r"\b(?:же|ну|вот|типа|короче|блин|чё|щас)\b|…|\.\.\.|!{2,}|\?{2,}",
+    re.IGNORECASE,
+)
+
+
+def check_perfect_grammar(text):
+    """§25.x perfect_grammar, weight 0.5. Conjunction: kantselyarit already
+    fired AND zero colloquial markers -- see the comment above
+    COLLOQUIAL_MARKERS_RE for the two gates and the measurements."""
+    if not KANTSELYARIT_RE.search(text):
+        return []
+    if COLLOQUIAL_MARKERS_RE.search(text):
+        return []
+    return [(
+        "perfect_grammar",
+        0.5,
+        "канцелярит при нуле разговорных маркеров: подозрительно гладкий регистр",
+    )]
+
+
 MECHANICAL_CHECKS = [
     check_denial_gap,
     check_em_dash_cascade,
@@ -981,6 +1016,7 @@ MECHANICAL_CHECKS = [
     check_school_arc,
     check_binary_light_dark,
     check_vague_deixis,
+    check_perfect_grammar,
 ]
 
 
@@ -1196,6 +1232,7 @@ IMPLEMENTED_FLAG_NAMES = {
     "binary_light_dark",
     "school_arc",
     "vague_deixis",
+    "perfect_grammar",
     "denial_gap",
     "noun_stack",
     "adj_pile",
